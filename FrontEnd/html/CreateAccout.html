@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng kí tài khoản</title>
+    <link rel="stylesheet" href="../css/CreateAccout.css">
+    <script src="../javaScript/CreateAccout.js"></script>
+
+</head>
+<body>
+    <div class="register">
+    <h2>Đăng ký tài khoản</h2>
+    <table>
+        <thead>
+            <tr>
+                <th></th>
+                <th>Nhập thông tin cá nhân</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+            <td>Tên đăng nhập:</td>
+            <td><input type="text" id="userName" ></td>
+        </tr>
+        <tr>
+            <td>Mật khẩu:</td>
+            <td><input type="password" id="userPassword" required></td>
+        </tr>
+        <tr>
+            <td>Họ:</td>
+            <td><input type="text" id="userLastName" required></td>
+        </tr>
+        <tr>
+            <td>Tên:</td>
+            <td><input type="text" id="userFirstName" required></td>
+        </tr>
+        <tr>
+            <td>Địa chỉ:</td>
+            <td><input type="text" id="userAddress" required></td>
+        </tr>
+        <tr>
+            <td>Email:</td>
+            <td><input type="email" id="userEmail" required></td>
+        </tr>
+        <tr>
+            <td>Số điện thoại:</td>
+            <td><input type="tel" id="userPhoneNumber"></td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="btn-container">
+    <button type="submit" id="register_button" onclick="register()">Đăng ký</button>
+    </div>
+    </div>
+</body>
+</html>

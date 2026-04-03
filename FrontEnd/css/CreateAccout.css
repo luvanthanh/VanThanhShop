@@ -1,0 +1,82 @@
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #ddc957, #512e5f);
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.register{
+    background: #fff;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(108, 52, 131, 0.2);
+    width: 600px;
+    max-width: 90vw;
+    text-align: left;
+    min-height: 420px; /* tăng chiều cao tối thiểu */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+h2 {
+    text-align: center;
+    color: #2d3436;
+    margin-bottom: 20px;
+}
+
+/* Bảng chứa thông tin */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+td {
+    color: #2d3436;
+    font-size: 15px;
+}
+
+/* Ô nhập liệu */
+input{
+    width: 100%;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    outline: none;
+    transition: 0.3s;
+    height: 25px;
+}
+
+input:focus{
+    border-color: #0984e3;
+    box-shadow: 0 0 5px rgba(9, 132, 227, 0.5);
+}
+
+
+
+/* Nút đăng ký */
+.btn-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+button {
+    background-color: #0984e3;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #2bb47b;
+}
+
+
+

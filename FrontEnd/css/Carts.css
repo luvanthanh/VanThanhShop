@@ -1,0 +1,188 @@
+
+
+.cartMessages{
+    font-size: 20px;
+    font-weight: bold;
+    color: red;
+    margin-left: 40%;
+    margin-top: 40%;
+}
+
+.section-one{
+    height: auto;
+    display:flex;
+}
+
+
+.list-carts{
+    width: 50%;
+    margin-right: 20px;
+}
+
+.list-carts table tr td{
+    text-align: left;
+}
+
+
+.section-one .list-carts table{
+    width: 100%;
+    text-align: left;
+    margin-top: 20px;
+    margin-left: 50px;
+    border: 1px solid red ;
+    
+    border-radius:10px;
+    padding: 10px;
+}
+
+img{
+    width: 100px;
+    height: 100px;
+}
+
+.list-carts .list-carts table thead th{
+    color:rgb(8, 8, 8);
+    font-size: 16px;
+}
+
+.list-carts table td{
+    /* border: 1px solid; */
+    padding:5px;
+}
+
+button{
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
+    border: none;
+    background-color: #f0e0e0;
+    cursor: pointer;
+}
+button:hover{
+    background-color: #42b468;
+    color: white;
+}
+
+.sum-money{
+    margin-top: 10px;
+    padding: 5px;
+    color: red;
+}
+.sum-money:hover{
+    margin-top: 10px;
+}
+
+
+.add_product{
+    font-size: 15px;
+    font-weight: bold;
+    margin-top: 20px;
+    margin-left: 850px;
+    border: 3px solid rgb(204, 45, 66);
+    border-radius:7px;
+    width: 150px;
+    padding:7px;
+    padding-left: 10px;
+    cursor: pointer;
+    color: red;
+    background: white;
+}
+
+.add_product:hover{
+    border: 3px solid rgb(19, 0, 128);
+    background:#e41224;
+    color: rgb(245, 239, 239)
+}
+
+.add_product:hover a{
+    color: rgb(245, 239, 239)
+}
+
+
+
+
+.section-one .information_cart{
+    margin-top:20px;
+    width :35%;
+    height: 700px;
+    margin-left: 100px;
+    position: relative;
+}
+
+.section-one .information_cart table{
+    border: none;
+    width :100%;
+    height: 550px;
+    border :#42b468 2px solid;
+    border-radius: 10px;
+}
+
+.section-one .information_cart tr{
+    margin: 10px;
+}
+.section-one .information_cart table tr td {
+    padding:10px;
+    width: 200px;
+}
+
+.section-one .information_cart table tr td input{
+    border-radius: 10px;
+    border:  1px solid #42b468;
+    width: 360px;
+    height: 25px;
+}
+
+.order-button{
+    margin-left: 50px;
+}
+
+
+select{
+    color: rgb(8, 8, 8);
+    border: 1px solid rgb(77, 224, 77);
+    border-radius: 10px;
+    height: 25px;
+}
+
+.order_button{
+    font-weight: 600;
+    border: 3px solid rgb(45, 204, 58);
+    border-radius: 10px;
+    width: 150px;
+    color: rgb(5, 100, 34);
+    background: white;
+    cursor: pointer;
+    height: 50px;
+    padding : 8px;
+    padding-top: 10px;
+    
+}
+
+.order_button:hover{
+    border: 5px solid rgb(103, 13, 163);
+    background:#06a563;
+    color: rgb(245, 239, 239)
+}
+
+.order-list{
+    position: absolute;
+    top: 570px;
+    left: 465px;
+    border: 1px solid rgb(45, 204, 58);
+    border-radius: 7px;
+    width: 200px;
+    padding: 5px;
+    color: rgb(5, 100, 34);
+    background: white;
+    cursor: pointer;
+    
+}
+
+.order-list:hover{
+    border: 1px solid rgb(19, 0, 128);
+    background:#06a563;
+    color: rgb(245, 239, 239)
+}
+.order-list a:hover{
+    color: rgb(245, 239, 239);
+}

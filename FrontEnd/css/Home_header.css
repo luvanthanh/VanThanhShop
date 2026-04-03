@@ -1,0 +1,252 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  text-decoration: none;
+  list-style-type: none;
+}
+
+body {
+  background: #f5f5f5;
+}
+
+
+/* Header tổng */
+.navbar {
+  width: 100%;
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px;
+  background: linear-gradient(135deg, #530f5c, #512e5f);
+  color: white;
+  font-size: 14px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 5px 5px 15px linear-gradient(135deg, #b25bd4, #8c0fbd);;
+}
+
+/* Thanh top nhỏ */
+
+.top-bar {
+  color: rgb(247, 244, 240);
+  margin-left: 250px;
+  width: 70%;
+  overflow: hidden;
+  white-space: nowrap;
+  background: linear-gradient(to bottom, #592a6b, #6a2f81);
+  position: relative;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  border-radius: 15px;
+
+}
+
+.top-bar-content {
+  display: inline-block;
+  padding-left: 80%;
+  animation: marquee 20s linear infinite;
+}
+
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
+/* Thanh chính */
+.main-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 20px 20px;
+  gap: 15px;
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
+/* Logo */
+.logo {
+  font-size: 27px;
+  font-weight: bold;
+  color: orange;
+}
+.logo-s {
+  color: #ffff;
+  padding: 0 5px;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+/* Nút */
+.btn {
+  background: linear-gradient(135deg, #6c3483, #512e5f);
+  border: 1px solid rgb(218, 187, 130);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.btn a{
+  color: white;
+  border-radius: 12px;
+  align-items: center;
+  gap: 5px;
+}
+.btn:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+.news-btn{
+  background: linear-gradient(135deg, #6c3483, #512e5f);
+  border: 1px solid rgb(218, 187, 130);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  position: relative;
+  overflow: visible !important;
+  cursor: pointer;
+}
+.news-btn a{
+  color:white;
+}
+
+.news-btn:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+.news-btn:hover .news-menu {
+  display: block;
+}
+
+.news-btn .news-menu{
+  background: rgb(133, 70, 184);
+  color: rgb(250, 246, 246);
+  border-radius: 6px;
+  padding: 10px;
+  top: 33px;
+  width: 150px;
+  left: 0;
+  display: none;
+  position: absolute;
+}
+.news-btn .news-menu ul{
+  display: flex;
+  flex-direction: column;
+}
+
+.news-btn .news-menu ul li{
+  margin: 8px 0;
+}
+/* Search */
+.search-box {
+  width: 100px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background: white;
+  border-radius: 12px;
+  padding: 5px 10px;
+}
+.search-box input {
+  border: none;
+  outline: none;
+  flex: 1;
+  padding: 5px;
+}
+.search-box i {
+  color: #888;
+}
+
+
+
+/* Cart */
+.cart {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  border: 1px solid rgb(218, 187, 130);
+  border-radius: 6px;
+}
+
+
+.cart i {
+  font-size: 18px;
+}
+.cart a{
+  color: white;
+  border-radius: 6px;
+  align-items: center;
+  gap: 5px;
+  background: linear-gradient(135deg, #6c3483, #512e5f);
+  padding: 5px 10px;
+}
+.cart a:hover{
+  background: rgba(255,255,255,0.2);
+}
+
+/* Login */
+.login-button {
+  background: linear-gradient(135deg, #6c3483, #512e5f);
+  border: 1px solid rgb(218, 187, 130);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  gap: 5px;
+  position: relative;
+}
+.login-button:hover {
+  background: rgba(255,255,255,0.2);
+}
+.login-button:hover .accout-menu-two {
+  display: block;
+}
+.login-button .accout-menu-two{
+  margin-left: -10px;
+  background: rgb(239, 235, 241);
+  border-radius: 4px;
+  top: 33px;
+  width: 109px;
+  display: none;
+  position: absolute;
+}
+
+.login-button:hover .accout-menu-two ul {
+  display: flex;
+  flex-direction: column;
+  width :100px;
+  height :100px;
+  justify-content: space-between;
+  align-items: center;
+  gap:5px;
+}
+
+.login-button:hover .accout-menu-two ul li {
+  padding:5px;
+  width:100%;
+  border: soild 1px black;
+}
+.login-button .accout-menu-two ul li a{
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  color: orange;
+  text-align: center;
+}
+
+.login-button .accout-menu-two ul li a:hover{
+  color: rgb(233, 20, 20);
+}
+
+i{
+  color: rgb(218, 187, 130);
+}
+
+

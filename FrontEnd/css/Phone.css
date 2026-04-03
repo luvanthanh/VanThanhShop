@@ -1,0 +1,244 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  text-decoration: none;
+}
+
+body {
+  background: #eedef0;
+}
+
+/* Header tổng */
+.navbar {
+  width: 100%;
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px;
+  background: linear-gradient(135deg, #6c3483, #512e5f);
+  color: white;
+  font-size: 14px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 5px 5px 15px rgba(48, 197, 18, 0.3);
+}
+
+/* Thanh top nhỏ */
+
+.top-bar {
+  margin-left: 250px;
+  width: 70%;
+  overflow: hidden;
+  white-space: nowrap;
+  background: linear-gradient(to bottom, #6c3483, #512e5f);
+  position: relative;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  border-radius: 15px;
+
+}
+
+.top-bar-content {
+  display: inline-block;
+  padding-left: 80%;
+  animation: marquee 20s linear infinite;
+}
+
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
+/* Thanh chính */
+.main-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 20px 20px;
+  gap: 15px;
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
+/* Logo */
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: orange;
+}
+.logo-s {
+  color: red;
+  padding: 0 5px;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+/* Nút */
+.btn {
+  background: rgba(255,255,255,0.1);
+  border: none;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.btn a{
+  color: white;
+  border-radius: 12px;
+  align-items: center;
+  gap: 5px;
+}
+.btn:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+/* Search */
+.search-box {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background: white;
+  border-radius: 12px;
+  padding: 5px 10px;
+}
+.search-box input {
+  border: none;
+  outline: none;
+  flex: 1;
+  padding: 5px;
+}
+.search-box i {
+  color: #888;
+}
+
+/* Cart */
+.cart {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+.cart i {
+  font-size: 18px;
+}
+.cart a{
+  color: white;
+  border-radius: 6px;
+  align-items: center;
+  gap: 5px;
+  background: rgba(255,255,255,0.2);
+  padding: 5px 10px;
+}
+
+/* Login */
+.login {
+  background: rgba(255,255,255,0.2);
+}
+
+.section-one{
+    margin-top:20px;
+    margin-left: 290px;
+    width: 1300px;
+    margin-top : 3px;
+}
+
+
+
+
+
+.section-two{
+  margin-top:20px;
+  display: flex;
+  gap: 20px;
+}
+
+
+.section-two .list-image .main-image img{
+  width:515px;
+  border: #9e54bb 2px solid;
+  border-radius: 5px;
+  height:515px;
+  object-fit: cover;
+}
+
+.section-two .list-image .list-image-box{
+  display:flex;
+  justify-content: space-between;
+  width:510px;
+  gap: 5px;
+}
+
+.section-two .list-image .list-image-box .image{ 
+  width: 100px;
+  height:75px;
+  border: 1px solid wheat;
+  border-radius: 5px;
+}
+
+.section-two .list-image .list-image-box .image img{ 
+  width: 100px;
+  height:75px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-radius: 5px;
+}
+
+.section-two .list-image .list-image-box .image:hover img { 
+  cursor: pointer;
+  transform: scale(1.2);
+}
+
+
+.section-two .content-phone {
+  margin-left: 20px;
+  font-size: 18px;
+  line-height: 1.6;
+  display:flex;
+  flex-direction: column;
+  gap:40px;
+}
+
+.section-two .content-phone .content-phone-right {
+  display: flex;
+  flex-direction: column;
+  gap:10px;
+}
+.section-two .content-phone .content-phone-right b{
+  color:rgb(228, 43, 43);
+}
+
+
+.cart-total i{
+  font-size: 30px;
+  color: rgb(29, 223, 71);
+  cursor: pointer;
+}
+
+.cart-total .checkout-btn {
+
+  /* background: linear-gradient(135deg, #a24bc2, #3aa33a); */
+  border: none;
+  color: rgb(14, 1, 1);
+  padding: 10px 20px;
+  border: solid 1px rgb(73, 192, 43);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 18px;
+  overflow: hidden;
+}
+.cart-total .checkout-btn:hover {
+  background: linear-gradient(135deg, #3aa33a, #ce9b0e);
+  color:rgb(248, 248, 246);
+}
+
+.cart-total i:hover .checkout-btn{
+  background: linear-gradient(135deg, #3aa33a, #ce9b0e);
+  color:rgb(248, 248, 246);
+}

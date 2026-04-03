@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Văn Thành Shop</title>
+    <!-- link icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <link rel="stylesheet" href="../css/Home_header.css">
+    <link rel="stylesheet" href="../css/Home_section_one.css">
+    <link rel="stylesheet" href="../css/Home_section_two.css">
+    <link rel="stylesheet" href="../css/Home_section_three.css">
+    <link rel="stylesheet" href="../css/Home_footer.css">
+    <script src="../javascript/Section_one_slide.js"></script>
+    <script src="../javaScript/Section_two_productList.js"></script>
+    <script src="../javaScript/section_one_news.js"></script>
+    <script src="../javaScript/Home.js"></script>
+</head>
+<body>
+
+  <!-- header -->
+  <header class="navbar">
+  <div class="top-bar">
+      <div class="top-bar-content">
+        <span>Xin chào mọi người tới với Văn Thành Shop</span>
+        <span> | Sản phẩm Chính hãng - Uy tín- Chất lượng cao</span>
+        <span> | Giao nhanh - Miễn phí cho đơn 300k</span>
+        <span> | Tra cứu đơn hàng</span>
+        <span> | Hotline: 9999999 99</span>
+      </div>
+    </div>
+
+    <div class="main-bar">
+      <!-- Logo -->
+      <div class="logo">
+        <a href="Home.html">
+        <span class="logo-s" style="color: Orange">VĂN THÀNH</span>
+        </a>
+      </div>
+
+      <!-- Menu -->
+      <div class="btn">
+        <i class="fa-solid fa-house-user"></i><a href="Home.html">Trang Chủ </a>
+      </div>
+
+      <!-- gioio thieu -->
+      <div class="btn">
+        <i class="fa-solid fa-newspaper"></i> <a href="Introduce.html" rel="noopener noreferrer" >Giới Thiệu</a>
+      </div>
+        <!-- tin tucws -->
+      <div class="news-btn">
+        <a href="ListNews.html" ><i class="fa-solid fa-pager"></i> Tin Tức</a>
+      </div>
+
+
+      <!-- Search -->
+      <div class="search-box">
+        <input type="text" placeholder="Bạn muốn mua gì hôm nay?">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </div>
+
+      <!-- Cart -->
+      <div class="cart">
+        <a href="Carts.html"> <i class="fa-solid fa-cart-shopping"></i>Giỏ hàng</a>
+      </div>
+
+      <!-- Login nút đăng nhập  -->
+      
+      <div class="login-button" id="login_button">
+        <i class="fa fa-user"></i> Tài khoản
+        <div class="accout-menu-two">
+          <ul>
+            <li><a href="LoginClient.html">Đăng nhập</a></li>
+            <li><a href="Profile.html">Profile </a></li>
+            <li><a id="logout_button" onclick="logout()">Đăng xuất</a></li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- section 1 -->
+  <div class="section-one">
+    <div class="section-one-content">
+      <div class="section-one-left" id="section_one_news"></div>
+
+      <div class="section-one-right">
+        <div class="slider-controls">
+            <button id="prev-slide" class="slider-btn"><i class="fa fa-chevron-left"></i></button>
+            <button id="next-slide" class="slider-btn"><i class="fa fa-chevron-right"></i></button>
+          </div>
+          <div class="list-slides">
+              <img src="https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung_galaxy_s25_ultra_-_5_1.png" alt="iPhone 17">
+              <img src="https://cdn2.cellphones.com.vn/insecure/rs:fill:690:300/q:90/plain/https://dashboard.cellphones.com.vn/storage/galaxy-s25-fe-home-0925.png" alt="Galaxy S25">
+              <img src="https://cdn2.cellphones.com.vn/insecure/rs:fill:690:300/q:90/plain/https://dashboard.cellphones.com.vn/storage/app3-home.jpg" alt="AirPods Pro 3">
+              <img src="https://cdn-media.sforum.vn/storage/app/media/haianh/xiaomi-15t-series-hyperos-3-toan-cau-thumb.jpg" alt="Xiaomi 15T">
+              <img src="https://cdn2.cellphones.com.vn/insecure/rs:fill:1036:450/q:90/plain/https://dashboard.cellphones.com.vn/storage/690x300_iPhone_17_Pro_Opensale_v3.png" alt="Asus Vivobook">
+          </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- section two  -->
+  <div class="section-two">
+    <div class="top">
+      <div class="top-content">ĐIỆN THOẠI NỔI BẬT</div>
+      <div class="top-list">
+        <div class="top-list-box" onclick="filterByBrand('all')">ALL</div>
+        <div class="top-list-box" onclick="filterByBrand('iphone')">IPHONE</div>
+        <div class="top-list-box" onclick="filterByBrand('samsung')">SAMSUNG</div>
+        <div class="top-list-box" onclick="filterByBrand('oppo')">OPPO</div>
+        <div class="top-list-box" onclick="filterByBrand('vivo')">VIVO</div>
+        <div class="top-list-box" onclick="filterByBrand('realme')">REALME</div>
+        <div class="top-list-box" onclick="filterByBrand('xiaomi')">XIAOMI</div>
+        <div class="top-list-box" onclick="filterByBrand('nubia')">NUBIA</div>
+        <div class="top-list-box" onclick="filterByBrand('honor')">HONOR</div>
+        <div class="top-list-box" onclick="filterByBrand('nothing')">NOTHING</div>
+      </div>
+
+    </div>
+
+    <div class="content">
+      <div class= "content-left">
+        <div class="filter">
+        <div class="filter-top">Tìm kiếm nhanh</div>
+        <div class="filter-list">
+          <div class="filter-list-box"><i class="fa-solid fa-mobile-button"></i>Thương Hiệu
+            <div class="filter-list-box-menu2">
+              <ul>
+                <li onclick="filterByBrand('iphone')">Iphone</li>
+                <li onclick="filterByBrand('samsung')">Samsung</li>
+                <li onclick="filterByBrand('oppo')">Oppo</li>
+                <li onclick="filterByBrand('xiaomi')">Xiaomi</li>
+                <li onclick="filterByBrand('vivo')">Vivo</li>
+                <li onclick="filterByBrand('realme')">Realme</li>
+                <li onclick="filterByBrand('nubia')">Nubia</li>
+                <li onclick="filterByBrand('honor')">Honor</li>
+                <li onclick="filterByBrand('nothing')">Nothing</li>
+              </ul>
+            </div>
+          </div>
+          <div class="filter-list-box"><i class="fa-solid fa-sack-dollar"></i>Mức Giá
+            <div class="filter-list-box-menu2">
+              <ul>
+                <li onclick="filterByPrice(0,5000000)">Dưới 5 triệu</li>
+                <li onclick="filterByPrice(5000000,10000000)">5 - 10 triệu</li>
+                <li onclick="filterByPrice(10000000,15000000)">10 - 15 triệu</li>
+                <li onclick="filterByPrice(15000000,20000000)">15 - 20 triệu</li>
+                <li onclick="filterByPrice(20000000,30000000)">20 - 30 triệu</li>
+                <li onclick="filterByPrice(30000000,50000000)">Trên 30 triệu</li>
+              </ul>
+            </div>
+          </div>
+          <div class="filter-list-box"><i class="fa-solid fa-microchip"></i>RAM
+            <div class="filter-list-box-menu2">
+              <ul>
+                <li onclick="filterByRam(4)">4 GB</li>
+                <li onclick="filterByRam(6)">6 GB</li>
+                <li onclick="filterByRam(8)">8 GB</li>
+                <li onclick="filterByRam(12)">12 GB</li>
+                <li onclick="filterByRam(16)">16 GB</li>
+              </ul>
+            </div>
+          </div>
+          <div class="filter-list-box"><i class="fa-solid fa-sd-card"></i>Bộ Nhớ Trong
+            <div class="filter-list-box-menu2">
+              <ul>
+                <li onclick="filterByRom(32)">32 GB</li>
+                <li onclick="filterByRom(64)">64 GB</li>
+                <li onclick="filterByRom(128)">128 GB</li>
+                <li onclick="filterByRom(256)">256 GB</li>
+                <li onclick="filterByRom(512)">512 GB</li>
+                <li onclick="filterByRom(1000)">1 TB</li>
+              </ul>
+            </div>
+          </div>
+          <div class="filter-list-box"> <i class="fa-solid fa-maximize"></i>Kích Thước
+            <div class="filter-list-box-menu2">
+              <ul>
+                <li onclick="filterByScreenSize(0,5)">Dưới 5 inches</li>
+                <li onclick="filterByScreenSize(5,5.5)">5 - 5.5 inches</li>
+                <li onclick="filterByScreenSize(5.5,6)">5.5 - 6 inches</li>
+                <li onclick="filterByScreenSize(6,6.5)">6 - 6.5 inches</li>
+                <li onclick="filterByScreenSize(6.5,8)">Trên 6.5 inches</li>
+              </ul>
+            </div>
+          </div>
+          <div class="filter-list-box"><i class="fa-solid fa-palette"></i>Màu Sắc
+            <div class="filter-list-box-menu2">
+              <ul>
+                <li onclick="filterByColor('black')">Đen</li>
+                <li onclick="filterByColor('white')">Trắng</li>
+                <li onclick="filterByColor('metallic')">Bạc</li>
+                <li onclick="filterByColor('orange')">Cam</li>
+                <li onclick="filterByColor('blue')">Xanh</li>
+                <li onclick="filterByColor('purple')">Tím</li>
+                <li onclick="filterByColor('pink')">Hồng</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="news" id="news">
+        
+      </div>
+
+      </div>
+      <div class="list-products" id="list-products"></div>
+    </div>
+
+    <div class="pagination">
+      <button id="prev-page">&lt;</button>
+      <span id="page-numbers"></span>
+      <button id="next-page">&gt;</button>
+    </div>
+  </div>
+
+  
+  
+
+      <!-- section 3 -->
+
+      <div class="section-three">
+        <div class="section-three-content">
+          <div class="box">
+            <div class="box-Head"> Về Văn Thành Shop </div>
+            <a href="Introduce.html">Giới Thiệu Công Ty</a>
+            <a href="">Tuyển Dụng</a>
+            <a href="">Liên Hệ</a>
+        </div>
+          <div class="box">
+            <div class="box-Head"> Tổng Dài hỗ trợ miễn phí </div>
+            <div class="box-Body"> Tư Vấn-Mua Hàng : 999999999 (7h - 22h thứ 2-7)</div>
+            <div class="box-Body"> CSKH: 999999999 (8h - 21h hàng ngày)</div>
+          </div>
+          <div class="box">
+          <div class="box-Head"> Hỗ trợ khách hàng </div>
+          <a href="">Chính sách bảo hành</a>
+          <a href="">Chính sách đổi trả</a>
+          <a href="">Hướng dẫn mua hàng</a>
+          </div>
+        <div class="box">
+            <div class="box-Head"> Kết nối với chúng tôi </div>
+            <a href="facebook.com"><i class="fa-brands fa-facebook"></i> Facebook</a>
+            <a href=""><i class="fa-brands fa-instagram"></i> Instagram</a>
+            <a href=""><i class="fa-brands fa-youtube"></i> Youtube</a>
+            <a href=""><i class="fa-brands fa-tiktok"></i> Tiktok</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <span>© 2025 Công ty Văn Thành Shop. GPDKKD: 123456789 do Sở KHĐT TP.Lào Cai cấp ngày 24/07/2025. Địa chỉ: Lào Cai. Điện thoại: 999999999. Email:luvanthanh@gmail.com
+      </div>
+
+</body>
+</html>

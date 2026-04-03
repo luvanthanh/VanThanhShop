@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đăng nhập</title>
+  <!-- Link đến file CSS -->
+  <link rel="stylesheet" href="../css/LoginClient.css">
+  <script src="../javaScript/CheckLoginClient.js"></script>
+</head>
+
+<body>
+  <div class="login-container">
+    <h2>Đăng nhập</h2>
+    <form>
+      <input type="text" id="username" placeholder="Tên đăng nhập" required autocomplete="off">
+      <input type="password" id="password" placeholder="Mật khẩu" required>
+      <button type="submit" onclick="login(event)"> Đăng nhập</button>
+    </form>
+    <p id="error-msg"></p>
+    <p>Chưa có tài khoản? <a href="CreateAccout.html">Đăng ký</a></p>
+  </div>
+</body>
+</html>

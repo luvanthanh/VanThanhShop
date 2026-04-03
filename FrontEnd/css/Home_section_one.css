@@ -1,0 +1,84 @@
+.section-one{
+    margin-left: 290px;
+    width: 1300px;
+    margin-top : 3px;
+}
+
+.section-one .section-one-content{
+    display: flex;
+    width:100%;
+    height: auto;
+}
+.section-one .section-one-content .section-one-left{
+    display :flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height:402px;
+    gap:5px;
+    margin-right: 5px;
+}
+
+
+.section-one .section-one-content .section-one-left a{
+    height: 33.3%;
+    border-radius: 3px ;
+    border: 1px solid black;
+}
+.section-one .section-one-content .section-one-left a img{
+    width: 100%;
+    height: 100%;
+    border-radius: 3px ;
+    object-fit: cover;
+    transition: cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s ;
+    overflow: hidden;
+}
+.section-one .section-one-content .section-one-left a img:hover{
+    transform: scale(1.05);
+}
+
+
+.section-one .section-one-content .section-one-right{
+    height:405px;
+    width: 1090px;
+    overflow: hidden;
+    position: relative;
+}
+.section-one .section-one-content .section-one-right .list-slides{
+    height:100%;
+    width:auto;
+    display: flex;
+    overflow: hidden;
+    transition: transform 0.5s ;
+}
+.section-one .section-one-content .section-one-right .list-slides img{
+    width: 1090px;
+    height: auto;
+    border-radius: 4px ;
+    flex-shrink: 0;
+}
+
+.slider-controls {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    transform: translateY(-50%);
+    pointer-events: none;
+    z-index: 10;
+}
+.slider-btn {
+    background: none;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    cursor: pointer;
+    pointer-events: auto;
+}
+.slider-btn:hover {
+    background: rgba(108,52,131,1);
+}

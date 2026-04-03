@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tin Tức</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <link rel="stylesheet" href="../css/Home_header.css">
+    <link rel="stylesheet" href="../css/Home_section_one.css">
+    <link rel="stylesheet" href="../css/Home_footer.css">
+    <link rel="stylesheet" href="../css/News.css">
+    <script src="../javascript/Section_one_slide.js"></script>
+    <script src="../javaScript/section_one_news.js"></script>
+    <script src ="../javaScript/News.js"></script>
+    <script src="../javaScript/Home.js"></script>
+
+</head>
+<body>
+<header class="navbar">
+<div class="top-bar">
+    <div class="top-bar-content">
+    <span>Xin chào mọi người tới với Thành Giang Shop</span>
+    <span> | Sản phẩm Chính hãng - Uy tín- Chất lượng cao</span>
+    <span> | Giao nhanh - Miễn phí cho đơn 300k</span>
+    <span> | Tra cứu đơn hàng</span>
+    <span> | Hotline: 9999999 99</span>
+    </div>
+</div>
+
+<div class="main-bar">
+    <!-- Logo -->
+    <div class="logo">
+    <a href="Home.html">
+    <span class="logo-s" style="color: Orange">Văn Thành Shop</span>
+    </a>
+    </div>
+
+    <!-- Menu -->
+    <div class="btn">
+        <i class="fa-solid fa-house-user"></i><a href="Home.html">Trang Chủ </a>
+    </div>
+    <div class="btn">
+        <i class="fa-solid fa-newspaper"></i> <a href="Introduce.html"  rel="noopener noreferrer" >Giới Thiệu</a>
+    </div>
+
+    <!-- tin tucws -->
+    <div class="news-btn">
+        <a href="ListNews.html" ><i class="fa-solid fa-pager"></i> Tin Tức</a>
+    </div>
+
+
+    <!-- Search -->
+    <div class="search-box">
+    <input type="text" placeholder="Bạn muốn mua gì hôm nay?">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    </div>
+    <!-- Cart -->
+    <div class="cart">
+        <a href="Carts.html"> <i class="fa-solid fa-cart-shopping"></i>Giỏ hàng</a>
+    </div>
+
+    <div class="login-button" id="login_button">
+        <i class="fa fa-user"></i> Tài khoản
+        <div class="accout-menu-two">
+        <ul>
+            <li><a href="LoginClient.html">Đăng nhập</a></li>
+            <li><a href="Profile.html">Profile </a></li>
+            <li><a id="logout_button" onclick="logout()">Đăng xuất</a></li>
+        </ul>
+        </div>
+    </div>
+
+</div>
+</header>
+
+<!-- section 1 -->
+<div class="section-one">
+<div class="section-one-content">
+    <div class="section-one-left" id="section_one_news"></div>
+
+    <div class="section-one-right">
+    <div class="slider-controls">
+        <button id="prev-slide" class="slider-btn"><i class="fa fa-chevron-left"></i></button>
+        <button id="next-slide" class="slider-btn"><i class="fa fa-chevron-right"></i></button>
+        </div>
+        <div class="list-slides">
+            <img src="https://cdn2.cellphones.com.vn/insecure/rs:fill:1036:450/q:90/plain/https://dashboard.cellphones.com.vn/storage/Z7-Sliding-1025.png" alt="iPhone 17">
+            <img src="https://cdn2.cellphones.com.vn/insecure/rs:fill:690:300/q:90/plain/https://dashboard.cellphones.com.vn/storage/galaxy-s25-fe-home-0925.png" alt="Galaxy S25">
+            <img src="https://cdn2.cellphones.com.vn/insecure/rs:fill:690:300/q:90/plain/https://dashboard.cellphones.com.vn/storage/app3-home.jpg" alt="AirPods Pro 3">
+            <img src="https://cdn2.cellphones.com.vn/insecure/rs:fill:1036:450/q:90/plain/https://dashboard.cellphones.com.vn/storage/nubia-neo-3-4g-home-0925.jpg" alt="Xiaomi 15T">
+            <img src="https://cdn2.cellphones.com.vn/insecure/rs:fill:1036:450/q:90/plain/https://dashboard.cellphones.com.vn/storage/690x300_iPhone_17_Pro_Opensale_v3.png" alt="Asus Vivobook">
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="section-two">
+    <div class="section-two-content" id="section_two_content"></div>
+</div>
+
+
+
+</body>
+</html>

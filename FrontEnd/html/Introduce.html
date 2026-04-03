@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giới Thiệu </title>
+    <!-- <link rel="stylesheet" href="../css/Home_header.css"> -->
+    <link rel="stylesheet" href="../css/Home_footer.css">
+    <link rel="stylesheet" href="../css/Home_section_three.css">
+    <script src="../javaScript/Home.js"></script>
+
+</head>
+<body>
+    <div class="header"> GIỚI THIỆU VỀ THÀNH SHOPPING </div>
+    <hr>
+    <div class="content">Website bán điện thoại của tôi được xây dựng theo kiến trúc Microservice nhằm tạo ra một nền tảng thương mại điện tử hiện đại, có khả năng mở rộng, bảo trì và triển khai linh hoạt. Thay vì sử dụng mô hình nguyên khối (Monolithic), hệ thống được chia thành nhiều dịch vụ nhỏ, mỗi dịch vụ đảm nhiệm một chức năng riêng biệt như quản lý sản phẩm, người dùng, giỏ hàng và tin tức. Nhờ vậy, các module có thể hoạt động độc lập, dễ dàng cập nhật hoặc mở rộng mà không ảnh hưởng đến toàn bộ hệ thống.
+        <br>
+        Phần backend của dự án được phát triển bằng Java Spring Boot, tận dụng các thành phần như Spring Web để xây dựng RESTful API, Spring Data JPA để thao tác dữ liệu, và Spring Security nhằm đảm bảo an toàn cho người dùng trong quá trình đăng nhập, xác thực và truy cập tài nguyên. Dữ liệu được lưu trữ trong cơ sở dữ liệu MySQL, với cấu trúc quan hệ rõ ràng, giúp quản lý thông tin sản phẩm, người dùng, giỏ hàng và bài viết một cách hiệu quả.
+        <br>
+        Để quản lý các dịch vụ trong kiến trúc Microservice, tôi sử dụng Spring Cloud Eureka Server làm trung tâm đăng ký và phát hiện dịch vụ (Service Discovery), cho phép các service có thể tự động nhận diện và giao tiếp với nhau mà không cần cấu hình thủ công. Song song đó, Spring Cloud Gateway được triển khai như một cổng API trung gian, chịu trách nhiệm định tuyến yêu cầu từ người dùng đến các service tương ứng, đồng thời cung cấp các cơ chế bảo mật, xác thực và kiểm soát lưu lượng.
+        <br>
+        Giao diện người dùng được xây dựng bằng HTML, CSS và JavaScript, giúp website thân thiện, trực quan và dễ sử dụng. Khi người dùng truy cập website, mọi yêu cầu đều đi qua API Gateway, sau đó được chuyển đến các service phù hợp: Product Service xử lý thông tin sản phẩm, User Service quản lý tài khoản người dùng, Cart Service lưu trữ giỏ hàng, và News Service hiển thị các bài viết, tin tức công nghệ mới nhất. Toàn bộ hệ thống hoạt động đồng bộ, phản hồi nhanh và đảm bảo tính ổn định cao.
+        <br>
+        Dự án này không chỉ giúp tôi củng cố kiến thức về phát triển web với Spring Boot mà còn mang lại trải nghiệm thực tế trong việc áp dụng kiến trúc Microservice – một xu hướng phổ biến trong các hệ thống phần mềm quy mô lớn hiện nay. Nó mở ra khả năng mở rộng trong tương lai, chẳng hạn như tích hợp thêm chức năng thanh toán trực tuyến, hệ thống gợi ý sản phẩm thông minh hoặc triển khai CI/CD để tự động hóa quá trình phát hành phần mềm.
+    </div>
+
+    <style>
+
+        .header{
+            font-size: 25px;
+            color: red;
+            text-align: center;
+        }
+        .content{
+            text-align: left;
+            width : 1000px;
+            font-size: 20px;
+            align-items: center;
+            margin-left:500px;
+            height:800px;
+        }
+    </style>
+<div class="section-three">
+    <div class="section-three-content">
+    <div class="box">
+        <div class="box-Head"> Về Văn Thành Shop </div>
+        <a href="">Giới Thiệu Công Ty</a>
+        <a href="">Tuyển Dụng</a>
+        <a href="">Liên Hệ</a>
+    </div>
+    <div class="box">
+        <div class="box-Head"> Tổng Dài hỗ trợ miễn phí </div>
+        <div class="box-Body"> Tư Vấn-Mua Hàng : 999999999 (7h - 22h thứ 2-7)</div>
+        <div class="box-Body"> CSKH: 999999999 (8h - 21h hàng ngày)</div>
+    </div>
+    <div class="box">
+    <div class="box-Head"> Hỗ trợ khách hàng </div>
+    <a href="">Chính sách bảo hành</a>
+    <a href="">Chính sách đổi trả</a>
+    <a href="">Hướng dẫn mua hàng</a>
+    </div>
+    <div class="box">
+        <div class="box-Head"> Kết nối với chúng tôi </div>
+        <a href="facebook.com"><i class="fa-brands fa-facebook"></i> Facebook</a>
+        <a href=""><i class="fa-brands fa-instagram"></i> Instagram</a>
+        <a href=""><i class="fa-brands fa-youtube"></i> Youtube</a>
+        <a href=""><i class="fa-brands fa-tiktok"></i> Tiktok</a>
+    </div>
+    </div>
+</div>
+
+<div class="footer">
+    <span>© 2025 Công ty Văn Thành Shop. GPDKKD: 123456789 do Sở KHĐT TP.Lào Cai cấp ngày 24/07/2025. Địa chỉ: Lào Cai. Điện thoại: 999999999. Email:luvanthanh@gmail.com
+</div>
+</body>
+</html>

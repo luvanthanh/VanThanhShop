@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh Sách Tin Tức</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <link rel="stylesheet" href="../css/Home_header.css">
+    <link rel="stylesheet" href="../css/Home_section_one.css">
+    <script src="../javaScript/NewsList.js"></script>
+    <link rel="stylesheet" href="../css/NewsList.css">
+    <script src="../javaScript/Home.js"></script>
+</head>
+<body>
+<header class="navbar">
+<div class="top-bar">
+    <div class="top-bar-content">
+    <span>Xin chào mọi người tới với Văn Thành Shop</span>
+    <span> | Sản phẩm Chính hãng - Uy tín- Chất lượng cao</span>
+    <span> | Giao nhanh - Miễn phí cho đơn 300k</span>
+    <span> | Tra cứu đơn hàng</span>
+    <span> | Hotline: 9999999 99</span>
+    </div>
+</div>
+
+<div class="main-bar">
+    <!-- Logo -->
+    <div class="logo">
+        <a href="Home.html">
+            <span class="logo-s" style="color: Orange">VĂN THÀNH</span>
+        </a>
+    </div>
+
+    <!-- Menu -->
+    <div class="btn">
+        <i class="fa-solid fa-house-user"></i><a href="Home.html">Trang Chủ </a>
+    </div>
+    <!-- giới thiêu -->
+    <div class="btn">
+    <i class="fa-solid fa-newspaper"></i> <a href="Introduce.html" rel="noopener noreferrer" >Giới Thiệu</a>
+    </div>
+
+    <div class="news-btn">
+    <a href="ListNews.html" ><i class="fa-solid fa-pager"></i> Tin Tức</a>
+    </div>
+
+
+    <!-- Search -->
+    <div class="search-box">
+    <input type="text" placeholder="Bạn muốn mua gì hôm nay?">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    </div>
+
+    <!-- Cart -->
+    <div class="cart">
+    <a href="Carts.html"> <i class="fa-solid fa-cart-shopping"></i>Giỏ hàng</a>
+    </div>
+
+    <!-- Login nút đăng nhập  -->
+    <div class="login-button" id="login_button">
+        <i class="fa fa-user"></i> Tài khoản
+        <div class="accout-menu-two">
+        <ul>
+            <li><a href="LoginClient.html">Đăng nhập</a></li>
+            <li><a href="Profile.html">Profile </a></li>
+            <li><a id="logout_button" onclick="logout()">Đăng xuất</a></li>
+        </ul>
+        </div>
+    </div>
+</div>
+</header>
+
+<div class="section-one">
+    <h1>Danh Sách Tin Tức</h1>
+    <div class="news-list" id="news_list">
+
+    </div>
+</div>
+</body>
+</html>
