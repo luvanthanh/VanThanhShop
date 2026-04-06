@@ -14,12 +14,17 @@ import Myproject.cart_service.repository.CartItemRepository;
 import Myproject.cart_service.repository.CartRepository;
 import lombok.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.loadbalancer.Response;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.stream.Stream.builder;
+
+
+@Builder
 @Service
 
 public class CartService {
@@ -29,6 +34,7 @@ public class CartService {
 
     @Autowired
     private CartRepository cartRepository;
+
     @Autowired
     private CartItemRepository cartItemRepository;
 
@@ -54,44 +60,42 @@ public class CartService {
     }
    // thêm cartItem bởi bằng cartId
     public CartItem addCartItemByCartId(CartItemCreationRequest request, @PathVariable int cartId) {
-        CartItem cartItem = cartItemRepository.getByCartIdAndProductId(cartId, request.getProductId())
-                .orElseGet(()->{
-                    CartItem newCartItem = new CartItem();
-                    newCartItem.setCartId(cartId);
-                    newCartItem.setProductId(request.getProductId());
-                    newCartItem.setQuantity(request.getQuantity());
-                    return cartItemRepository.save(newCartItem);
-                });
-        if(cartItem !=null ){
-            cartItem.setQuantity(request.getQuantity()+cartItem.getQuantity());
+        ApiResponse<ProductResponse> response = productClient.getProductById(request.getProductId());
+
+        if(response == null ){
+            throw new RuntimeException("product không tồn taij hoặc có lỗi khi lấy dữ liệu ở service khác!");
+        }
+
+        ProductResponse product = response.getData();
+        if(product.getProductStockQuantity() < request.getQuantity()){
+            throw new RuntimeException("lỗi số lượng cho kho không đủ!");
+        }
+
+        CartItem cartItem = cartItemRepository.findById(cartId).orElse(null);
+        if(cartItem == null){
+            cartItem = new CartItem();
+            cartItem.setCartId(cartId);
+            cartItem.setProductId(request.getProductId());
+            cartItem.setQuantity(request.getQuantity());
+
+            cartItem.setProductName(product.getProductName());
+            cartItem.setProductImage(product.getProductName());
+            cartItem.setProductImage(product.getProductImageUrl());
+        }
+        else{
+            cartItem.setQuantity(cartItem.getQuantity() + 1);
         }
         return cartItemRepository.save(cartItem);
     }
 
 //    lấy danh sách sản phẩm thông qua cartId ( vì mỗi user có 1 và chỉ 1 cartId)
-    public List<CartItemResponse> getCartItemByCartId(int cartId) {
+    public ApiResponse<List<CartItem>> getCartItemByCartId(int cartId) {
         List<CartItem> listCartItems = cartItemRepository.findByCartId(cartId);
-
-        List<CartItemResponse> listCartItemResponses = new ArrayList<>();
-
-        for (CartItem item : listCartItems) {
-
-            ApiResponse<ProductResponse> product = productClient.getProductById(item.getProductId()); // gọi đến service khác
-            ProductResponse productResponse = product.getData();
-
-            CartItemResponse cartItemResponse = new CartItemResponse(
-                    item.getCartItemsId(),
-                    item.getProductId(),
-                    productResponse.getProductImageUrl(),
-                    productResponse.getProductName(),
-                    productResponse.getProductPrice(),
-                    item.getQuantity()
-            );
-
-            listCartItemResponses.add(cartItemResponse);
-        }
-
-        return listCartItemResponses;
+        return ApiResponse.<List<CartItem>>builder()
+                .code(1000)
+                .message("đã lấy dữ liệu thành công!")
+                .data(listCartItems)
+                .build();
     }
 
     public ApiResponse<CartResponse> getCartByUserId(@PathVariable String userId) {

@@ -9,7 +9,6 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @SpringBootApplication
 @EnableFeignClients(basePackages = "Myproject.cart_service.client")
 public class CartServiceApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(CartServiceApplication.class, args);
 	}

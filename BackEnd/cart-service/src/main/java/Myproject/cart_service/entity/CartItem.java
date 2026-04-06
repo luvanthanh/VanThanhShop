@@ -17,8 +17,10 @@ public class CartItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int cartItemsId;
 
-    private int cartId;// Cart foreign key
+    private int cartId;
 
-    private int productId;    // Product ID from Product Service
-    private int quantity;     // số lượng
+    private int productId;
+    private String productName;
+    private String productImage;
+    private int quantity;
 }

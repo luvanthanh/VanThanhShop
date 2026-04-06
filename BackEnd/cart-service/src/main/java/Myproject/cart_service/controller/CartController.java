@@ -23,35 +23,41 @@
         @Autowired
         CartService cartService;
 
-        @PostMapping("/createdCartByUserId/{userId}") // thêm giỏ hàng , bắt đầu tạo giỏ hàng cho user
+
+//tạo mới giỏ hàng theo user, mỗi user sẽ có 1 giỏ hàng
+        @PostMapping("/createdCartByUserId/{userId}")
         public ApiResponse<CartResponse> createCartByUserId(@PathVariable String userId) {
             return cartService.createdCartByUserId(userId);
         }
 
-
-        @PostMapping("/{cartId}/cartItems") //sau đó mới thêm cartItem (productId ) vào trong CartId  // tiếp theo đó mới lấy thông tin sản phẩm
+//thêm sản phẩm  vào giò hàng
+        @PostMapping("/{cartId}/cartItems")
         public CartItem addCartItemByCartId( @RequestBody  CartItemCreationRequest request, @PathVariable int cartId) {
             return  cartService.addCartItemByCartId(request,cartId);
         }
 
-        @GetMapping("/getCartByUserId/{userId}") //lấy cart bằng userId
+//lấy giỏ hàng của khách hàng
+        @GetMapping("/getCartByUserId/{userId}")
         public ApiResponse<CartResponse> getCartByUserId(@PathVariable String userId) {
             return cartService.getCartByUserId(userId);
         }
 
-        @GetMapping("/{cartId}/cartItems")  //lấy danh sách cartItem bằng cartId
-        public List<CartItemResponse> getCartItemByCartId(@PathVariable int cartId) {
-            return  cartService.getCartItemByCartId(cartId);
+
+//lấy danh sách giỏ hàng
+        @GetMapping("/{cartId}/cartItems")
+        public ApiResponse<List<CartItem>> getCartItemByCartId(@PathVariable int cartId) {
+            return cartService.getCartItemByCartId(cartId);
         }
 
-        @PutMapping("/cartItems/{cartItemId}/") //sửa quatity của cartItem theo cartItemId
+//sửa số lượng của sản phẩm trong giỏ hàng
+        @PutMapping("/cartItems/{cartItemId}/")
         public CartItem updateCartItem(@RequestBody CartItemUpdateRequest request ,  @PathVariable int cartItemId) {
             return cartService.updateCartItemQuantity(request,cartItemId);
         }
 
 
-
-        @DeleteMapping("/cartItems/{cartItemId}")   //xóa cartItems theo cartItemId
+//xóa sản phẩm ra khỏi giở hàng
+        @DeleteMapping("/cartItems/{cartItemId}")
         public String deleteCartItem(@PathVariable int cartItemId) {
             return cartService.deleteCartItemByCartId(cartItemId);
         }
