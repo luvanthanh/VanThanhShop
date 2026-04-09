@@ -32,7 +32,7 @@
 
 //thêm sản phẩm  vào giò hàng
         @PostMapping("/{cartId}/cartItems")
-        public CartItem addCartItemByCartId( @RequestBody  CartItemCreationRequest request, @PathVariable int cartId) {
+        public ApiResponse<CartItem> addCartItemByCartId( @RequestBody  CartItemCreationRequest request, @PathVariable int cartId) {
             return  cartService.addCartItemByCartId(request,cartId);
         }
 
@@ -51,7 +51,7 @@
 
 //sửa số lượng của sản phẩm trong giỏ hàng
         @PutMapping("/cartItems/{cartItemId}/")
-        public CartItem updateCartItem(@RequestBody CartItemUpdateRequest request ,  @PathVariable int cartItemId) {
+        public ApiResponse<CartItem> updateCartItem(@RequestBody CartItemUpdateRequest request ,  @PathVariable int cartItemId) {
             return cartService.updateCartItemQuantity(request,cartItemId);
         }
 

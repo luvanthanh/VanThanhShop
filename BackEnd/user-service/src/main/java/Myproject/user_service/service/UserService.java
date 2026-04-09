@@ -82,7 +82,7 @@ public class UserService {
 
 
 
-//    sửa thông tin user
+    @PostAuthorize("hasRole('ADMIN') or returnObject.userName == authentication.name")
     public UserResponse updateUserById(@RequestBody UserUpdateRequest request, String userId){
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new AppException(ErrorCode.USER_EXITS));
@@ -95,7 +95,7 @@ public class UserService {
         return userMapper.toUserResponse(userRepository.save(user));
     }
 
-//    xóa thông tin user
+    @PostAuthorize("hasRole('ADMIN') or returnObject.userName == authentication.name")
     public String deletedUserById(String userId){
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(()-> new AppException(ErrorCode.USER_NOTFIND));

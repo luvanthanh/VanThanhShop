@@ -14,14 +14,9 @@ import Myproject.cart_service.repository.CartItemRepository;
 import Myproject.cart_service.repository.CartRepository;
 import lombok.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.loadbalancer.Response;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
-
-import java.util.ArrayList;
 import java.util.List;
-
-import static java.util.stream.Stream.builder;
 
 
 @Builder
@@ -59,7 +54,7 @@ public class CartService {
                 .build();
     }
    // thêm cartItem bởi bằng cartId
-    public CartItem addCartItemByCartId(CartItemCreationRequest request, @PathVariable int cartId) {
+    public ApiResponse<CartItem> addCartItemByCartId(CartItemCreationRequest request, @PathVariable int cartId) {
         ApiResponse<ProductResponse> response = productClient.getProductById(request.getProductId());
 
         if(response == null ){
@@ -85,7 +80,11 @@ public class CartService {
         else{
             cartItem.setQuantity(cartItem.getQuantity() + 1);
         }
-        return cartItemRepository.save(cartItem);
+        cartItemRepository.save(cartItem);
+        return ApiResponse.<CartItem>builder()
+                .code(1000)
+                .message("Đã lấy dữ liệu thành công!")
+                .build();
     }
 
 //    lấy danh sách sản phẩm thông qua cartId ( vì mỗi user có 1 và chỉ 1 cartId)
@@ -110,7 +109,7 @@ public class CartService {
                 .build();
     }
 
-    public CartItem updateCartItemQuantity(CartItemUpdateRequest request, @PathVariable int cartItemId) {
+    public ApiResponse<CartItem> updateCartItemQuantity(CartItemUpdateRequest request, @PathVariable int cartItemId) {
         CartItem cartItem = cartItemRepository.findById(cartItemId)
                 .orElseThrow(()->new RuntimeException(" không tìm thấy cartItem"));
         if(request.getQuantity() <= 0 || cartItem.getQuantity() <= 0){
@@ -119,12 +118,16 @@ public class CartService {
         cartItem.setQuantity(request.getQuantity());
 
 
-        return cartItemRepository.save(cartItem);
+        cartItemRepository.save(cartItem);
+        return ApiResponse.<CartItem>builder()
+                .code(1000)
+                .message("đã  update số lượng sản phẩm thành công!")
+                .data(cartItem)
+                .build();
     }
 
     public String deleteCartItemByCartId(int cartItemId){
         cartItemRepository.deleteById(cartItemId);
         return "cartItem đã được xóa ra khỏi data base!";
     }
-
 }

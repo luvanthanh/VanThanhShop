@@ -20,12 +20,13 @@ public class AuthenticationController {
     @Autowired
     AuthenticationService authenticationService;
 
-//    đã test ok rồi đó=))
+
     @PostMapping("/login")
     ApiResponse<AuthenticationResponse> login(@RequestBody LoginRequest loginRequest){
         var result = authenticationService.login(loginRequest);
 
         return ApiResponse.<AuthenticationResponse>builder()
+                .code(1000)
                 .data(result)
                 .build();
     }
@@ -36,20 +37,20 @@ public class AuthenticationController {
         authenticationService.logout(logoutRequest);
 
         return ApiResponse.<Void>builder()
-                .message("Successfully logged out")
+                .code(1000)
+                .message("Đăng xuất thành công!")
                 .build();
     }
 
-//    Cũng đã test ok rồi đó
+
     @PostMapping("/introspect")
     ApiResponse<IntrospectResponse> introspect(@RequestBody IntrospectRequest request)
                throws JOSEException, ParseException
     {
         var result = authenticationService.introspect(request);
         return ApiResponse.<IntrospectResponse>builder()
+                .code(1000)
                 .data(result)
                 .build();
     }
-
-
 }

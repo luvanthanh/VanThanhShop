@@ -52,7 +52,7 @@ public class AuthenticationService {
         JWSHeader jwsHeader= new JWSHeader(JWSAlgorithm.HS512);
         JWTClaimsSet jwtClaimsSet= new JWTClaimsSet.Builder()
                 .subject(user.getUserName())
-                .issuer("Van Thanh hahhahha")
+                .issuer("Van Thanh Shop")
                 .issueTime(new Date())
                 .expirationTime(new Date(
                         Instant.now().plus(1, ChronoUnit.HOURS).toEpochMilli()))
@@ -108,7 +108,7 @@ public class AuthenticationService {
         return signedJWT;
     }
 
-    //    check xem có đăng nhập đúng không
+    // check xem có đăng nhập đúng không
     public AuthenticationResponse login(LoginRequest request) {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
         var user = userRepository.findByUserName(request.getUserName())
