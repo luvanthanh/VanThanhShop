@@ -1,7 +1,7 @@
 package Myproject.news_service.controller;
 
 
-import Myproject.news_service.dto.reponse.APIResponse;
+import Myproject.news_service.dto.reponse.ApiResponse;
 import Myproject.news_service.dto.request.NewsCreationRequest;
 import Myproject.news_service.dto.request.NewsUpdateRequest;
 import Myproject.news_service.entity.News;
@@ -19,33 +19,51 @@ public class NewsController {
     @Autowired
     private NewsService newsService;
 
-//  lấy tất cả news
+
     @GetMapping
-    public APIResponse<List<News>> getAllNews(){
-        return newsService.getAllNews();
+    public ApiResponse<List<News>> getAllNews(){
+        var result =  newsService.getAllNews();
+        return ApiResponse.<List<News>>builder()
+                .code(200)
+                .message(" get all news success")
+                .data(result)
+                .build();
     }
-// lấy news by id
+
     @GetMapping("/{newsId}")
-    public APIResponse<News> getNewsById(@PathVariable int newsId){
-        return newsService.getNewsById(newsId);
+    public ApiResponse<News> getNewsById(@PathVariable int newsId){
+        var result = newsService.getNewsById(newsId);
+        return ApiResponse.<News>builder()
+                .code(200)
+                .message(" get news success")
+                .data(result)
+                .build();
     }
-// thêm tin tức mới
+
     @PostMapping
-    public APIResponse<News> addNews(@RequestBody NewsCreationRequest request){
-        return newsService.addNews(request);
+    public ApiResponse<News> addNews(@RequestBody NewsCreationRequest request){
+        var result = newsService.addNews(request);
+        return ApiResponse.<News>builder()
+                .code(200)
+                .message("add new news success")
+                .data(result)
+                .build();
     }
 
-//    sửa tin tức
+
     @PostMapping("/{newsId}")
-    public APIResponse<News> updateNews(@RequestBody NewsUpdateRequest request, @PathVariable int newsId){
-        return  newsService.updateNews(request, newsId);
+    public ApiResponse<News> updateNews(@RequestBody NewsUpdateRequest request, @PathVariable int newsId){
+        var result =  newsService.updateNews(request, newsId);
+        return ApiResponse.<News>builder()
+                .code(200)
+                .message("update new news success")
+                .data(result)
+                .build();
     }
 
-//    xóa news
     @DeleteMapping("/{newsId}")
     public String deleteNews(@PathVariable int newsId){
         return newsService.deletedNews(newsId);
     }
-
 
 }

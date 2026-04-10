@@ -21,7 +21,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-//  thêm user mới
+
     @PostMapping
     ApiResponse<UserResponse> addUser(@RequestBody UserCreationRequest request){
         var authentication = SecurityContextHolder.getContext().getAuthentication();
