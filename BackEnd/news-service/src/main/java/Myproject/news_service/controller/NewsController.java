@@ -24,7 +24,7 @@ public class NewsController {
     public ApiResponse<List<News>> getAllNews(){
         var result =  newsService.getAllNews();
         return ApiResponse.<List<News>>builder()
-                .code(200)
+                .code(1000)
                 .message(" get all news success")
                 .data(result)
                 .build();

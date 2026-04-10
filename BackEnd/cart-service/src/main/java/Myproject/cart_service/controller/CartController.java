@@ -1,7 +1,5 @@
     package Myproject.cart_service.controller;
 
-
-
     import Myproject.cart_service.dto.reponse.ApiResponse;
     import Myproject.cart_service.dto.reponse.CartItemResponse;
     import Myproject.cart_service.dto.reponse.CartResponse;
@@ -10,15 +8,17 @@
     import Myproject.cart_service.entity.Cart;
     import Myproject.cart_service.entity.CartItem;
     import Myproject.cart_service.service.CartService;
+    import jakarta.validation.Valid;
+    import lombok.Builder;
     import org.springframework.beans.factory.annotation.Autowired;
     import org.springframework.web.bind.annotation.*;
 
     import java.util.List;
 
     @RestController
+    @Builder
     @RequestMapping("/carts")
     public class CartController {
-
 
         @Autowired
         CartService cartService;
@@ -27,19 +27,34 @@
 //tạo mới giỏ hàng theo user, mỗi user sẽ có 1 giỏ hàng
         @PostMapping("/createdCartByUserId/{userId}")
         public ApiResponse<CartResponse> createCartByUserId(@PathVariable String userId) {
-            return cartService.createdCartByUserId(userId);
+            var result = cartService.createdCartByUserId(userId);
+            return ApiResponse.<CartResponse>builder()
+                    .code(1000)
+                    .message(" created cart success")
+                    .data(result)
+                    .build();
         }
 
 //thêm sản phẩm  vào giò hàng
         @PostMapping("/{cartId}/cartItems")
-        public ApiResponse<CartItem> addCartItemByCartId( @RequestBody  CartItemCreationRequest request, @PathVariable int cartId) {
-            return  cartService.addCartItemByCartId(request,cartId);
+        public ApiResponse<CartItem> addCartItemByCartId(@Valid @RequestBody  CartItemCreationRequest request, @PathVariable int cartId) {
+            var result = cartService.addCartItemByCartId(request,cartId);
+            return ApiResponse.<CartItem>builder()
+                    .code(1000)
+                    .message(" added cart success!")
+                    .data(result)
+                    .build();
         }
 
 //lấy giỏ hàng của khách hàng
         @GetMapping("/getCartByUserId/{userId}")
         public ApiResponse<CartResponse> getCartByUserId(@PathVariable String userId) {
-            return cartService.getCartByUserId(userId);
+            var result = cartService.getCartByUserId(userId);
+            return ApiResponse.<CartResponse>builder()
+                    .code(1000)
+                    .message(" get cart success!")
+                    .data(result)
+                    .build();
         }
 
 

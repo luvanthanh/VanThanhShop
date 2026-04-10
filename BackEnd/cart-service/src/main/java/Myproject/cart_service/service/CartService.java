@@ -38,30 +38,26 @@ public class CartService {
 
 
 // tạo cart nếu chưa có (1 user sẽ có 1 cart)
-    public ApiResponse<CartResponse> createdCartByUserId(String userId){
+    public CartResponse createdCartByUserId(String userId){
         Cart cart = cartRepository.getCartsByUserId( userId)
                 .orElseGet(()->{
                     Cart newCart =new Cart();
                     newCart.setUserId(userId);
                     return cartRepository.save(newCart);
                 });
-         CartResponse cartResponse = cartMapper.cartDtoToCart(cart);
 
-        return ApiResponse.<CartResponse>builder()
-                .code(1000)
-                .message(" đã lấy giữ liệu thành công!")
-                .data(cartResponse)
-                .build();
+         return cartMapper.toCartResponse(cart);
     }
-   // thêm cartItem bởi bằng cartId
-    public ApiResponse<CartItem> addCartItemByCartId(CartItemCreationRequest request, @PathVariable int cartId) {
-        ApiResponse<ProductResponse> response = productClient.getProductById(request.getProductId());
 
-        if(response == null ){
-            throw new RuntimeException("product không tồn taij hoặc có lỗi khi lấy dữ liệu ở service khác!");
+   // thêm cartItem bởi bằng cartId
+    public CartItem addCartItemByCartId(CartItemCreationRequest request, @PathVariable int cartId) {
+        ApiResponse<ProductResponse> productResponse = productClient.getProductById(request.getProductId());
+
+        if(productResponse == null ){
+            throw new RuntimeException("product don't have find athor service !");
         }
 
-        ProductResponse product = response.getData();
+        ProductResponse product = productResponse.getData();
         if(product.getProductStockQuantity() < request.getQuantity()){
             throw new RuntimeException("lỗi số lượng cho kho không đủ!");
         }
@@ -80,11 +76,8 @@ public class CartService {
         else{
             cartItem.setQuantity(cartItem.getQuantity() + 1);
         }
-        cartItemRepository.save(cartItem);
-        return ApiResponse.<CartItem>builder()
-                .code(1000)
-                .message("Đã lấy dữ liệu thành công!")
-                .build();
+        return cartItemRepository.save(cartItem);
+
     }
 
 //    lấy danh sách sản phẩm thông qua cartId ( vì mỗi user có 1 và chỉ 1 cartId)
@@ -97,16 +90,11 @@ public class CartService {
                 .build();
     }
 
-    public ApiResponse<CartResponse> getCartByUserId(@PathVariable String userId) {
+    public CartResponse getCartByUserId(@PathVariable String userId) {
         Cart cart = cartRepository.getCartsByUserId(userId)
                 .orElseThrow(()-> new RuntimeException(" không tìm thấy cart"));
         CartResponse cartResponse = new  CartResponse();
-         cartResponse =  cartMapper.cartDtoToCart(cart);
-        return ApiResponse.<CartResponse>builder()
-                .code(1000)
-                .message(" đã lấy dữ liệu CartResponse thành công!")
-                .data(cartResponse)
-                .build();
+        return cartMapper.toCartResponse(cart);
     }
 
     public ApiResponse<CartItem> updateCartItemQuantity(CartItemUpdateRequest request, @PathVariable int cartItemId) {
