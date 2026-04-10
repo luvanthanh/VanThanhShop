@@ -1,5 +1,6 @@
 package Myproject.user_service.service;
 
+import Myproject.user_service.dto.reponse.ApiResponse;
 import Myproject.user_service.dto.reponse.AuthenticationResponse;
 import Myproject.user_service.dto.reponse.IntrospectResponse;
 import Myproject.user_service.dto.request.LoginRequest;
@@ -57,7 +58,7 @@ public class AuthenticationService {
                 .expirationTime(new Date(
                         Instant.now().plus(1, ChronoUnit.HOURS).toEpochMilli()))
                 .jwtID(UUID.randomUUID().toString()) // random chuỗi kí tự
-                .claim("scope",buildScope(user)) //
+                .claim("scope",user.getRoles()) //
                 .build();
         Payload payload = new Payload(jwtClaimsSet.toJSONObject());
         JWSObject jwsObject = new JWSObject(jwsHeader,payload);
@@ -86,9 +87,10 @@ public class AuthenticationService {
             checkTokenInvalidate = false;
         }
 
-        return IntrospectResponse.builder()
+        return  IntrospectResponse.builder()
                 .checkToken(checkTokenInvalidate)
                 .build();
+
     }
 
     private SignedJWT verifyToken (String token) throws JOSEException, ParseException {
@@ -123,16 +125,16 @@ public class AuthenticationService {
         else{
             var token = generateToken(user); // sinh token khi đăng nhập với tài khoàn đúng
 
-            return AuthenticationResponse.builder()
-                    .token(token)
-                    .userId(user.getUserId())
-                    .checkLogin(checkPassword)
-                    .build();
+         return AuthenticationResponse.builder()
+                .checkLogin(checkPassword)
+                .token(token)
+                .userId(user.getUserId())
+                .build();
 
         }
     }
 
-    public void logout(LogoutRequest request) throws ParseException, JOSEException {
+    public InvalidatedToken logout(LogoutRequest request) throws ParseException, JOSEException {
         var signToken = verifyToken(request.getToken());
 
         String jit = signToken.getJWTClaimsSet().getJWTID();
@@ -143,16 +145,14 @@ public class AuthenticationService {
                 .expiryTime(expiryTime)
                 .build();
 
-        invalidatedTokenRepository.save(invalidatedToken);
-    }
-
-    private String buildScope(User user){                               // dday
-        StringJoiner stringJoiner =new StringJoiner(" ");
-        if(!CollectionUtils.isEmpty(user.getRoles()))
-            user.getRoles().forEach(stringJoiner::add);
-
-        return stringJoiner.toString();
+        return invalidatedTokenRepository.save(invalidatedToken);
     }
 
 
+//    private String buildScope(User user){                               // đoạn này dùng để liệt kê các roles , thường thì 1 user có nhiều roles mới dùng
+//        StringJoiner stringJoiner =new StringJoiner(" ");
+//        if(!CollectionUtils.isEmpty(user.getRoles()))
+//            user.getRoles().forEach(stringJoiner::add);
+//        return stringJoiner.toString();
+//    }
 }

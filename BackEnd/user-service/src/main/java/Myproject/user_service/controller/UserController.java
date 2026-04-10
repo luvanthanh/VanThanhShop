@@ -84,7 +84,8 @@ public class UserController {
     ApiResponse<String> deleteUserById(@PathVariable("userId") String userId){
         var authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        log.info(" User Name: " + authentication.getName());
+        log.info(" User Name: " + authentication.getName());  // câu lệnh này sẽ in ra ở
+
         authentication.getAuthorities().forEach(grantedAuthority -> log.info("roles: "+grantedAuthority.getAuthority()));
         ApiResponse<String> apiResponse = new ApiResponse<>();
 
