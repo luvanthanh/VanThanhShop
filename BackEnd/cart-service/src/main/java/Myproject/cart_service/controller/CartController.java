@@ -58,16 +58,26 @@
         }
 
 
-//lấy danh sách giỏ hàng
+//lấy danh sách giỏ hàng thông qua cart id vì mỗi user có 1 id
         @GetMapping("/{cartId}/cartItems")
-        public ApiResponse<List<CartItem>> getCartItemByCartId(@PathVariable int cartId) {
-            return cartService.getCartItemByCartId(cartId);
+        public ApiResponse<List<CartItemResponse>> getCartItemByCartId(@PathVariable int cartId) {
+            var result =cartService.getCartItemByCartId(cartId);
+            return ApiResponse.<List<CartItemResponse>>builder()
+                    .code(1000)
+                    .message("get cartItem by cartId success!")
+                    .data(result)
+                    .build();
         }
 
 //sửa số lượng của sản phẩm trong giỏ hàng
         @PutMapping("/cartItems/{cartItemId}/")
         public ApiResponse<CartItem> updateCartItem(@RequestBody CartItemUpdateRequest request ,  @PathVariable int cartItemId) {
-            return cartService.updateCartItemQuantity(request,cartItemId);
+            var result = cartService.updateCartItemQuantity(request,cartItemId);
+            return ApiResponse.<CartItem>builder()
+                    .code(1000)
+                    .message(" updated cart success!")
+                    .data(result)
+                    .build();
         }
 
 

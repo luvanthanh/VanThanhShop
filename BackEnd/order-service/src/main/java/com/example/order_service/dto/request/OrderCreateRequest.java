@@ -22,6 +22,7 @@ public class OrderCreateRequest {
     private String paymentMethod;
     private Double totalMoney;
     private LocalDateTime createdAt = LocalDateTime.now();
+    private String order_status;
 
     private String userId;
     private int cartId;

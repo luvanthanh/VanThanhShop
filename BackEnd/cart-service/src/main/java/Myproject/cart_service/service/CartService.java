@@ -16,6 +16,8 @@ import lombok.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -81,13 +83,20 @@ public class CartService {
     }
 
 //    lấy danh sách sản phẩm thông qua cartId ( vì mỗi user có 1 và chỉ 1 cartId)
-    public ApiResponse<List<CartItem>> getCartItemByCartId(int cartId) {
+    public List<CartItemResponse> getCartItemByCartId(int cartId) {
         List<CartItem> listCartItems = cartItemRepository.findByCartId(cartId);
-        return ApiResponse.<List<CartItem>>builder()
-                .code(1000)
-                .message("đã lấy dữ liệu thành công!")
-                .data(listCartItems)
-                .build();
+        List<CartItemResponse> listCartItemResponse = new ArrayList<>();
+        if(listCartItems == null){
+            throw new RuntimeException(" don't have find athor service !");
+        }
+        else{
+            for(CartItem cartItem : listCartItems){
+                CartItemResponse cartItemResponse = cartMapper.toCartItemResponse(cartItem)
+                        .orElseThrow(()-> new RuntimeException("don't can mapper cartItem -> cartItemResponse "));
+                listCartItemResponse.add(cartItemResponse);
+            }
+            return listCartItemResponse;
+        }
     }
 
     public CartResponse getCartByUserId(@PathVariable String userId) {
@@ -97,21 +106,15 @@ public class CartService {
         return cartMapper.toCartResponse(cart);
     }
 
-    public ApiResponse<CartItem> updateCartItemQuantity(CartItemUpdateRequest request, @PathVariable int cartItemId) {
+    public CartItem updateCartItemQuantity(CartItemUpdateRequest request, @PathVariable int cartItemId) {
         CartItem cartItem = cartItemRepository.findById(cartItemId)
                 .orElseThrow(()->new RuntimeException(" không tìm thấy cartItem"));
         if(request.getQuantity() <= 0 || cartItem.getQuantity() <= 0){
             throw new RuntimeException(" số lượng phải lớn hơn 0");
         }
         cartItem.setQuantity(request.getQuantity());
+       return  cartItemRepository.save(cartItem);
 
-
-        cartItemRepository.save(cartItem);
-        return ApiResponse.<CartItem>builder()
-                .code(1000)
-                .message("đã  update số lượng sản phẩm thành công!")
-                .data(cartItem)
-                .build();
     }
 
     public String deleteCartItemByCartId(int cartItemId){

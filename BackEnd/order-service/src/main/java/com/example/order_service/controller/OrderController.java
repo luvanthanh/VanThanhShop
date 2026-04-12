@@ -2,6 +2,8 @@ package com.example.order_service.controller;
 
 
 import com.example.order_service.dto.request.OrderCreateRequest;
+import com.example.order_service.dto.response.ApiResponse;
+import com.example.order_service.dto.response.OrderResponse;
 import com.example.order_service.entity.Order;
 import com.example.order_service.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +18,13 @@ public class OrderController {
     private OrderService orderService;
 
     @GetMapping
-    public List<Order> getAllOrders() {
-        return orderService.getAllOrder();
+    public ApiResponse<List<OrderResponse>> getAllOrders() {
+        var result = orderService.getAllOrder();
+        return ApiResponse.<List<OrderResponse>>builder()
+                .code(1000)
+                .message(" get all orders successful ")
+                .data(result)
+                .build();
     }
 
     @GetMapping("getOrderByUserId/{userId}")
