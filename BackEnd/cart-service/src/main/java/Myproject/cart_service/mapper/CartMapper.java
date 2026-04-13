@@ -13,6 +13,6 @@ import java.util.Optional;
 public interface CartMapper {
     CartResponse toCartResponse(Cart cart);
 
-    Optional<CartItemResponse> toCartItemResponse(CartItem cartItem);
+    CartItemResponse toCartItemResponse(CartItem cartItem);
 
 }

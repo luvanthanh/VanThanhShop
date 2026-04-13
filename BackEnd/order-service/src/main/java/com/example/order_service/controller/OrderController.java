@@ -28,8 +28,13 @@ public class OrderController {
     }
 
     @GetMapping("getOrderByUserId/{userId}")
-    public List<Order> getOrderByUserId(@PathVariable("userId") String userId){
-        return orderService.getOrderByUserId(userId);
+    public ApiResponse<List<OrderResponse>> getOrderByUserId(@PathVariable("userId") String userId){
+        var result =  orderService.getOrderByUserId(userId);
+        return ApiResponse.<List<OrderResponse>>builder()
+                .code(1000)
+                .message(" get orders successful ")
+                .data(result)
+                .build();
     }
 
     @PostMapping

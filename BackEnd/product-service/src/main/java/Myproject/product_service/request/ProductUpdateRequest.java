@@ -27,8 +27,8 @@ public class ProductUpdateRequest {
     private int productWarranty;
     private long productPrice;
     private String productFormattedPrice;
-    private String productImageUrl;
-    private String productImageUrl1;
-    private String productImageUrl2;
-    private String productImageUrl3;
+    private String productImage;
+    private String productImage1;
+    private String productImage2;
+    private String productImage3;
 }

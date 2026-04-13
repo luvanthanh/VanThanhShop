@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ProductResponse {
     private int productId;
-    private String productImageUrl;
+    private String productImage;
     private String productName;
     private int productStockQuantity;
     private double productPrice;

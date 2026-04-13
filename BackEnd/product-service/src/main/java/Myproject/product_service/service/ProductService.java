@@ -7,7 +7,7 @@ import Myproject.product_service.mapper.ProductMapper;
 import Myproject.product_service.request.ProductCreationRequest;
 import Myproject.product_service.request.ProductUpdateRequest;
 import Myproject.product_service.response.ProductResponse;
-import Myproject.product_service.response.ApiResponse;
+
 import lombok.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;

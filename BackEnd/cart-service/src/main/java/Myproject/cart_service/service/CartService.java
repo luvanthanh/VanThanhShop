@@ -16,10 +16,8 @@ import lombok.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
-
 import java.util.ArrayList;
 import java.util.List;
-
 
 @Builder
 @Service
@@ -41,7 +39,7 @@ public class CartService {
 
 // tạo cart nếu chưa có (1 user sẽ có 1 cart)
     public CartResponse createdCartByUserId(String userId){
-        Cart cart = cartRepository.getCartsByUserId( userId)
+        Cart cart = cartRepository.getCartsByUserId(userId)
                 .orElseGet(()->{
                     Cart newCart =new Cart();
                     newCart.setUserId(userId);
@@ -64,7 +62,8 @@ public class CartService {
             throw new RuntimeException("lỗi số lượng cho kho không đủ!");
         }
 
-        CartItem cartItem = cartItemRepository.findById(cartId).orElse(null);
+        CartItem cartItem = cartItemRepository.getByCartIdAndProductId(cartId,product.getProductId())
+                .orElse(null);
         if(cartItem == null){
             cartItem = new CartItem();
             cartItem.setCartId(cartId);
@@ -72,14 +71,15 @@ public class CartService {
             cartItem.setQuantity(request.getQuantity());
 
             cartItem.setProductName(product.getProductName());
-            cartItem.setProductImage(product.getProductName());
-            cartItem.setProductImage(product.getProductImageUrl());
+            cartItem.setProductImage(product.getProductImage());
+            cartItem.setProductPrice(product.getProductPrice());
+            cartItem.setQuantity(request.getQuantity());
+
         }
         else{
             cartItem.setQuantity(cartItem.getQuantity() + 1);
         }
         return cartItemRepository.save(cartItem);
-
     }
 
 //    lấy danh sách sản phẩm thông qua cartId ( vì mỗi user có 1 và chỉ 1 cartId)
@@ -91,8 +91,7 @@ public class CartService {
         }
         else{
             for(CartItem cartItem : listCartItems){
-                CartItemResponse cartItemResponse = cartMapper.toCartItemResponse(cartItem)
-                        .orElseThrow(()-> new RuntimeException("don't can mapper cartItem -> cartItemResponse "));
+                CartItemResponse cartItemResponse = cartMapper.toCartItemResponse(cartItem);
                 listCartItemResponse.add(cartItemResponse);
             }
             return listCartItemResponse;
@@ -102,7 +101,6 @@ public class CartService {
     public CartResponse getCartByUserId(@PathVariable String userId) {
         Cart cart = cartRepository.getCartsByUserId(userId)
                 .orElseThrow(()-> new RuntimeException(" không tìm thấy cart"));
-        CartResponse cartResponse = new  CartResponse();
         return cartMapper.toCartResponse(cart);
     }
 
@@ -114,9 +112,7 @@ public class CartService {
         }
         cartItem.setQuantity(request.getQuantity());
        return  cartItemRepository.save(cartItem);
-
     }
-
     public String deleteCartItemByCartId(int cartItemId){
         cartItemRepository.deleteById(cartItemId);
         return "cartItem đã được xóa ra khỏi data base!";

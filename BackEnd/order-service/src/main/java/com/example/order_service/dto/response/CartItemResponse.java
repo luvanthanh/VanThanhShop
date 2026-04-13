@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class CartItemResponse {
     private int productId;
-    private String imageUrl;
+    private String productImage;
     private String productName;
     private  double productPrice;
-    private int quantity;
+    private int productQuantity;
 }

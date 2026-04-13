@@ -1,6 +1,7 @@
 package Myproject.cart_service.dto.reponse;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,6 +16,8 @@ public class CartItemResponse {
     private int productId;
     private String imageUrl;
     private String productName;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private  double productPrice;
     private int quantity;
 }

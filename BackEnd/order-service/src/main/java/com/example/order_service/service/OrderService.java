@@ -36,9 +36,20 @@ public class OrderService {
         return orderResponses;
     }
 
-    public List<Order> getOrderByUserId(String userId){
-        return orderRepository.findByUserId(userId)
-                .orElseThrow(() -> new RuntimeException("không timg thấy"));
+    public List<OrderResponse> getOrderByUserId(String userId){
+        List<Order> listOrders = orderRepository.findByUserId(userId);
+        List<OrderResponse> orderResponses = new ArrayList<>();
+        if(listOrders.isEmpty()){
+            throw new RuntimeException(" don't find any order ");
+
+        }
+        else{
+            for (Order order : listOrders){
+                OrderResponse orderResponse = orderMapper.toOrderResponse(order);
+                orderResponses.add(orderResponse);
+            }
+        }
+        return orderResponses;
     }
 
     public Order createOrder(OrderCreateRequest request){

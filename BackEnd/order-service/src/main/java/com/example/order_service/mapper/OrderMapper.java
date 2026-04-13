@@ -15,5 +15,4 @@ public interface OrderMapper {
     Order toOrder(OrderCreateRequest request);
     OrderResponse toOrderResponse(Order order);
 
-
 }
