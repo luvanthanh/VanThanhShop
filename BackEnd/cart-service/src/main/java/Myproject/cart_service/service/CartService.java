@@ -105,14 +105,15 @@ public class CartService {
     }
 
     public CartItem updateCartItemQuantity(CartItemUpdateRequest request, @PathVariable int cartItemId) {
-        CartItem cartItem = cartItemRepository.findById(cartItemId)
-                .orElseThrow(()->new RuntimeException(" không tìm thấy cartItem"));
-        if(request.getQuantity() <= 0 || cartItem.getQuantity() <= 0){
+        CartItem cartItem = cartItemRepository.findByCartItemsId(cartItemId)
+                .orElseThrow(()->new RuntimeException("không tìm thấy cartItem"));
+        if(request.getProductQuantity() <= 0 || cartItem.getQuantity() <= 0){
             throw new RuntimeException(" số lượng phải lớn hơn 0");
         }
-        cartItem.setQuantity(request.getQuantity());
+        cartItem.setQuantity(request.getProductQuantity());
        return  cartItemRepository.save(cartItem);
     }
+
     public String deleteCartItemByCartId(int cartItemId){
         cartItemRepository.deleteById(cartItemId);
         return "cartItem đã được xóa ra khỏi data base!";

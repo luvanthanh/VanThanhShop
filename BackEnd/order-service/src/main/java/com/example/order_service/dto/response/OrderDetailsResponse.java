@@ -13,7 +13,6 @@ import lombok.*;
 
 
 public class OrderDetailsResponse {
-
     private String orderDetailId;
     private String orderId;
 

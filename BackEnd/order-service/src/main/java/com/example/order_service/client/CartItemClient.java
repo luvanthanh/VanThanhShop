@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
-@FeignClient(name = "product-service")
+@FeignClient(name = "cart-service")
 public interface CartItemClient {
 
-    @GetMapping("carts/{cartId}/cartItems")
+    @GetMapping("/carts/{cartId}/cartItems")
     public ApiResponse<List<CartItemResponse>> getCartItemByCartId(@PathVariable int cartId);
 }

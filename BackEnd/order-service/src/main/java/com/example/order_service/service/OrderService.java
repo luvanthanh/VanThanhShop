@@ -1,9 +1,14 @@
 package com.example.order_service.service;
 
 
+import com.example.order_service.client.CartItemClient;
 import com.example.order_service.dto.request.OrderCreateRequest;
+import com.example.order_service.dto.response.ApiResponse;
+import com.example.order_service.dto.response.CartItemResponse;
+import com.example.order_service.dto.response.OrderDetailsResponse;
 import com.example.order_service.dto.response.OrderResponse;
 import com.example.order_service.entity.Order;
+import com.example.order_service.entity.OrderDetails;
 import com.example.order_service.mapper.OrderMapper;
 import com.example.order_service.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +22,12 @@ public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
+    @Autowired
+    CartItemClient cartItemClient;
 
     @Autowired
     private OrderMapper orderMapper;
+
     public List<OrderResponse> getAllOrder(){
         List<Order> listOrder =  orderRepository.findAll();
         List<OrderResponse> orderResponses = new ArrayList<>();
@@ -52,11 +60,35 @@ public class OrderService {
         return orderResponses;
     }
 
-    public Order createOrder(OrderCreateRequest request){
+    public OrderResponse createOrder(OrderCreateRequest request){
         Order order = orderMapper.toOrder(request);
-        order.setPaymentMethod(request.getPaymentMethod());
-        order.setTotalMoney(request.getTotalMoney());
-        return orderRepository.save(order);
+        OrderResponse orderResponse = orderMapper.toOrderResponse(order);
+        return orderResponse;
+    }
+
+//   thêm chi tiết đơn hàng
+    public List<OrderDetailsResponse> createdOrderDetails (String orderId){
+        Order order =  orderRepository.findById(orderId).orElse(null);
+
+        ApiResponse<List<CartItemResponse>> cartItemsResponse = cartItemClient.getCartItemByCartId(order.getCartId());
+
+        List<CartItemResponse> listItems = cartItemsResponse.getData();
+        List<OrderDetailsResponse> listOrderDetailsResponse = new  ArrayList<>();
+
+        for( CartItemResponse item : listItems){
+            OrderDetails orderDetails = new OrderDetails();
+
+            orderDetails.setOrderId(orderId);
+            orderDetails.setProductImage(item.getProductImage());
+            orderDetails.setProductName(item.getProductName());
+            orderDetails.setProductPrice(item.getProductPrice());
+            orderDetails.setProductQuantity(item.getProductQuantity());
+            orderDetails.setProductTotalPrice(item.getProductPrice() *item.getProductQuantity());
+
+            OrderDetailsResponse orderDetailsResponse = orderMapper.toOrderDetailsResponse(orderDetails);
+            listOrderDetailsResponse.add(orderDetailsResponse);
+        }
+        return listOrderDetailsResponse;
     }
 
     public void deleteOrder(String orderId){

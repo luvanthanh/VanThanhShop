@@ -70,7 +70,7 @@
         }
 
 //sửa số lượng của sản phẩm trong giỏ hàng
-        @PutMapping("/cartItems/{cartItemId}/")
+        @PutMapping("/cartItems/{cartItemId}")
         public ApiResponse<CartItem> updateCartItem(@RequestBody CartItemUpdateRequest request ,  @PathVariable int cartItemId) {
             var result = cartService.updateCartItemQuantity(request,cartItemId);
             return ApiResponse.<CartItem>builder()

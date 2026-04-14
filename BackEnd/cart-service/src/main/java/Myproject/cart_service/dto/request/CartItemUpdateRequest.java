@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class CartItemUpdateRequest {
-    private int quantity;
+    private int productQuantity;
 }

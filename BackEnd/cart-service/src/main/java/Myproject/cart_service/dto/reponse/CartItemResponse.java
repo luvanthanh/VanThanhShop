@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class CartItemResponse {
-    private int cartItemId;
+    private int cartItemsId;
     private int productId;
-    private String imageUrl;
+    private String productImage;
     private String productName;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)

@@ -7,12 +7,9 @@ import Myproject.cart_service.entity.Cart;
 import Myproject.cart_service.entity.CartItem;
 import org.mapstruct.Mapper;
 
-import java.util.Optional;
-
 @Mapper(componentModel = "spring")
 public interface CartMapper {
     CartResponse toCartResponse(Cart cart);
 
     CartItemResponse toCartItemResponse(CartItem cartItem);
-
 }

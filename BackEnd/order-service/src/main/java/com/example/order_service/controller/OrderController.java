@@ -2,7 +2,9 @@ package com.example.order_service.controller;
 
 
 import com.example.order_service.dto.request.OrderCreateRequest;
+import com.example.order_service.dto.request.OrderDetailCreationRequest;
 import com.example.order_service.dto.response.ApiResponse;
+import com.example.order_service.dto.response.OrderDetailsResponse;
 import com.example.order_service.dto.response.OrderResponse;
 import com.example.order_service.entity.Order;
 import com.example.order_service.service.OrderService;
@@ -38,13 +40,30 @@ public class OrderController {
     }
 
     @PostMapping
-    public Order createOrder(@RequestBody OrderCreateRequest request){
-        return  orderService.createOrder(request);
+    public ApiResponse<OrderResponse> createOrder(@RequestBody OrderCreateRequest request){
+        var result =  orderService.createOrder(request);
+        return ApiResponse.<OrderResponse>builder()
+                .code(1000)
+                .message(" create order successful ")
+                .data(result)
+                .build();
+    }
+    @PostMapping("/{orderId}")
+    public ApiResponse<List<OrderDetailsResponse>> createOrderDetails(@PathVariable String  orderId){
+        var result = orderService.createdOrderDetails(orderId);
+        return ApiResponse.<List<OrderDetailsResponse>>builder()
+                .code(1000)
+                .message(" create order details successful ")
+                .data(result)
+                .build();
     }
 
     @DeleteMapping("/orderId")
     public void deleteOrder(@PathVariable("orderId") String orderId){
          orderService.deleteOrder(orderId);
     }
+
+
+
 
 }
