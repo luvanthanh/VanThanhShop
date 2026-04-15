@@ -151,7 +151,7 @@ public class ProductController {
                 .build();
     }
 
-    @GetMapping("/getAndSortBYPrice/decrease")
+    @GetMapping("/getAndSortByPrice/decrease")
     ApiResponse<List<Product>> getAndSortBYPrice(){
         var result = productService.getAndSortByPrice2();
         return ApiResponse.<List<Product>>builder()
