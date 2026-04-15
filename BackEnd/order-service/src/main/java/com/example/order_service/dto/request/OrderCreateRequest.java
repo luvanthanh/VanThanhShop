@@ -11,13 +11,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 public class OrderCreateRequest {
+
     private String shopAddress;
 
     private String note;
     private String customerName;
     private String deliveryAddress;
     private String customerPhoneNumber;
-
 
     private String paymentMethod;
     private Double totalMoney;

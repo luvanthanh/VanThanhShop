@@ -41,14 +41,14 @@ public class OrderController {
 
     @PostMapping
     public ApiResponse<OrderResponse> createOrder(@RequestBody OrderCreateRequest request){
-        var result =  orderService.createOrder(request);
+        var result = orderService.createOrder(request);
         return ApiResponse.<OrderResponse>builder()
                 .code(1000)
                 .message(" create order successful ")
                 .data(result)
                 .build();
     }
-    @PostMapping("/{orderId}")
+    @PostMapping("/{orderId}/details")
     public ApiResponse<List<OrderDetailsResponse>> createOrderDetails(@PathVariable String  orderId){
         var result = orderService.createdOrderDetails(orderId);
         return ApiResponse.<List<OrderDetailsResponse>>builder()
@@ -58,6 +58,10 @@ public class OrderController {
                 .build();
     }
 
+    @GetMapping("/{orderId}/details")
+    ApiResponse<List<OrderDetailsResponse>>  getOrderDetails(@PathVariable String orderId){
+        var result = orderService.
+    }
     @DeleteMapping("/orderId")
     public void deleteOrder(@PathVariable("orderId") String orderId){
          orderService.deleteOrder(orderId);

@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @Builder
 @Slf4j
 public class OrderResponse {
+    private String orderId;
     private String shopAddress;
 
     private String note;

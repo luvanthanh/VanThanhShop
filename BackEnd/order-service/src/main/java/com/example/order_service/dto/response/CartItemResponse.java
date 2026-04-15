@@ -1,5 +1,6 @@
 package com.example.order_service.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,5 +15,6 @@ public class CartItemResponse {
     private String productImage;
     private String productName;
     private  double productPrice;
+    @JsonProperty("quantity")
     private int productQuantity;
 }

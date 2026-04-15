@@ -15,7 +15,10 @@ import java.util.Optional;
 public interface OrderMapper {
     @Mapping(target = "orderId", ignore = true)
     Order toOrder(OrderCreateRequest request);
+    @Mapping(source = "orderId", target = "orderId")
     OrderResponse toOrderResponse(Order order);
+
+    @Mapping(source = "orderDetailId", target = "orderDetailId")
     OrderDetailsResponse toOrderDetailsResponse(OrderDetails orderDetails);
 
 }

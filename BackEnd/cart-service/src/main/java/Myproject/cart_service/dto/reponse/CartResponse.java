@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 
 public class CartResponse {
-    private int cart_id;
-    private String user_id;
+    private int cartId;
+    private String userId;
 }
