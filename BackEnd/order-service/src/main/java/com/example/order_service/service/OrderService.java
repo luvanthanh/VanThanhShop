@@ -67,7 +67,7 @@ public class OrderService {
         }
         return listOrderDetailsResponse;
     }
-
+// lấy tất cả đơn hàng
     public List<OrderResponse> getAllOrder(){
         List<Order> listOrder =  orderRepository.findAll();
         List<OrderResponse> orderResponses = new ArrayList<>();
@@ -83,7 +83,7 @@ public class OrderService {
         }
         return orderResponses;
     }
-// xem đon hàng
+// lấy danh sách đơn hàng theo user id
     public List<OrderResponse> getOrderByUserId(String userId){
         List<Order> listOrders = orderRepository.findByUserId(userId);
         List<OrderResponse> orderResponses = new ArrayList<>();
@@ -101,7 +101,21 @@ public class OrderService {
     }
 
 
-
+//    lấy chi tiết đơn hàng
+    public List<OrderDetailsResponse> getOrderDetails(String orderId){
+        List<OrderDetails> listOrderDetails = orderDetailsRepository.findByOrderId(orderId);
+        List<OrderDetailsResponse> orderDetailsResponses = new ArrayList<>();
+        if(listOrderDetails.isEmpty()){
+            throw new RuntimeException(" don't find any order ");
+        }
+        else{
+            for(OrderDetails orderDetails : listOrderDetails){
+                OrderDetailsResponse orderDetailsResponse = orderMapper.toOrderDetailsResponse(orderDetails);
+                orderDetailsResponses.add(orderDetailsResponse);
+            }
+        }
+        return orderDetailsResponses;
+    }
 
 
 

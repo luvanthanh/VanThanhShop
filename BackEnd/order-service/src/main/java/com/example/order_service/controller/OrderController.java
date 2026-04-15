@@ -60,7 +60,12 @@ public class OrderController {
 
     @GetMapping("/{orderId}/details")
     ApiResponse<List<OrderDetailsResponse>>  getOrderDetails(@PathVariable String orderId){
-        var result = orderService.
+        var result = orderService.getOrderDetails(orderId);
+        return ApiResponse.<List<OrderDetailsResponse>>builder()
+                .code(1000)
+                .message(" get order details successful ")
+                .data(result)
+                .build();
     }
     @DeleteMapping("/orderId")
     public void deleteOrder(@PathVariable("orderId") String orderId){
