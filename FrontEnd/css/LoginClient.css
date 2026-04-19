@@ -1,70 +1,119 @@
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* BACKGROUND */
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', Arial, sans-serif;
   background: linear-gradient(135deg, #ddc957, #512e5f);
   height: 100vh;
-  margin: 0;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
+/* CARD */
 .login-container {
-  background: #fff;
+  background: rgba(255, 255, 255, 0.95);
   padding: 40px;
-  border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(108, 52, 131, 0.2);
-  width: 600px;
-  max-width: 90vw;
+  border-radius: 18px;
+  width: 500px;
+  max-width: 90%;
   text-align: center;
-  min-height: 420px; /* tăng chiều cao tối thiểu */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(81, 46, 95, 0.4);
+  animation: fadeIn 0.6s ease;
 }
 
+/* TITLE */
 .login-container h2 {
-  margin-bottom: 20px;
-  color: #2d3436;
+  margin-bottom: 25px;
+  color: #512e5f;
+  font-size: 26px;
 }
 
+/* INPUT */
 .login-container input {
   width: 100%;
   padding: 12px;
   margin: 10px 0;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  outline: none;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 14px;
   transition: 0.3s;
 }
 
+/* focus đẹp */
 .login-container input:focus {
-  border-color: #0984e3;
-  box-shadow: 0 0 5px rgba(9, 132, 227, 0.5);
+  border-color: #6c3483;
+  box-shadow: 0 0 8px rgba(108, 52, 131, 0.4);
+  outline: none;
 }
 
+/* BUTTON */
 .login-container button {
   width: 100%;
   padding: 12px;
-  background: red;
+  margin-top: 10px;
+
+  background: linear-gradient(135deg, #ff3b30, #c0392b);
   border: none;
   color: #fff;
   font-size: 16px;
   font-weight: bold;
-  border-radius: 8px;
+  border-radius: 10px;
+
   cursor: pointer;
   transition: 0.3s;
 }
 
+/* hover */
 .login-container button:hover {
-  background: linear-gradient(135deg, #6c3483, #512e5f);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(192, 57, 43, 0.5);
 }
 
+/* active */
+.login-container button:active {
+  transform: scale(0.97);
+}
+
+/* ERROR MESSAGE */
+#error-msg {
+  margin-top: 10px;
+  font-size: 14px;
+  color: red;
+  min-height: 20px;
+}
+
+/* LINK */
 .login-container p {
   margin-top: 15px;
   font-size: 14px;
 }
 
 .login-container a {
-  color: #0984e3;
+  color: #6c3483;
+  font-weight: 600;
   text-decoration: none;
+}
+
+.login-container a:hover {
+  text-decoration: underline;
+}
+
+/* ANIMATION */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

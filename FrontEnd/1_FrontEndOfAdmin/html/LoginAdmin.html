@@ -1,39 +1,39 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <title>Admin Login</title>
-    <link rel="stylesheet" href="../css/LoginAdmin.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
-    <script src="../javascript/LoginAdmin.js"></script>
-
+  <meta charset="UTF-8">
+  <title>Login Admin</title>
 </head>
 <body>
 
-<div class="login-container">
-    <div class="login-card">
-        <h2>🍊 Admin Login</h2>
-        <p>Đăng nhập hệ thống quản trị</p>
+<h2>Login Admin</h2>
 
-        <div class="form-group">
-            <input id="adminName" type="text" placeholder="Tên đăng nhập">
-        </div>
+<input id="userName" placeholder="Username"><br><br>
+<input id="password" type="password" placeholder="Password"><br><br>
 
-        <div class="form-group">
-            <input id="adminPassword" type="password" placeholder="Mật khẩu">
-        </div>
+<button onclick="login()">Login</button>
 
-        <button class="btn-login" onclick="LoginAdmin()">
-            Đăng nhập
-        </button>
+<script>
+function login() {
+    const userName = document.getElementById("userName").value;
+    const password = document.getElementById("password").value;
 
-        <div class="extra">
-            <a href="#">Quên mật khẩu?</a>
-        </div>
-    </div>
-</div>
-
+    fetch("http://localhost:8888/api/users/auth/login", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ userName, password })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.data?.token) {
+            localStorage.setItem("adminToken", data.data.token);
+            location.href = "Home.html";
+        } else {
+            alert("Sai tài khoản");
+        }
+    });
+}
+</script>
 
 </body>
 </html>

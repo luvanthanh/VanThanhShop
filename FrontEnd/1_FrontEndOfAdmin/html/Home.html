@@ -1,42 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
-  <title>Trang chủ Admin</title>
+  <title>Admin</title>
   <link rel="stylesheet" href="../css/HomeAdmin.css">
-  <script src="../javaScript/productPage.js"></script>
-  <script src="../javaScript/newsPage.js"></script>
-  <script src="../javaScript/userPage.js"></script>
-
 </head>
 <body>
-  <div class="header">
-    <a class="accout" href="LoginAdmin.html"><i class="fa-regular fa-user">Accout</i></a>
-    <div>Chào mừng đến với trang quản trị viên - Văn Thành Shop</div>
-  </div>
-  <div class="section-one">
-    <div class="section-one-content">
-      <div class="content-left">
-        <ul>
-          <li><div><i class="fa-regular fa-house"></i>Trang chủ </div></li>
-          <li><div onclick="productPage()"><i class="fa-solid fa-mobile"></i>Quản lý sản phẩm</div></li>
-          <li><div onclick="newsPage()"><i class="fa-solid fa-newspaper"></i>Quản lý Tin Tức</div></li>
-          <li><div onclick="userPage()"><i class="fa-solid fa-person"></i>Quản lý người dùng</div></li>
-          <li><div><i class="fa-solid fa-truck"></i>Quản lý đặt hàng</div></li>
-        </ul>
-      </div>
-      <div class="content-right">
-        <div class="content-right-list" id="content-right-page">
-          Nội dung quản trị viên
-        </div>
-      </div>
-    </div>
+
+<div class="layout">
+
+  <div class="sidebar">
+    <h2>ADMIN</h2>
+    <ul>
+      <li data-page="product">📱 Sản phẩm</li>
+      <li data-page="user">👤 Người dùng</li>
+      <li data-page="news">📰 Tin tức</li>
+      <li id="logout">🚪 Logout</li>
+    </ul>
   </div>
 
-  <div class="footer">
-
+  <div class="main">
+    <div class="header">Dashboard</div>
+    <div id="content" class="content"></div>
   </div>
+
+</div>
+
+<script type="module" src="../javascript/main.js"></script>
 </body>
 </html>

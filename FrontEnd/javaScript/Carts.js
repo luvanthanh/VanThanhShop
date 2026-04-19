@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   const userId = localStorage.getItem("userId");
 
   if (!userId) {
@@ -7,73 +7,71 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // 1 Tạo cart nếu chưa có
-  fetch(`http://localhost:8888/api/carts/createdCartByUserId/${userId}`, {
-    method: "POST",
-  });
+  try {
+    // 1. Tạo cart (đợi chạy xong)
+    await fetch(`http://localhost:8888/api/carts/createdCartByUserId/${userId}`, {
+      method: "POST",
+    });
 
-  // 2 Lấy cart theo userId
-  fetch(`http://localhost:8888/api/carts/getCartByUserId/${userId}`)
-  .then((response) => response.json())
-  .then((cart) => {
-    localStorage.setItem("cartId", cart.data.cartId);
-    const cartId = cart.data.cartId;
-    console.log("CartId lấy từ localStorage:", cartId);
+    // 2. Lấy cart
+    const cartRes = await fetch(`http://localhost:8888/api/carts/getCartByUserId/${userId}`);
+    const cartJson = await cartRes.json();
 
-    // 3. Lấy danh sách cartItem theo cartId
-    return fetch(`http://localhost:8888/api/carts/${cartId}/cartItems`)
-      .then((res) => res.json())
-      .then((cartItems) => {
+    const cartId = cartJson.data.cartId;
+    localStorage.setItem("cartId", cartId);
 
-        const itemsWithProduct = cartItems.map((item) => {
-          console.log("RAW cartItem từ backend:", item);
+    console.log("CartId:", cartId);
 
-          return {
-            ...item,
-            cartItemsId: item.cartItemId,
-            product: {
-              productName: item.productName,
-              productPrice: item.productPrice,
-              productImageUrl: item.imageUrl
-            }
-          };
-        });
+    // 3. Lấy cartItems
+    const res = await fetch(`http://localhost:8888/api/carts/${cartId}/cartItems`);
+    const cartItemsJson = await res.json();
 
-        window.cartData = itemsWithProduct;
-        renderCart(itemsWithProduct);
-      });
-  })
-  .catch((error) => console.error("Lỗi khi lấy giỏ hàng:", error));
+    const cartItems = cartItemsJson.data; // ⚠️ QUAN TRỌNG
 
+    const itemsWithProduct = cartItems.map((item) => ({
+      ...item,
+      cartItemId: item.cartItemsId, // fix naming
+      product: {
+        productName: item.productName,
+        productPrice: item.productPrice,
+        productImage: item.productImage
+      }
+    }));
+
+    window.cartData = itemsWithProduct;
+    renderCart(itemsWithProduct);
+
+  } catch (err) {
+    console.error("Lỗi:", err);
+  }
 });
 
-// =====================================================
-// RENDER CART UI
-// =====================================================
+
+// ================= RENDER =================
 function renderCart(data) {
   const listCartsDiv = document.getElementById("list_carts");
   listCartsDiv.innerHTML = "";
 
-  if (data.length === 0) {
-    listCartsDiv.innerHTML = "<p class = 'cartMessages'>Giỏ hàng trống!</p>";
+  if (!data || data.length === 0) {
+    listCartsDiv.innerHTML = "<p class='cartMessages'>Giỏ hàng trống!</p>";
     return;
   }
 
   let tongTien = 0;
 
-  let tableHTML = `
+  let html = `
     <table>
-        <thead>
-            <tr>
-                <th>Hình ảnh</th>
-                <th>Tên sản phẩm</th>
-                <th>Giá</th>
-                <th>Số lượng</th>
-                <th>Tổng tiền</th>
-                <th>Xóa</th>
-            </tr>
-        </thead>
-        <tbody>
+      <thead>
+        <tr>
+          <th>Hình ảnh</th>
+          <th>Tên sản phẩm</th>
+          <th>Giá</th>
+          <th>Số lượng</th>
+          <th>Tổng tiền</th>
+          <th>Xóa</th>
+        </tr>
+      </thead>
+      <tbody>
   `;
 
   data.forEach((item, index) => {
@@ -83,48 +81,41 @@ function renderCart(data) {
 
     tongTien += total;
 
-    tableHTML += `
+    html += `
       <tr id="row-${index}">
-          <td><img src="${product.productImageUrl}" alt="${product.productName}"></td>
-          <td>${product.productName}</td>
-          <td id="price-${index}" data-price="${price}">
-              ${price.toLocaleString("vi-VN")} VND
-          </td>
-          <td>
-              <button onclick="minus(${index})">-</button>
-              <span id="quantity-${index}">${quantity}</span>
-              <button onclick="plus(${index})">+</button>
-          </td>
-          <td id="total-${index}">
-              ${total.toLocaleString("vi-VN")} VND
-          </td>
-          <td><button onclick="deleteCart(${index})">Xóa</button></td>
+        <td><img src="${product.productImage}" width="80"></td>
+        <td>${product.productName}</td>
+        <td id="price-${index}" data-price="${price}">
+          ${price.toLocaleString("vi-VN")} VND
+        </td>
+        <td>
+          <button onclick="minus(${index})">-</button>
+          <span id="quantity-${index}">${quantity}</span>
+          <button onclick="plus(${index})">+</button>
+        </td>
+        <td id="total-${index}">
+          ${total.toLocaleString("vi-VN")} VND
+        </td>
+        <td><button onclick="deleteCart(${index})">Xóa</button></td>
       </tr>
     `;
   });
 
-  tableHTML += `
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td><b>Tổng cộng:</b></td>
-            <td class="sum-money" id="sum_money">${tongTien.toLocaleString("vi-VN")} VND</td>
-          </tr>
-        </tbody>
+  html += `
+      <tr>
+        <td colspan="3"></td>
+        <td><b>Tổng cộng:</b></td>
+        <td id="sum_money">${tongTien.toLocaleString("vi-VN")} VND</td>
+      </tr>
+    </tbody>
     </table>
-
-    <div class="add_product"><a href="Home.html">Thêm sản phẩm</a></div>
   `;
 
-  listCartsDiv.innerHTML = tableHTML;
-  updateTotalSum();
+  listCartsDiv.innerHTML = html;
 }
 
 
-// =====================================================
-// CẬP NHẬT TỔNG TIỀN
-// =====================================================
+// ================= UPDATE TOTAL =================
 function updateTotalSum() {
   let total = 0;
   const totalEls = document.querySelectorAll('[id^="total-"]');
@@ -133,19 +124,18 @@ function updateTotalSum() {
     total += Number(el.textContent.replace(/\D/g, ""));
   });
 
-  document.getElementById("sum_money").textContent =
-    total.toLocaleString("vi-VN") + " VND";
-
-const sum_money = document.getElementById("sum_money");
-console.log(sum_money);
-const sum_money_carts = document.getElementById("sum_money_carts").textContent = sum_money.textContent;
-console.log(sum_money_carts);
+  const sumEl = document.getElementById("sum_money");
+  if (sumEl) {
+    sumEl.textContent = total.toLocaleString("vi-VN") + " VND";
+  }
 }
 
-// =====================================================
-// TĂNG NUMBER
-// =====================================================
+
+// ================= PLUS =================
 function plus(index) {
+  const item = window.cartData[index];
+  if (!item) return;
+
   const quantityEl = document.getElementById(`quantity-${index}`);
   const price = Number(document.getElementById(`price-${index}`).dataset.price);
   const totalEl = document.getElementById(`total-${index}`);
@@ -153,146 +143,164 @@ function plus(index) {
   let quantity = parseInt(quantityEl.textContent);
   quantity++;
 
+  // update UI trước
   quantityEl.textContent = quantity;
   totalEl.textContent = (quantity * price).toLocaleString("vi-VN") + " VND";
 
-  fetch(`http://localhost:8888/api/carts/cartItems/${window.cartData[index].cartItemsId}`, {
+  // 🔥 CALL API ĐÚNG FIELD
+  fetch(`http://localhost:8888/api/carts/cartItems/${item.cartItemId}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      quantity: quantity,
+      productQuantity: quantity, // ✅ FIX Ở ĐÂY
     }),
   })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Cập nhật số lượng thất bại!");
-      }
-      return response.json();
+    .then(res => res.json())
+    .then(data => {
+      console.log("Update OK:", data);
     })
-    .then((data) => {
-      console.log("Cập nhật số lượng thành công:", data);
-    })
-    .catch((error) => {
-      console.error("Lỗi khi cập nhật số lượng:", error);
-      alert("Lỗi khi cập nhật số lượng: " + error.message);
+    .catch(err => {
+      console.error("Lỗi update:", err);
     });
 
   updateTotalSum();
 }
 
-// =====================================================
-// GIẢM NUMBER
-// =====================================================
+// ================= MINUS =================
 function minus(index) {
+  const item = window.cartData[index];
+  if (!item) return;
+
   const quantityEl = document.getElementById(`quantity-${index}`);
   const price = Number(document.getElementById(`price-${index}`).dataset.price);
   const totalEl = document.getElementById(`total-${index}`);
 
   let quantity = parseInt(quantityEl.textContent);
 
-  if (quantity > 1) {
-    quantity--;
-    quantityEl.textContent = quantity;
-    totalEl.textContent = (quantity * price).toLocaleString("vi-VN") + " VND";
-  }
-    fetch(`http://localhost:8888/api/carts/cartItems/${window.cartData[index].cartItemsId}`, {
+  if (quantity <= 1) return;
+
+  quantity--;
+
+  // update UI
+  quantityEl.textContent = quantity;
+  totalEl.textContent = (quantity * price).toLocaleString("vi-VN") + " VND";
+
+  // 🔥 CALL API ĐÚNG FIELD
+  fetch(`http://localhost:8888/api/carts/cartItems/${item.cartItemId}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      quantity: quantity,
+      productQuantity: quantity, // ✅ FIX
     }),
   })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Cập nhật số lượng thất bại!");
-      }
-      return response.json();
+    .then(res => res.json())
+    .then(data => {
+      console.log("Update OK:", data);
     })
-    .catch((error) => {
-      console.error("Lỗi khi cập nhật số lượng:", error);
-      alert("Lỗi khi cập nhật số lượng: " + error.message);
+    .catch(err => {
+      console.error("Lỗi update:", err);
     });
 
   updateTotalSum();
 }
 
-// =====================================================
-// XÓA CART ITEM
-// =====================================================
+// ================= DELETE =================
 function deleteCart(index) {
-  const cartItem = window.cartData[index];
-  if (!cartItem) return;
+  const item = window.cartData[index];
+  if (!item) return;
 
-  if (!confirm(`Xóa "${cartItem.product.productName}" khỏi giỏ hàng?`)) return;
+  if (!confirm(`Xóa "${item.product.productName}"?`)) return;
 
-  fetch(`http://localhost:8888/api/carts/cartItems/${cartItem.cartItemsId}`, {
+  fetch(`http://localhost:8888/api/carts/cartItems/${item.cartItemId}`, {
     method: "DELETE",
-  })
-    .then((response) => {
-      if (!response.ok) throw new Error("Xóa thất bại!");
-
-      // Xóa khỏi DOM
-      document.getElementById(`row-${index}`).remove();
-
-      // Xóa khỏi mảng (để tránh lỗi khi xóa lần 2)
-      window.cartData.splice(index, 1);
-
-      updateTotalSum();
-      alert("Đã xóa sản phẩm!");
-    })
-    .catch((err) => {
-      console.error(err);
-      // alert("Không thể xóa sản phẩm!");
-    });
+  }).then(() => {
+    document.getElementById(`row-${index}`).remove();
+    window.cartData.splice(index, 1);
+    updateTotalSum();
+  });
 }
 
 
-function order() {
-
-  const shopAddress = document.getElementById("shopAddress").textContent.trim();
-  const customerName = document.getElementById("customerName").value;
-  const deliveryAddress = document.getElementById("deliveryAddress").value;
-  const customerPhoneNumber = document.getElementById("customerPhoneNumber").value;
-  const note = document.getElementById("note").value;
-  const paymentMethod = document.getElementById("paymentMethod").value;
-  const sum_money_carts = document.getElementById("sum_money_carts").textContent;
+// ================= ORDER =================
+async function order() {
+  const userId = localStorage.getItem("userId");
   const cartId = localStorage.getItem("cartId");
 
-  fetch(`http://localhost:8888/api/orders`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      shopAddress: shopAddress,
-      customerName: customerName,
-      deliveryAddress: deliveryAddress,
-      customerPhoneNumber: customerPhoneNumber,
-      note: note,
-      paymentMethod: paymentMethod,
-      totalMoney: parseInt(sum_money_carts.replace(/\D/g, "")),
-      cartId: cartId,
-      userId: localStorage.getItem("userId"),
-    }),
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Đặt hàng thất bại!");
-      }
-      return response.json();
-    })
-    .then((data) => {
-      alert("Đặt hàng thành công!");
-      window.location.href = "OrderList.html";
-    })
-    .catch((error) => {
-      alert("Lỗi khi đặt hàng: " + error.message);
+  const customerName = document.getElementById("customerName").value.trim();
+  const deliveryAddress = document.getElementById("deliveryAddress").value.trim();
+  const customerPhoneNumber = document.getElementById("customerPhoneNumber").value.trim();
+  const note = document.getElementById("note").value.trim();
+  const paymentMethod = document.getElementById("paymentMethod").value;
+  const shopAddress = document.getElementById("shopAddress").textContent;
+
+  const sumEl = document.getElementById("sum_money") || document.getElementById("sum_money_carts");
+  const totalAmount = sumEl ? Number(sumEl.textContent.replace(/\D/g, "")) : 0;
+
+  // ===== VALIDATE =====
+  if (!customerName || !deliveryAddress || !customerPhoneNumber) {
+    alert("Vui lòng nhập đầy đủ thông tin!");
+    return;
+  }
+
+  if (!window.cartData || window.cartData.length === 0) {
+    alert("Giỏ hàng trống!");
+    return;
+  }
+
+  try {
+    // ===== 1. TẠO ORDER =====
+    const orderRes = await fetch("http://localhost:8888/api/orders", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: userId,
+        cartId: cartId,
+        shopAddress: shopAddress,
+        customerName: customerName,
+        deliveryAddress: deliveryAddress,
+        customerPhoneNumber: customerPhoneNumber,
+        note: note,
+        paymentMethod: paymentMethod,
+        totalMoney: totalAmount
+      }),
     });
+
+    if (!orderRes.ok) throw new Error("Tạo order thất bại");
+
+    const orderData = await orderRes.json();
+    console.log("Order created:", orderData);
+
+    // 🔥 LẤY orderId từ response
+    const orderId = orderData.data.orderId;
+
+    // ===== 2. TẠO ORDER DETAILS =====
+    const detailRes = await fetch(`http://localhost:8888/api/orders/${orderId}/details`, {
+      method: "POST",
+    });
+
+    if (!detailRes.ok) throw new Error("Tạo order details thất bại");
+
+    const detailData = await detailRes.json();
+    console.log("Order details created:", detailData);
+
+    // ===== SUCCESS =====
+    alert("🎉 Đặt hàng thành công!");
+
+    // clear UI
+    document.getElementById("list_carts").innerHTML = "<p class='cartMessages'>Giỏ hàng trống!</p>";
+    window.cartData = [];
+
+    // redirect
+    window.location.href = "OrderList.html";
+
+  } catch (err) {
+    console.error(err);
+    alert("❌ Đặt hàng thất bại!");
+  }
 }
-
-
-

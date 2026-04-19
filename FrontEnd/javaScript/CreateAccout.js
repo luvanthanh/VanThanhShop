@@ -1,59 +1,60 @@
-function register() {
-    // Lấy dữ liệu từ input
-    const userName = document.getElementById("userName").value.trim();
-    const userPassword = document.getElementById("userPassword").value;
-    const userLastName = document.getElementById("userLastName").value.trim();
-    const userFirstName = document.getElementById("userFirstName").value.trim();
-    const userAddress = document.getElementById("userAddress").value.trim();
-    const userEmail = document.getElementById("userEmail").value.trim();
-    const userPhoneNumber = document.getElementById("userPhoneNumber").value.trim();
+document.getElementById("register_button").addEventListener("click", register);
 
-    // Kiểm tra các trường bắt buộc
-    if (!userName || !userPassword || !userLastName || !userFirstName || !userAddress || !userEmail) {
-        alert("Vui lòng điền đầy đủ các trường bắt buộc!");
+async function register() {
+    const btn = document.getElementById("register_button");
+    btn.classList.add("loading");
+    btn.innerText = "Đang xử lý...";
+
+    const data = {
+        userName: document.getElementById("userName").value.trim(),
+        userPassword: document.getElementById("userPassword").value,
+        userLastName: document.getElementById("userLastName").value.trim(),
+        userFirstName: document.getElementById("userFirstName").value.trim(),
+        userAddress: document.getElementById("userAddress").value.trim(),
+        userEmail: document.getElementById("userEmail").value.trim(),
+        userPhoneNumber: document.getElementById("userPhoneNumber").value.trim()
+    };
+
+    // validate
+    if (!data.userName || !data.userPassword || !data.userLastName || !data.userFirstName || !data.userAddress || !data.userEmail) {
+        alert("Vui lòng nhập đầy đủ thông tin!");
+        resetBtn(btn);
         return;
     }
 
-    // Tạo object gửi lên server
-    const data = {
-        userName,
-        userPassword,
-        userLastName,
-        userFirstName,
-        userAddress,
-        userEmail,
-        userPhoneNumber
-    };
+    // validate email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(data.userEmail)) {
+        alert("Email không hợp lệ!");
+        resetBtn(btn);
+        return;
+    }
 
-    // Gửi POST request
-    fetch("http://localhost:8888/api/users", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-    })
-    .then(response => {
+    try {
+        const response = await fetch("http://localhost:8888/api/users", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        });
+
         if (!response.ok) {
-            return response.text().then(text => { throw new Error(text || "Đăng ký thất bại"); });
+            const errText = await response.text();
+            throw new Error(errText || "Đăng ký thất bại");
         }
-        return response.json();
-    })
-    .then(result => {
-        console.log("Phản hồi từ server:", result);
+
         alert("Đăng ký thành công!");
-        // Xóa dữ liệu form sau khi đăng ký
-        document.getElementById("userName").value = "";
-        document.getElementById("userPassword").value = "";
-        document.getElementById("userLastName").value = "";
-        document.getElementById("userFirstName").value = "";
-        document.getElementById("userAddress").value = "";
-        document.getElementById("userEmail").value = "";
-        document.getElementById("userPhoneNumber").value = "";
-        window.location.href="LoginClient.html";
-    })
-    .catch(err => {
-        console.error(err);
+        window.location.href = "LoginClient.html";
+
+    } catch (err) {
         alert("Lỗi: " + err.message);
-    });
+    }
+
+    resetBtn(btn);
+}
+
+function resetBtn(btn) {
+    btn.classList.remove("loading");
+    btn.innerText = "Đăng ký";
 }

@@ -1,57 +1,109 @@
-h2{
+/* SECTION */
+.section-one {
+    display: flex;
+    justify-content: center;
+    padding: 40px 0;
+    background: #f5f6f8;
+}
+
+/* CARD */
+.profile-card {
+    width: 800px;
+    background: #fff;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+/* TITLE */
+.profile-card h2 {
     text-align: center;
+    margin-bottom: 25px;
+    font-size: 26px;
+    color: #222;
 }
 
-.section-one{
-    height:650px;
-}
-.user-detail{
-    margin: 20px;
-    font-size: 18px;
-}
-
-.user-detail table{
-    margin-top: 20px;
-    margin-left: 450px;
-    width: 50%;
-    border-collapse: collapse;
-    text-align: left;
+/* GRID */
+.profile-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
 }
 
-.user-detail table td{
+/* FULL WIDTH FIELD */
+.field.full {
+    grid-column: span 2;
+}
+
+/* FIELD */
+.field {
+    display: flex;
+    flex-direction: column;
+}
+
+.field label {
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+/* INPUT */
+.field input {
     padding: 10px;
-}
-.user-detail table td input{
-    padding: 5px;
-    border: 1px solid #c03c3c;
-    border-radius: 10px;
-    width: 100%;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    transition: 0.2s;
 }
 
-.button-update{
-    margin-left: 1103px;
-    margin-top: 10px;
-    background-color: #f0e0e0;
-    width: 300px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+.field input:focus {
+    border-color: #ff3b30;
+    outline: none;
 }
 
+/* ACTION BUTTON */
+.profile-actions {
+    margin-top: 25px;
+    display: flex;
+    justify-content: flex-end;
+}
 
-
-.button-update a{
-    text-decoration: none;
-    color: black;
-    display:inline-block;
-    width:100%;
-    height:100%;
+.btn-update {
     padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 15px;
+    background: linear-gradient(135deg, #ff3b30, #ff6b6b);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: 0.25s;
 }
 
-.button-update a:hover{
-    color: white;
-    background-color: #42b468;
+.btn-update:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(255,59,48,0.5);
+}
+
+/* ERROR */
+.error {
+    text-align: center;
+    color: red;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .profile-card {
+        width: 90%;
+    }
+
+    .profile-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .field.full {
+        grid-column: span 1;
+    }
+
+    .profile-actions {
+        justify-content: center;
+    }
 }

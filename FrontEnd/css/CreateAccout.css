@@ -1,6 +1,6 @@
 body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #ddc957, #512e5f);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #9755df, #bba01d);
     height: 100vh;
     margin: 0;
     display: flex;
@@ -8,75 +8,65 @@ body {
     align-items: center;
 }
 
-.register{
+.register {
     background: #fff;
-    padding: 40px;
+    padding: 30px 35px;
     border-radius: 16px;
-    box-shadow: 0 8px 24px rgba(108, 52, 131, 0.2);
-    width: 600px;
-    max-width: 90vw;
-    text-align: left;
-    min-height: 420px; /* tăng chiều cao tối thiểu */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    max-width: 90%;
 }
 
 h2 {
     text-align: center;
-    color: #2d3436;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
+    color: #333;
 }
 
-/* Bảng chứa thông tin */
-table {
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #555;
+}
+
+input {
     width: 100%;
-    border-collapse: collapse;
-}
-
-td {
-    color: #2d3436;
-    font-size: 15px;
-}
-
-/* Ô nhập liệu */
-input{
-    width: 100%;
-    margin: 10px 0;
+    padding: 10px;
+    border-radius: 8px;
     border: 1px solid #ccc;
-    border-radius: 10px;
     outline: none;
+    font-size: 14px;
     transition: 0.3s;
-    height: 25px;
 }
 
-input:focus{
-    border-color: #0984e3;
-    box-shadow: 0 0 5px rgba(9, 132, 227, 0.5);
-}
-
-
-
-/* Nút đăng ký */
-.btn-container {
-    text-align: center;
-    margin-top: 20px;
+input:focus {
+    border-color: #2575fc;
+    box-shadow: 0 0 5px rgba(37, 117, 252, 0.5);
 }
 
 button {
-    background-color: #0984e3;
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #9755df, #3533d6);
     color: white;
     border: none;
-    padding: 10px 20px;
-    border-radius: 6px;
+    border-radius: 10px;
     font-size: 16px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: 0.3s;
 }
 
 button:hover {
-    background-color: #2bb47b;
+    opacity: 0.9;
+    transform: translateY(-1px);
 }
 
-
-
+button.loading {
+    background: gray;
+    cursor: not-allowed;
+}

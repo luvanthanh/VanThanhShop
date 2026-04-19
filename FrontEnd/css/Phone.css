@@ -1,244 +1,138 @@
-/* Reset */
+/* RESET */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
-  text-decoration: none;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-  background: #eedef0;
+    background: #f5f6f8;
+    font-family: 'Segoe UI', Arial, sans-serif;
 }
 
-/* Header tổng */
-.navbar {
-  width: 100%;
-  border-bottom-left-radius: 2px;
-  border-bottom-right-radius: 2px;
-  background: linear-gradient(135deg, #6c3483, #512e5f);
-  color: white;
-  font-size: 14px;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  box-shadow: 5px 5px 15px rgba(48, 197, 18, 0.3);
+/* MAIN */
+.product-detail {
+    display: flex;
+    gap: 40px;
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
 }
 
-/* Thanh top nhỏ */
-
-.top-bar {
-  margin-left: 250px;
-  width: 70%;
-  overflow: hidden;
-  white-space: nowrap;
-  background: linear-gradient(to bottom, #6c3483, #512e5f);
-  position: relative;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  border-radius: 15px;
-
+/* IMAGE */
+.images {
+    flex: 1;
+    text-align: center;
 }
 
-.top-bar-content {
-  display: inline-block;
-  padding-left: 80%;
-  animation: marquee 20s linear infinite;
+.main-img {
+    width: 320px;
+    height: 320px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 1px solid #eee;
+    transition: 0.3s;
 }
 
-@keyframes marquee {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-100%); }
+.main-img:hover {
+    transform: scale(1.05);
 }
 
-/* Thanh chính */
-.main-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  padding: 20px 20px;
-  gap: 15px;
-  margin-left: 50px;
-  margin-right: 50px;
+.sub-images {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
 }
 
-/* Logo */
-.logo {
-  font-size: 24px;
-  font-weight: bold;
-  color: orange;
-}
-.logo-s {
-  color: red;
-  padding: 0 5px;
-  border-radius: 4px;
-  font-weight: bold;
+.sub-images img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 2px solid transparent;
 }
 
-/* Nút */
-.btn {
-  background: rgba(255,255,255,0.1);
-  border: none;
-  color: white;
-  padding: 8px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 5px;
+.sub-images img:hover {
+    border: 2px solid #ff3b30;
 }
 
-.btn a{
-  color: white;
-  border-radius: 12px;
-  align-items: center;
-  gap: 5px;
-}
-.btn:hover {
-  background: rgba(255,255,255,0.2);
+/* INFO */
+.info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
-/* Search */
-.search-box {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  background: white;
-  border-radius: 12px;
-  padding: 5px 10px;
-}
-.search-box input {
-  border: none;
-  outline: none;
-  flex: 1;
-  padding: 5px;
-}
-.search-box i {
-  color: #888;
+.info h1 {
+    font-size: 26px;
+    margin-bottom: 10px;
 }
 
-/* Cart */
-.cart {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  cursor: pointer;
-}
-.cart i {
-  font-size: 18px;
-}
-.cart a{
-  color: white;
-  border-radius: 6px;
-  align-items: center;
-  gap: 5px;
-  background: rgba(255,255,255,0.2);
-  padding: 5px 10px;
+/* TEXT */
+.info p {
+    font-size: 15px;
+    color: #444;
 }
 
-/* Login */
-.login {
-  background: rgba(255,255,255,0.2);
+/* DESCRIPTION */
+.desc {
+    margin: 10px 0;
+    padding: 10px;
+    background: #f9fafb;
+    border-radius: 8px;
+    color: #555;
 }
 
-.section-one{
-    margin-top:20px;
-    margin-left: 290px;
-    width: 1300px;
-    margin-top : 3px;
+/* PRICE */
+.old-price {
+    text-decoration: line-through;
+    color: #888;
 }
 
-
-
-
-
-.section-two{
-  margin-top:20px;
-  display: flex;
-  gap: 20px;
+.price {
+    font-size: 30px;
+    color: #ff3b30;
+    margin: 10px 0;
 }
 
-
-.section-two .list-image .main-image img{
-  width:515px;
-  border: #9e54bb 2px solid;
-  border-radius: 5px;
-  height:515px;
-  object-fit: cover;
+/* BUTTON */
+.buy-btn {
+    width: 260px;
+    height: 50px;
+    background: linear-gradient(135deg, #ff3b30, #ff6b6b);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 10px;
 }
 
-.section-two .list-image .list-image-box{
-  display:flex;
-  justify-content: space-between;
-  width:510px;
-  gap: 5px;
+.buy-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(255,59,48,0.5);
 }
 
-.section-two .list-image .list-image-box .image{ 
-  width: 100px;
-  height:75px;
-  border: 1px solid wheat;
-  border-radius: 5px;
+.buy-btn:active {
+    transform: scale(0.96);
 }
 
-.section-two .list-image .list-image-box .image img{ 
-  width: 100px;
-  height:75px;
-  cursor: pointer;
-  transition: all 0.2s;
-  border-radius: 5px;
-}
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .product-detail {
+        flex-direction: column;
+        text-align: center;
+    }
 
-.section-two .list-image .list-image-box .image:hover img { 
-  cursor: pointer;
-  transform: scale(1.2);
-}
-
-
-.section-two .content-phone {
-  margin-left: 20px;
-  font-size: 18px;
-  line-height: 1.6;
-  display:flex;
-  flex-direction: column;
-  gap:40px;
-}
-
-.section-two .content-phone .content-phone-right {
-  display: flex;
-  flex-direction: column;
-  gap:10px;
-}
-.section-two .content-phone .content-phone-right b{
-  color:rgb(228, 43, 43);
-}
-
-
-.cart-total i{
-  font-size: 30px;
-  color: rgb(29, 223, 71);
-  cursor: pointer;
-}
-
-.cart-total .checkout-btn {
-
-  /* background: linear-gradient(135deg, #a24bc2, #3aa33a); */
-  border: none;
-  color: rgb(14, 1, 1);
-  padding: 10px 20px;
-  border: solid 1px rgb(73, 192, 43);
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 18px;
-  overflow: hidden;
-}
-.cart-total .checkout-btn:hover {
-  background: linear-gradient(135deg, #3aa33a, #ce9b0e);
-  color:rgb(248, 248, 246);
-}
-
-.cart-total i:hover .checkout-btn{
-  background: linear-gradient(135deg, #3aa33a, #ce9b0e);
-  color:rgb(248, 248, 246);
+    .buy-btn {
+        width: 100%;
+    }
 }

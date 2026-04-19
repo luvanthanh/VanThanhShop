@@ -1,77 +1,89 @@
-document.addEventListener("DOMContentLoaded", () => {// token lưu sau khi đăng nhập
+document.addEventListener("DOMContentLoaded", () => {
+
     const token = localStorage.getItem("token");
 
     if (!token) {
-    alert("Vui lòng đăng nhập để xem thông tin!");
-    window.location.href = "LoginClient.html";
-    return;
+        alert("Vui lòng đăng nhập!");
+        window.location.href = "LoginClient.html";
+        return;
     }
 
     fetch(`http://localhost:8888/api/users/myInfo`, {
-    method: "GET",
-    headers: {
-        "Authorization": `Bearer ${token}`, // Gửi token xác thực
-        "Content-Type": "application/json"
-    }
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
+        }
     })
     .then(res => {
-        if (!res.ok){
+        if (!res.ok) {
             window.location.href = "LoginClient.html";
-            throw new Error("Không tìm thấy thông tin người dùng hoặc lỗi xác thực.vui lòng đăng nhập lại.");
+            throw new Error("Lỗi xác thực!");
         }
-        
         return res.json();
     })
     .then(user => {
-        console.log("Dữ liệu trả về từ API:", user);
-        const userDiv = document.getElementById("user_info");
-        userDiv.innerHTML = `
-            <div class="user-detail">
-                <h2>Thông Tin Người Dùng</h2>
-                <table>
-                    <tr>
-                        <td>ID Người Dùng</td>
-                        <td> <input type="text" id="userId" value="${user.data.userId}" readonly ></td>
-                    </tr>
-                    <tr>
-                        <td>Tên Đăng Nhập</td>
-                        <td> <input type="text" id="userName" value="${user.data.userName}"> </td>
-                    </tr>
-                    <tr>
-                        <td>Password</td>
-                        <td> <input type="text" id="userPassword" value="*********"></td>
-                    </tr>
-                    
-                    <tr>
-                        <td>Họ</td>
-                        <td> <input type="text" id="userFirstName" value="${user.data.userFirstName}"></td>
-                    </tr>
-                    <tr>
-                        <td>Tên</td>
-                        <td> <input type="text" id="userLastName" value="${user.data.userLastName}"</td>
-                    </tr>
-                    <tr>
-                        <td>Email</td>
-                        <td><input type="text" id="userEmail" value="${user.data.userEmail}"</td>
-                    </tr>
-                    <tr>
-                        <td>Số Điện Thoại</td>
-                        <td><input type="text" id="userPhoneNumber" value="${user.data.userPhoneNumber}"</td>
-                    </tr>
-                    <tr>
-                        <td>Địa Chỉ</td>
-                        <td><input type="text" id="userAddess" value="${user.data.userAddress}"</td>
-                    </tr>
-                </table>
-            </div>
 
-            <div>
-                <div class="button-update"> <a href="UpdateUser.html"> Cập Nhật Thông Tin Cá Nhân</a></div>
+        const u = user.data;
+        const userDiv = document.getElementById("user_info");
+
+        userDiv.innerHTML = `
+            <div class="profile-card">
+
+                <h2>👤 Thông Tin Cá Nhân</h2>
+
+                <div class="profile-grid">
+
+                    <div class="field">
+                        <label>ID</label>
+                        <input type="text" value="${u.userId}" readonly>
+                    </div>
+
+                    <div class="field">
+                        <label>Tên đăng nhập</label>
+                        <input type="text" value="${u.userName}">
+                    </div>
+
+                    <div class="field">
+                        <label>Họ</label>
+                        <input type="text" value="${u.userFirstName}">
+                    </div>
+
+                    <div class="field">
+                        <label>Tên</label>
+                        <input type="text" value="${u.userLastName}">
+                    </div>
+
+                    <div class="field">
+                        <label>Email</label>
+                        <input type="text" value="${u.userEmail}">
+                    </div>
+
+                    <div class="field">
+                        <label>Số điện thoại</label>
+                        <input type="text" value="${u.userPhoneNumber}">
+                    </div>
+
+                    <div class="field full">
+                        <label>Địa chỉ</label>
+                        <input type="text" value="${u.userAddress}">
+                    </div>
+
+                </div>
+
+                <div class="profile-actions">
+                    <a href="UpdateUser.html" class="btn-update">
+                        ✏️ Cập nhật thông tin
+                    </a>
+                </div>
+
             </div>
         `;
     })
-    .catch(error => {
-        alert("Lỗi khi tải thông tin người dùng: " + error.message);
-        console.error("Lỗi khi load dữ liệu từ API:", error);
+    .catch(err => {
+        console.error(err);
+        document.getElementById("user_info").innerHTML =
+            "<p class='error'>Không tải được thông tin</p>";
     });
+
 });

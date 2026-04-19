@@ -1,14 +1,14 @@
 
 fetch(`http://localhost:8888/api/products`)
     .then(response => response.json())
-    .then(products => {
+    .then(result => {
         const listContainer = document.getElementById("list-products");
         const prevBtn = document.getElementById('prev-page');
         const nextBtn = document.getElementById('next-page');
         const pageNumbers = document.getElementById('page-numbers');
         const productsPerPage = 8;
         let currentPage = 1;
-        let filteredProducts = products.data;
+        let filteredProducts = result.data;
 
         // ⚙️ HÀM HIỂN THỊ SẢN PHẨM
         function renderProducts(page, data = filteredProducts) {
@@ -23,7 +23,7 @@ fetch(`http://localhost:8888/api/products`)
                 productDiv.classList.add("product");
                 productDiv.innerHTML = `
                     <a href="Phone.html?id=${product.productId}">
-                        <img src="${product.productImageUrl}" alt="${product.productName}">
+                        <img src="${product.productImage}" alt="${product.productName}">
                         <div class="product-name">${product.productName}</div>
                         <div class="configuration-product">
                             <span class="configuration-product-button">${product.productScreenSize} inches</span>
@@ -39,7 +39,7 @@ fetch(`http://localhost:8888/api/products`)
                 // nút xem thêm
                 const btn = productDiv.querySelector('.product-phone');
                 btn.addEventListener('click', function() {
-                    window.location.href = `Phone.html?id=${product.data.productId}`;
+                    window.location.href = `Phone.html?id=${product.productId}`;
                 });
                 listContainer.appendChild(productDiv);
             });
@@ -154,8 +154,33 @@ fetch(`http://localhost:8888/api/products`)
                 })
                 .catch(error => console.error("Lỗi khi load dữ liệu từ API:", error));
         }
+        // 🔥 SẮP XẾP GIÁ TĂNG DẦN
+window.sortPriceIncrease = function () {
+    fetch(`http://localhost:8888/api/products/getAndSortByPrice/increase`)
+        .then(response => response.json())
+        .then(data => {
+            filteredProducts = data.data;
+            currentPage = 1;
+            renderProducts(currentPage, filteredProducts);
+        })
+        .catch(error => console.error("Lỗi sort tăng:", error));
+};
+
+
+// 🔥 SẮP XẾP GIÁ GIẢM DẦN
+window.sortPriceDecrease = function () {
+    fetch(`http://localhost:8888/api/products/getAndSortByPrice/decrease`)
+        .then(response => response.json())
+        .then(data => {
+            filteredProducts = data.data;
+            currentPage = 1;
+            renderProducts(currentPage, filteredProducts);
+        })
+        .catch(error => console.error("Lỗi sort giảm:", error));
+};
 
         // 🚀 Khởi tạo lần đầu
         renderProducts(currentPage);
     })
+    
     .catch(error => console.error("Lỗi khi load dữ liệu từ API:", error));
