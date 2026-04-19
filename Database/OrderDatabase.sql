@@ -22,7 +22,6 @@ CREATE TABLE orders (
 );
 
 
-
 create table order_details (
 order_detail_id nvarchar(255) primary key,
 order_id nvarchar(255),
@@ -38,5 +37,3 @@ foreign key (order_id) references orders(order_id)
 
 select * from order_details
 select * from orders
-
-
