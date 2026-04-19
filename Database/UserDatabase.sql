@@ -25,8 +25,6 @@ expiry_time DATETIME
 select * from invalidated_token;
 select * from users;
 
-delete from users 
-       where user_id ="ce527e28-047a-4948-a806-98f89b58a8a4";
 
 
 

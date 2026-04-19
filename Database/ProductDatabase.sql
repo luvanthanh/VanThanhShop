@@ -2,7 +2,7 @@ CREATE DATABASE IF NOT EXISTS ProductDatabase;
 USE ProductDatabase;
 
 -- Tạo bảng
-DROP TABLE IF EXISTS products;
+
 
 CREATE TABLE products (
     product_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -18,10 +18,10 @@ CREATE TABLE products (
     product_warranty INT,
     product_price BIGINT,
     product_formatted_price VARCHAR(50),
-    product_image_url VARCHAR(500),
-    product_image_url1 VARCHAR(500),
-    product_image_url2 VARCHAR(500),
-    product_image_url3 VARCHAR(500)
+    product_image VARCHAR(500),
+    product_image1 VARCHAR(500),
+    product_image2 VARCHAR(500),
+    product_image3 VARCHAR(500)
 );
 
 
@@ -39,10 +39,10 @@ INSERT INTO products (
     product_warranty,
     product_price,
     product_formatted_price,
-    product_image_url,
-    product_image_url1,
-    product_image_url2,
-    product_image_url3
+    product_image,
+    product_image1,
+    product_image2,
+    product_image3
 ) VALUES
 ( 'iphone', 'iPhone 15 Pro Max 512GB', 6.9, 'Titanium', 8, 256, 'Màn hình Super Retina XDR sắc nét, cùng nhiều tính năng công nghệ mới...', '2025-07-24', 100, 24, 33990000, '33.990.000', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone_air.jpg','https://cdnv2.tgdd.vn/mwg-static/tgdd/Products/Images/42/342670/Kit/iphone-air-bbh-638947425000996482.jpg','https://cdnv2.tgdd.vn/mwg-static/tgdd/Products/Images/42/342670/iphone-air-xanh-2-638930804039872382-750x500.jpg','https://cdnv2.tgdd.vn/mwg-static/tgdd/Products/Images/42/342670/iphone-air-xanh-4-638930804050688764-750x500.jpg'),
 ( 'oppo', 'Oppo A5i |Chính Hãng', 6.3, 'purple', 4, 64, 'Hiệu năng mạnh mẽ, camera Zoom 100x, màn hình Dynamic AMOLED 2X...', '2025-05-10', 80, 24, 4990000, '4.990.000', 'https://cdn.tgdd.vn/Products/Images/42/340259/oppo-a5i-purple-thumb-600x600.jpg','https://cdnv2.tgdd.vn/mwg-static/tgdd/Products/Images/42/340259/oppo-a5i-purple-4-638887962865821813-750x500.jpg','https://cdnv2.tgdd.vn/mwg-static/tgdd/Products/Images/42/340259/oppo-a5i-purple-11-638887962914900999-750x500.jpg','https://cdnv2.tgdd.vn/mwg-static/tgdd/Products/Images/42/340259/Kit/oppo-a5i-bbh-638887964509235111.jpg'),
@@ -105,6 +105,4 @@ INSERT INTO products (
 ;
 
 
-
 select * from products;
-Show tables;

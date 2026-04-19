@@ -9,15 +9,18 @@ CREATE TABLE carts (
 );
 
 
-
 CREATE TABLE cart_items
 (
 cart_items_id Int auto_increment primary key,
 cart_id int not null,
 product_id int not null ,
+product_name varchar(200),
+product_image varchar(200),
+product_price bigint,
 quantity int not null,
 foreign key (cart_id) references carts(cart_id)
 );
+
 
 select * from carts;
 select * from cart_items

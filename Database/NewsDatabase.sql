@@ -2,7 +2,7 @@ CREATE DATABASE IF NOT EXISTS NewsDatabase;
 USE NewsDatabase;
 
 -- Tạo bảng
-drop table news;
+
 CREATE TABLE news (
 	news_id int auto_increment primary key,
     news_product_id int ,
