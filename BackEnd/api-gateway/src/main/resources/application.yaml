@@ -66,6 +66,14 @@ spring:
           filters:
             - StripPrefix=1
 
+#            ================== PAYMENT SERVICE ===============
+        - id: payment-service
+          uri: lb://payment-service
+          predicates:
+            - Path=/api/payments/**
+          filters:
+            - StripPrefix=1
+
 eureka:
   client:
     register-with-eureka: true

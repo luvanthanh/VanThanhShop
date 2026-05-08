@@ -1,0 +1,33 @@
+
+server:
+  port: 8085
+
+spring:
+  application:
+    name: payment-service
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/PaymentDatabase
+    username: root
+    password: "@Luvanthanh24072005"
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+
+eureka:
+  instance:
+    prefer-ip-address: true
+
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+vnpay:
+  tmnCode: NQLZ8X4G
+  hashSecret: 473C0JNA5BWG51QDWVQ56TFEG9ZZ1XSF
+  payUrl: https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
+  returnUrl: http://localhost:8888/api/payments/vnpay-return
