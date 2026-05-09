@@ -107,24 +107,24 @@
             <td>Chọn Phương thức thanh toán</td>
             <td>
               <select id="paymentMethod" name="paymentMethod">
-                <option value="receive" >Thanh toán khi nhận hàng</option>
                 <option value="Viettel pay">Thanh toán bằng VN Pay</option>
+                <option value="receive" >Thanh toán khi nhận hàng</option>
               </select>
             </td>
           </tr>
           <tr>
             <td>Tổng tiền cần thanh toán</td>
-            <td id="sum_money_carts"></td>
+            <td class="sum_money_cart" id="sum_money_carts"></td>
           </tr>
           <tr>
-            <td> <div class="order_button" id="order_button" onclick="order()">Đặt hàng </div></td>
+            <td> <div class="order_button" id="order_button" onclick="order()"><i class="fa-solid fa-cart-arrow-down"></i> Đặt hàng </div></td>
             <td></td>
           </tr>
         </tbody>
       </table>
       
       <div class="order-list">
-        <a href="OrderList.html"> Xem đơn đã đặt hàng</a>
+        <a href="OrderList.html"><i class="fa-brands fa-jedi-order"></i> Xem lịch sử đơn hàng</a>
       </div>
     </div>
   </div>

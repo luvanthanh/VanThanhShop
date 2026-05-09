@@ -106,7 +106,7 @@ function renderCart(data) {
       <tr>
         <td colspan="3"></td>
         <td><b>Tổng cộng:</b></td>
-        <td id="sum_money">${tongTien.toLocaleString("vi-VN")} VND</td>
+        <td class= "sum_money" id="sum_money">${tongTien.toLocaleString("vi-VN")} VND</td>
       </tr>
     </tbody>
     </table>
@@ -236,6 +236,8 @@ function deleteCart(index) {
 
 
 // ================= ORDER =================
+
+// ================= ORDER =================
 async function order() {
   const userId = localStorage.getItem("userId");
   const cartId = localStorage.getItem("cartId");
@@ -247,8 +249,13 @@ async function order() {
   const paymentMethod = document.getElementById("paymentMethod").value;
   const shopAddress = document.getElementById("shopAddress").textContent;
 
-  const sumEl = document.getElementById("sum_money") || document.getElementById("sum_money_carts");
-  const totalAmount = sumEl ? Number(sumEl.textContent.replace(/\D/g, "")) : 0;
+  const sumEl =
+    document.getElementById("sum_money") ||
+    document.getElementById("sum_money_carts");
+
+  const totalAmount = sumEl
+    ? Number(sumEl.textContent.replace(/\D/g, ""))
+    : 0;
 
   // ===== VALIDATE =====
   if (!customerName || !deliveryAddress || !customerPhoneNumber) {
@@ -262,6 +269,7 @@ async function order() {
   }
 
   try {
+
     // ===== 1. TẠO ORDER =====
     const orderRes = await fetch("http://localhost:8888/api/orders", {
       method: "POST",
@@ -281,36 +289,80 @@ async function order() {
       }),
     });
 
-    if (!orderRes.ok) throw new Error("Tạo order thất bại");
+    if (!orderRes.ok) {
+      throw new Error("Tạo order thất bại");
+    }
 
     const orderData = await orderRes.json();
+
     console.log("Order created:", orderData);
 
-    // 🔥 LẤY orderId từ response
     const orderId = orderData.data.orderId;
 
     // ===== 2. TẠO ORDER DETAILS =====
-    const detailRes = await fetch(`http://localhost:8888/api/orders/${orderId}/details`, {
-      method: "POST",
-    });
+    const detailRes = await fetch(
+      `http://localhost:8888/api/orders/${orderId}/details`,
+      {
+        method: "POST",
+      }
+    );
 
-    if (!detailRes.ok) throw new Error("Tạo order details thất bại");
+    if (!detailRes.ok) {
+      throw new Error("Tạo order details thất bại");
+    }
 
-    const detailData = await detailRes.json();
-    console.log("Order details created:", detailData);
+    // ===== 3. CHECK PAYMENT METHOD =====
 
-    // ===== SUCCESS =====
-    alert("🎉 Đặt hàng thành công!");
+    // ===== COD =====
+    if (paymentMethod === "receive") {
 
-    // clear UI
-    document.getElementById("list_carts").innerHTML = "<p class='cartMessages'>Giỏ hàng trống!</p>";
-    window.cartData = [];
+      alert("🎉 Đặt hàng thành công!");
 
-    // redirect
-    window.location.href = "OrderList.html";
+      document.getElementById("list_carts").innerHTML =
+        "<p class='cartMessages'>Giỏ hàng trống!</p>";
+
+      window.cartData = [];
+
+      window.location.href = "OrderList.html";
+
+      return;
+    }
+
+    // ===== VNPAY =====
+    if (paymentMethod === "Viettel pay") {
+
+      const paymentRes = await fetch(
+        "http://localhost:8888/api/payments/create",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            orderId: orderId,
+            amount: totalAmount,
+            paymentMethod: "VNPAY"
+          }),
+        }
+      );
+
+      if (!paymentRes.ok) {
+        throw new Error("Tạo thanh toán VNPay thất bại");
+      }
+
+      // API trả về URL
+      const paymentUrl = await paymentRes.text();
+
+      console.log("VNPay URL:", paymentUrl);
+
+      // redirect sang VNPay
+      window.open(paymentUrl, "_blank");
+    }
 
   } catch (err) {
+
     console.error(err);
+
     alert("❌ Đặt hàng thất bại!");
   }
 }

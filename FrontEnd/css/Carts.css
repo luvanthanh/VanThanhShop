@@ -63,14 +63,14 @@ button:hover{
     color: white;
 }
 
-.sum-money{
+.sum_money{
     margin-top: 10px;
+    font-weight: 600;
+    font-size: 18px ;
     padding: 5px;
     color: red;
 }
-.sum-money:hover{
-    margin-top: 10px;
-}
+
 
 
 .add_product{
@@ -126,40 +126,44 @@ button:hover{
 }
 
 .section-one .information_cart table tr td input{
-    border-radius: 10px;
-    border:  1px solid #42b468;
+    border-radius: 8px;
+    border:  2px solid #18c281;
     width: 360px;
     height: 25px;
 }
 
-.order-button{
-    margin-left: 50px;
-}
 
 
 select{
     color: rgb(8, 8, 8);
-    border: 1px solid rgb(77, 224, 77);
-    border-radius: 10px;
-    height: 25px;
+    border: 2px solid rgb(17, 224, 17);
+    border-radius: 8px;
+    padding : 5px;
+    height: 30px;
 }
 
+.sum_money_cart{
+    color: green;
+    font-weight: bold;
+    font-size: 18px;
+}
 .order_button{
     font-weight: 600;
-    border: 3px solid rgb(45, 204, 58);
+    border: 2px solid rgb(45, 204, 58);
     border-radius: 10px;
     width: 150px;
     color: rgb(5, 100, 34);
     background: white;
     cursor: pointer;
     height: 50px;
-    padding : 8px;
-    padding-top: 10px;
-    
+    text-align: center;
+    align-items: center;
+    padding-top: 15px;
+    /* padding : 12px; */
 }
 
 .order_button:hover{
-    border: 5px solid rgb(103, 13, 163);
+    border: 2px solid rgb(103, 13, 163);
     background:#06a563;
     color: rgb(245, 239, 239)
 }

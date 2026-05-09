@@ -7,7 +7,6 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-
 // dùng để gọi đến service khác
 @FeignClient(name = "product-service")
 public interface ProductClient {

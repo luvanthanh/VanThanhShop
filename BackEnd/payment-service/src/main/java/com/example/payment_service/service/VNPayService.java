@@ -3,7 +3,12 @@ package com.example.payment_service.service;
 
 import com.example.payment_service.config.VNPayConfig;
 import com.example.payment_service.dto.request.PaymentRequest;
+import com.example.payment_service.entity.Payment;
+import com.example.payment_service.entity.enum_entity.PaymentMethod;
+import com.example.payment_service.entity.enum_entity.PaymentStatus;
+import com.example.payment_service.repository.PaymentRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.Mac;
@@ -11,11 +16,14 @@ import javax.crypto.spec.SecretKeySpec;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class VNPayService {
+
+    private final PaymentRepository paymentRepository;
 
     private final VNPayConfig vnPayConfig;
 
@@ -25,13 +33,13 @@ public class VNPayService {
         String vnp_Command = "pay";
         String orderType = "other";
 
-        String vnp_TxnRef = String.valueOf(System.currentTimeMillis());
+        String vnp_TxnRef = request.getOrderId();
 
         String vnp_IpAddr = "127.0.0.1";
 
         String vnp_TmnCode = vnPayConfig.getTmnCode();
 
-        long amount = (long) (request.getAmount() * 100);
+        long amount =  request.getAmount() * 100;
 
         Map<String, String> vnp_Params = new HashMap<>();
 
@@ -115,5 +123,55 @@ public class VNPayService {
         }
 
         return hash.toString();
+    }
+
+    public String handlePaymentReturn(
+            Map<String, String> params
+    ) {
+
+        String responseCode =
+                params.get("vnp_ResponseCode");
+
+        String orderId =
+                params.get("vnp_TxnRef");
+
+        // amount VNPay trả về x100
+        Long amount =
+                Long.parseLong(
+                        params.get("vnp_Amount")
+                ) / 100;
+
+        String transactionNo =
+                params.get("vnp_TransactionNo");
+
+        // check thanh toán thành công
+        // chống thanh toán trùng
+        if (paymentRepository.existsByOrderId(orderId)) {
+
+            return "Order already paid";
+        }
+
+        PaymentStatus paymentStatus =
+                "00".equals(responseCode)
+                        ? PaymentStatus.SUCCESS
+                        : PaymentStatus.FAILURE;
+
+        Payment payment = Payment.builder()
+                .orderId(orderId)
+                .paymentAmount(amount)
+                .transactionNo(transactionNo)
+                .paymentMethod(PaymentMethod.VNPAY)
+                .paymentStatus(paymentStatus)
+                .responseCode(responseCode)
+                .transactionDate(LocalDateTime.now())
+                .build();
+
+        paymentRepository.save(payment);
+
+        if ("00".equals(responseCode)) {
+
+            return "Thanh toán thành công";
+        }
+        return "Thanh toán thất bại";
     }
 }

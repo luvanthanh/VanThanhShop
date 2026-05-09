@@ -1,6 +1,8 @@
 package com.example.payment_service.entity;
 
 
+import com.example.payment_service.entity.enum_entity.PaymentMethod;
+import com.example.payment_service.entity.enum_entity.PaymentStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,7 +10,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-
 @Entity
 @Data
 @NoArgsConstructor
@@ -19,15 +20,23 @@ public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String paymentId;
-    private String  orderId;
 
-    private Double paymentAmount;
+    @Column(unique = true)
+    private String orderId;
+
+    private Long paymentAmount;
 
     private String transactionNo;
 
-    private String paymentMethod;
+    @Enumerated(EnumType.STRING)
+    private PaymentMethod paymentMethod;
 
-    private String paymentStatus;
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus paymentStatus;
+
+    private String responseCode;
+
+    private LocalDateTime transactionDate;
 
     private LocalDateTime createdAt;
 
