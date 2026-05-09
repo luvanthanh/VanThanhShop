@@ -156,4 +156,10 @@ public class ProductService {
             return list;
         }
     }
+
+    public List<Product> getProductByName(String name){
+        List<Product> list = productRepository.findByProductNameContainingIgnoreCase(name);
+        return list;
+    }
+
 }

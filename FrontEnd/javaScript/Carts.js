@@ -51,6 +51,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 function renderCart(data) {
   const listCartsDiv = document.getElementById("list_carts");
   listCartsDiv.innerHTML = "";
+  
 
   if (!data || data.length === 0) {
     listCartsDiv.innerHTML = "<p class='cartMessages'>Giỏ hàng trống!</p>";
@@ -76,7 +77,7 @@ function renderCart(data) {
 
   data.forEach((item, index) => {
     const { product, quantity } = item;
-    const price = product.productPrice;
+    const price = Number(product.productPrice);
     const total = price * quantity;
 
     tongTien += total;
@@ -112,21 +113,30 @@ function renderCart(data) {
   `;
 
   listCartsDiv.innerHTML = html;
+  document.getElementById("sum_money_carts").textContent =
+  tongTien.toLocaleString("vi-VN") + " VND";
 }
-
 
 // ================= UPDATE TOTAL =================
 function updateTotalSum() {
   let total = 0;
+
   const totalEls = document.querySelectorAll('[id^="total-"]');
 
   totalEls.forEach((el) => {
     total += Number(el.textContent.replace(/\D/g, ""));
   });
 
+  // tổng ở bảng cart
   const sumEl = document.getElementById("sum_money");
   if (sumEl) {
     sumEl.textContent = total.toLocaleString("vi-VN") + " VND";
+  }
+
+  // tổng ở form bên phải
+  const sumCartEl = document.getElementById("sum_money_carts");
+  if (sumCartEl) {
+    sumCartEl.textContent = total.toLocaleString("vi-VN") + " VND";
   }
 }
 

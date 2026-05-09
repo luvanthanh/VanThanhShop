@@ -52,6 +52,16 @@ public class ProductController {
     }
 
 
+    @GetMapping("/getProductByName/{name}")
+    ApiResponse<List<Product>> getProductByName(@PathVariable String name){
+        var  result = productService.getProductByName(name);
+        return ApiResponse.<List<Product>>builder()
+                .code(1000)
+                .message("get product success")
+                .data(result)
+                .build();
+    }
+
     @PutMapping("/updateProductById/{productId}")
     ApiResponse<Product> updateProduct(@RequestBody ProductUpdateRequest request, @PathVariable("productId") int productId){
         var result =  productService.updateProduct(request,productId);
@@ -85,6 +95,7 @@ public class ProductController {
                 .data(result)
                 .build();
     }
+
 
 
     @GetMapping("/getProductByPrice")
