@@ -3,6 +3,7 @@ package com.example.order_service.service;
 
 import com.example.order_service.client.CartItemClient;
 import com.example.order_service.dto.request.OrderCreateRequest;
+import com.example.order_service.dto.request.OrderUpdateRequest;
 import com.example.order_service.dto.response.ApiResponse;
 import com.example.order_service.dto.response.CartItemResponse;
 import com.example.order_service.dto.response.OrderDetailsResponse;
@@ -117,7 +118,12 @@ public class OrderService {
         return orderDetailsResponses;
     }
 
-
+    public OrderResponse updateOrder (String orderId, OrderUpdateRequest request){
+        Order  order = orderRepository.findByOrderId(orderId)
+                .orElseThrow(() -> new RuntimeException("order not found"));
+        order = orderMapper.toOrderUpdate(request);
+        return orderMapper.toOrderResponse(orderRepository.save(order));
+    }
 
 //    xóa đơn hàng
     public void deleteOrder(String orderId){

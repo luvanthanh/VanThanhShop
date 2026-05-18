@@ -110,6 +110,7 @@ function renderCart(data) {
       </tr>
     </tbody>
     </table>
+    <a href="Home.html" class ="add_product"> Thêm Sản phẩm </a>
   `;
 
   listCartsDiv.innerHTML = html;

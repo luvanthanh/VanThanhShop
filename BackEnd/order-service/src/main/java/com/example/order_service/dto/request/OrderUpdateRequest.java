@@ -1,18 +1,18 @@
 package com.example.order_service.dto.request;
 
-import jakarta.persistence.Column;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-@Getter
-@Setter
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class OrderCreateRequest {
-    private String shopAddress;
 
+public class OrderUpdateRequest {
     private String note;
     private String customerName;
     private String deliveryAddress;
@@ -23,6 +23,4 @@ public class OrderCreateRequest {
     private LocalDateTime createdAt = LocalDateTime.now();
     private String order_status;
 
-    private String userId;
-    private int cartId;
 }

@@ -2,6 +2,7 @@ package com.example.order_service.mapper;
 
 
 import com.example.order_service.dto.request.OrderCreateRequest;
+import com.example.order_service.dto.request.OrderUpdateRequest;
 import com.example.order_service.dto.response.OrderDetailsResponse;
 import com.example.order_service.dto.response.OrderResponse;
 import com.example.order_service.entity.Order;
@@ -21,4 +22,6 @@ public interface OrderMapper {
     @Mapping(source = "orderDetailId", target = "orderDetailId")
     OrderDetailsResponse toOrderDetailsResponse(OrderDetails orderDetails);
 
+    @Mapping(source = "orderId", target = "orderId")
+    Order toOrderUpdate(OrderUpdateRequest request);
 }
