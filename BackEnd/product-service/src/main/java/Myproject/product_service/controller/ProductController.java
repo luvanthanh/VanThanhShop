@@ -19,7 +19,6 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-
     @GetMapping
     ApiResponse<List<Product>> getAllProducts(){
         var result =  productService.getAllProducts();
@@ -29,7 +28,6 @@ public class ProductController {
                 .data(result)
                 .build();
     }
-
 
     @GetMapping("/getProductById/{productId}")
     public ApiResponse<ProductResponse> getProductById(@PathVariable int productId){
