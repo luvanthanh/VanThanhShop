@@ -49,7 +49,6 @@ public class ProductController {
                 .build();
     }
 
-
     @GetMapping("/getProductByName/{name}")
     ApiResponse<List<Product>> getProductByName(@PathVariable String name){
         var  result = productService.getProductByName(name);

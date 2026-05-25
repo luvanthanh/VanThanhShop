@@ -7,12 +7,11 @@ export const options = {
     product_load: {
       executor: 'ramping-vus',
       stages: [
-       { duration: '30s', target: 50 },
-  { duration: '30s', target: 100 },
-  { duration: '30s', target: 150 },
-  { duration: '30s', target: 250 },
-  { duration: '1m', target: 250 },
-  { duration: '30s', target: 0 },
+            // { duration: '10s', target: 500 },
+            // { duration: '10s', target: 1000 },
+            // { duration: '10s', target: 1500 },
+            { duration: '10s', target: 2500 },
+            // { duration: '5s', target: 0 },
       ],
     },
   },
@@ -27,11 +26,18 @@ const PRODUCT_ID = __ENV.PRODUCT_ID || '1';
 
 export default function () {
   const endpoints = [
-    ['/products', 'get all products'],
-    [`/products/getProductById/${PRODUCT_ID}`, 'get product by id'],
-    ['/products/getAndSortByPrice/increase', 'sort price increase'],
-    ['/products/getProductByPrice?min=0&max=100000000', 'filter by price'],
-  ];
+  ['/products', 'get all products'],
+  [`/products/getProductById/${PRODUCT_ID}`, 'get product by id'],
+  ['/products/getProductByName/iPhone', 'get by name'],
+  ['/products/getAndSortByPrice/increase', 'sort price increase'],
+  ['/products/getAndSortByPrice/decrease', 'sort price decrease'],
+  ['/products/getProductByBrand/iphone', 'get by brand'],
+  ['/products/getProductByRam/8', 'get by ram'],
+  ['/products/getProductByRom/128', 'get by rom'],
+  ['/products/getProductByColor/Black', 'get by color'],
+  ['/products/getProductByPrice?min=0&max=100000000', 'filter by price'],
+  ['/products/getProductByScreenSize?min=5&max=7', 'filter screen size'],
+];
 
   for (const [path, name] of endpoints) {
     const res = http.get(`${BASE_URL}${path}`, { tags: { endpoint: name } });
