@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono;
 @Component
 public class AuthenticationFilter implements ReactiveJwtDecoder {
 
-    private final AuthenticationClient authenticationClient;
+    private final AuthenticationClient authenticationClient; // đêr xác thực token, gọi đến user-service để kiểm tra token có hợp lệ hay không
 
     public AuthenticationFilter(AuthenticationClient authenticationClient) {
         this.authenticationClient = authenticationClient;
@@ -22,9 +22,8 @@ public class AuthenticationFilter implements ReactiveJwtDecoder {
     @Override
     public Mono<Jwt> decode(String token) {
         return Mono.fromCallable(() -> {
-            var response = authenticationClient.introspect(
-                    new IntrospectRequest(token)
-            );
+            var response = authenticationClient.introspect(new IntrospectRequest(token));
+            
                     if(response == null || response.getData()== null || !response.getData().isCheckToken()){
                         throw new JwtException("Invalid token");
                     }

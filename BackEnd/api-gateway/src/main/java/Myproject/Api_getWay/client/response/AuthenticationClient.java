@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(name = "user-service")
 public interface AuthenticationClient {
-
     @PostMapping("/users/auth/introspect")
     ApiResponse<IntrospectResponse>  introspect(@RequestBody IntrospectRequest introspectRequest);
 }

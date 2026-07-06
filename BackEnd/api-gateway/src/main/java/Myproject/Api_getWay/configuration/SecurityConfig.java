@@ -4,19 +4,13 @@ import Myproject.Api_getWay.filter.AuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
-import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
-
 import org.springframework.security.web.server.SecurityWebFilterChain;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
 
 import java.util.List;
 
@@ -27,13 +21,36 @@ import java.util.List;
 public class SecurityConfig {
 
     private final String[] PUBLIC_ENDPOINTS = {
-            "/users",
-            "/users/auth/login",
-            "/users/auth/introspect",
-            "/users/auth/logout"
+            "/api/users",
+            "/api/users/auth/login",
+            "/api/users/auth/introspect",
+            "/api/users/auth/logout"
     };
 
-    private final String FRONTEND_URL = "http://127.0.0.1:5501";
+    private final String[] PUBLIC_GET_ENDPOINTS = {
+        "/api/products",
+        "/api/products/getProductById/{productId}",
+        "/api/products/getProductByName/{name}",
+        "/api/products/getProductByBrand/{productBrand}",
+        "/api/products/getProductByPrice",
+        "/api/products/getProductByRam/{productRam}",
+        "/api/products/getProductByRom/{productRom}",
+        "/api/products/getProductByColor/{productColor}",
+        "/api/products/getProductByScreenSize",
+        "/api/products/getAndSortByPrice/increase",
+        "/api/products/getAndSortByPrice/decrease",
+
+        "/api/news",
+        "/api/news/{newsId}",
+
+        "/api/orders",
+        "/api/orders/getOrderByUserId/{userId}",
+        "/api/orders/{orderId}/details",
+
+        "/api/carts/getCartByUserId/{userId}",
+        "/api/carts/{cartId}/cartItems"
+};
+
 
     private final AuthenticationFilter authenticationFilter;
 
@@ -45,28 +62,31 @@ public class SecurityConfig {
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
 
         http
-                .csrf(ServerHttpSecurity.CsrfSpec::disable)
-                .cors(ServerHttpSecurity.CorsSpec::disable)
+                .csrf(ServerHttpSecurity.CsrfSpec::disable) // tắt CSRF vì API dùng JWT, không dùng session/cookie form login
+                .cors(ServerHttpSecurity.CorsSpec::disable) // CORS sẽ được cấu hình riêng ở dưới
 
                 .authorizeExchange(exchange -> exchange
-                        .pathMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
+                        .pathMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll() // các post của public endpoints được phép truy cập mà không cần xác thực
+                        .pathMatchers(HttpMethod.GET, PUBLIC_GET_ENDPOINTS).permitAll() // các get của public endpoints được phép truy cập mà không cần xác thực)
                         .anyExchange().authenticated()
                 )
 
-                .oauth2ResourceServer(oauth2 -> oauth2
-                        .jwt(jwt -> jwt
-                                .jwtDecoder(authenticationFilter)
+                .oauth2ResourceServer(oauth2 -> oauth2 // cấu hình xác thực OAuth2 Resource Server với các api yêu cầu xác thực bằng JWT 
+                        .jwt(jwt -> jwt.jwtDecoder(authenticationFilter) // chuyển hướng sang AuthenticationFilter để xác thực JWT
                         )
-                        .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
+                        .authenticationEntryPoint(new JwtAuthenticationEntryPoint()) // nếu sai thì chuyển sang JwtAuthenticationEntryPoint để trả về lỗi 401
                 );
 
         return http.build();
     }
 
 
-    //     đã tắt cors ở trên
+    
+    /*
+    // đã tắt cors ở trên
+    private final String FRONTEND_URL = "http://127.0.0.1:5501";
     @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
+    public CorsConfigurationSource corsConfigurationSource() {  // cấu hình CORS để cho phép truy cập từ front end
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of(FRONTEND_URL));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
@@ -77,8 +97,7 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-
-
+   */
     // hàm này chỉ dùng đổi đổi scope thành roles
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
