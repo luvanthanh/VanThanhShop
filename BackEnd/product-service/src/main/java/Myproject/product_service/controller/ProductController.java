@@ -17,7 +17,7 @@ import java.util.List;
 public class ProductController {
 
     @Autowired
-    private ProductService productService;
+    ProductService productService;
 
     @GetMapping
     ApiResponse<List<Product>> getAllProducts(){

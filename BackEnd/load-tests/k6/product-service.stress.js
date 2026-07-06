@@ -6,17 +6,18 @@ export const options = {
   scenarios: {
     product_stress: {
       executor: 'ramping-vus',
-      stages: [
-          { duration: '10s', target: 50 },
-          { duration: '10s', target: 100 },
-          { duration: '20s', target: 150 },
-          { duration: '20s', target: 250 },
-          { duration: '10s', target: 0 },
+          stages: [
+          { duration: '20s', target: 2500 },
+          { duration: '20s', target: 2750 },
+          { duration: '20s', target: 3000 },
+          { duration: '20s', target: 3250 },
+          { duration: '20s', target: 3500 },
+          { duration: '20s', target: 0 },
       ],
     },
   },
   thresholds: {
-    http_req_failed: ['rate<0.10'],
-    http_req_duration: ['p(95)<1500'],
+    http_req_failed: ['rate<0.05'],
+    http_req_duration: ['p(95)<800'],
   },
 };

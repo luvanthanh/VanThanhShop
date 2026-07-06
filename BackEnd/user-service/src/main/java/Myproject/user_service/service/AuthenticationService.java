@@ -1,6 +1,6 @@
 package Myproject.user_service.service;
 
-import Myproject.user_service.dto.reponse.ApiResponse;
+
 import Myproject.user_service.dto.reponse.AuthenticationResponse;
 import Myproject.user_service.dto.reponse.IntrospectResponse;
 import Myproject.user_service.dto.request.LoginRequest;
@@ -23,13 +23,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
-
 import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
-import java.util.StringJoiner;
 import java.util.UUID;
 
 @Slf4j
@@ -93,7 +90,7 @@ public class AuthenticationService {
 
     }
 
-    private SignedJWT verifyToken (String token) throws JOSEException, ParseException {
+    public SignedJWT verifyToken (String token) throws JOSEException, ParseException {
         JWSVerifier verifier = new MACVerifier(SINGER_KEY.getBytes()); // tạo 1 JWSVerifier với cái SINGER_KEY
         SignedJWT signedJWT = SignedJWT.parse(token); // để giải mã cái token này ra gồm 3 phần
 
@@ -122,11 +119,12 @@ public class AuthenticationService {
         if(!checkPassword) {
             throw new AppException(ErrorCode.PASSWORRD_INVALID);
         }
+
         else{
             var token = generateToken(user); // sinh token khi đăng nhập với tài khoàn đúng
 
          return AuthenticationResponse.builder()
-                .checkLogin(checkPassword)
+                .checkLogin(true)
                 .token(token)
                 .userId(user.getUserId())
                 .build();
@@ -149,7 +147,7 @@ public class AuthenticationService {
     }
 
 
-//    private String buildScope(User user){                               // đoạn này dùng để liệt kê các roles , thường thì 1 user có nhiều roles mới dùng
+//    private String buildScope(User user){                               đoạn này dùng để liệt kê các roles , thường thì 1 user có nhiều roles mới dùng
 //        StringJoiner stringJoiner =new StringJoiner(" ");
 //        if(!CollectionUtils.isEmpty(user.getRoles()))
 //            user.getRoles().forEach(stringJoiner::add);

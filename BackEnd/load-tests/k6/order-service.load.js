@@ -7,9 +7,9 @@ export const options = {
     order_load: {
       executor: 'ramping-vus',
       stages: [
-        { duration: '30s', target: 20 },
-        { duration: '1m', target: 20 },
-        { duration: '30s', target: 0 },
+        { duration: '15s', target: 400 },
+        // { duration: '1m', target: 20 },
+        // { duration: '30s', target: 0 },
       ],
     },
   },
@@ -20,8 +20,8 @@ export const options = {
 };
 
 const BASE_URL = serviceUrl('ORDER_BASE_URL', 'http://localhost:8888/api');
-const USER_ID = __ENV.ORDER_USER_ID || 'admin';
-const ORDER_ID = __ENV.ORDER_ID || '';
+const USER_ID = __ENV.ORDER_USER_ID || 'c5a6ae2f-b48b-4956-a60e-6fb610edf2ba';
+const ORDER_ID = __ENV.ORDER_ID || 'd2fc6a5c-fb35-4be4-a5e3-d7197021256f';
 
 export default function () {
   const allOrders = http.get(`${BASE_URL}/orders`, {

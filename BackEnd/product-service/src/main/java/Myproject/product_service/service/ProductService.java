@@ -21,6 +21,8 @@ import java.util.List;
 
 public class ProductService {
 
+
+
     @Autowired
     private ProductRepository productRepository;
 
@@ -40,16 +42,17 @@ public class ProductService {
 
 
     public ProductResponse getProductById(int productId){
-        Product product = productRepository.findById(productId);
-        ProductResponse productResponse = new ProductResponse();
-        productResponse = productMapper.toProductResponse(product);
-        return productResponse;
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("product not found"));
+
+        return productMapper.toProductResponse(product);
+
     }
 
 //tạo sản phẩm
     public ProductResponse createProduct(ProductCreationRequest request){
-        Product product = new Product();
-        product = productMapper.toProduct(request);
+
+        Product product = productMapper.toProduct(request);
         product = productRepository.save(product);
 
         return productMapper.toProductResponse(product);
@@ -57,7 +60,8 @@ public class ProductService {
 
 
     public Product updateProduct(ProductUpdateRequest request , int productId){
-        Product product = productRepository.findById(productId);
+        Product product = productRepository.findById(productId)
+                        .orElseThrow(() -> new RuntimeException((" product chưa tồn tại !")));
         productMapper.updateProductFromRequest(request, product);
         return  productRepository.save(product);
     }
@@ -73,7 +77,7 @@ public class ProductService {
     public List<Product> getProductByBrand(String productBrand){
         List<Product> list = productRepository.findByProductBrand(productBrand);
         if (list.isEmpty()){
-            throw new RuntimeException(" don't have any products");
+            throw new RuntimeException("Don't have any products");
         }
         else {
             return list;
@@ -158,8 +162,7 @@ public class ProductService {
     }
 
     public List<Product> getProductByName(String name){
-        List<Product> list = productRepository.findByProductNameContainingIgnoreCase(name);
-        return list;
-    }
+        return  productRepository.findByProductNameContainingIgnoreCase(name);
 
+    }
 }

@@ -2,7 +2,8 @@ import http from 'k6/http';
 import { check, fail } from 'k6';
 
 export const JSON_HEADERS = {
-  'Content-Type': 'application/json',
+  'Content-Type': 'application/json; charset=utf-8',
+  'Accept': 'application/json',
 };
 
 export function serviceUrl(envName, defaultUrl) {
@@ -11,35 +12,56 @@ export function serviceUrl(envName, defaultUrl) {
 
 export function authHeaders(token) {
   return token
-    ? { ...JSON_HEADERS, Authorization: `Bearer ${token}` }
+    ? {
+        ...JSON_HEADERS,
+        Authorization: `Bearer ${token}`,
+      }
     : JSON_HEADERS;
 }
 
 export function checkApiResponse(res, name) {
   return check(res, {
-    [`${name}: status is 2xx/3xx`]: (r) => r.status >= 200 && r.status < 400,
-    [`${name}: no server error`]: (r) => r.status < 500,
+    [`${name}: status < 500`]: (r) => r.status < 500,
+    [`${name}: status OK`]: (r) => r.status >= 200 && r.status < 400,
   });
 }
 
 export function login(baseUrl, username = 'admin', password = 'admin') {
-  const res = http.post(
-    `${baseUrl}/users/auth/login`,
-    JSON.stringify({ userName: username, password }),
-    { headers: JSON_HEADERS, tags: { endpoint: 'login' } },
-  );
-
-  const ok = check(res, {
-    'login success': (r) => r.status === 200 && Boolean(r.json('data.token')),
+  const payload = JSON.stringify({
+    userName: username,
+    password: password,
   });
 
-  if (!ok) {
-    fail(`Cannot login to user-service. Status=${res.status}, body=${res.body}`);
+  const res = http.post(
+    `${baseUrl}/users/auth/login`,
+    payload,
+    {
+      headers: JSON_HEADERS,
+      tags: { endpoint: 'login' },
+    }
+  );
+
+  const isOk = check(res, {
+    'login status is 200': (r) => r.status === 200,
+    'login has token': (r) => {
+      try {
+        return !!r.json('data.token');
+      } catch (e) {
+        return false;
+      }
+    },
+  });
+
+  if (!isOk) {
+    console.error('LOGIN FAILED RESPONSE:', res.status, res.body);
+    fail(`Cannot login. Status=${res.status}, body=${res.body}`);
   }
 
+  const body = res.json('data');
+
   return {
-    token: res.json('data.token'),
-    userId: res.json('data.userId'),
+    token: body.token,
+    userId: body.userId,
   };
 }
 

@@ -7,10 +7,10 @@ export const options = {
     product_load: {
       executor: 'ramping-vus',
       stages: [
-            // { duration: '10s', target: 500 },
-            // { duration: '10s', target: 1000 },
+          { duration: '15s', target: 7000 },
+          // { duration: '10s', target: 1500 },
             // { duration: '10s', target: 1500 },
-            { duration: '10s', target: 2500 },
+            // { duration: '10s', target: 2500 },
             // { duration: '5s', target: 0 },
       ],
     },

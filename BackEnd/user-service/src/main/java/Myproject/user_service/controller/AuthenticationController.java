@@ -21,7 +21,6 @@ public class AuthenticationController {
     @Autowired
     AuthenticationService authenticationService;
 
-
     @PostMapping("/login")
     ApiResponse<AuthenticationResponse> login(@RequestBody LoginRequest loginRequest){
         var result = authenticationService.login(loginRequest);

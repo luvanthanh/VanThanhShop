@@ -7,9 +7,9 @@ export const options = {
     user_load: {
       executor: 'ramping-vus',
       stages: [
-        { duration: '30s', target: 20 },
-        { duration: '1m', target: 20 },
-        { duration: '30s', target: 0 },
+        { duration: '15s', target: 500 }
+        // { duration: '1m', target: 20 },
+        // { duration: '30s', target: 0 },
       ],
     },
   },

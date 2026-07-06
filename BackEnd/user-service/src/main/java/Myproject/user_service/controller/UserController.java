@@ -83,7 +83,6 @@ public class UserController {
     @DeleteMapping("/{userId}")
     ApiResponse<String> deleteUserById(@PathVariable("userId") String userId){
         var authentication = SecurityContextHolder.getContext().getAuthentication();
-
         log.info(" User Name: " + authentication.getName());  // câu lệnh này sẽ in ra ở
 
         authentication.getAuthorities().forEach(grantedAuthority -> log.info("roles: "+grantedAuthority.getAuthority()));
@@ -92,6 +91,4 @@ public class UserController {
         apiResponse.setData(userService.deletedUserById(userId));
         return apiResponse;
     }
-
-
 }

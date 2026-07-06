@@ -361,9 +361,6 @@ async function order() {
     }
 
   } catch (err) {
-
-    console.error(err);
-
     alert("❌ Đặt hàng thất bại!");
   }
 }

@@ -1,0 +1,14 @@
+package Myproject.Api_getWay.dto.response;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class IntrospectResponse {
+    private boolean checkToken;
+}
