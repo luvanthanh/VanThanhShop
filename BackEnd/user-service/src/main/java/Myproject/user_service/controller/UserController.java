@@ -9,6 +9,7 @@ import Myproject.user_service.entity.User;
 import Myproject.user_service.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,6 +36,7 @@ public class UserController {
     }
 
 //    lấy tất cả danh sách user
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ApiResponse<List<User>> getAllUsers(){
         var authentication = SecurityContextHolder.getContext().getAuthentication();

@@ -1,18 +1,25 @@
 package Myproject.Api_getWay.configuration;
 
-import Myproject.Api_getWay.filter.AuthenticationFilter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
-import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
+import org.springframework.security.oauth2.server.resource.authentication.ReactiveJwtAuthenticationConverterAdapter;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 
+import Myproject.Api_getWay.filter.AuthenticationFilter;
+import reactor.core.publisher.Mono;
 
-import java.util.List;
+import org.springframework.core.convert.converter.Converter;
 
 
 @Configuration
@@ -67,12 +74,17 @@ public class SecurityConfig {
 
                 .authorizeExchange(exchange -> exchange
                         .pathMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll() // các post của public endpoints được phép truy cập mà không cần xác thực
-                        .pathMatchers(HttpMethod.GET, PUBLIC_GET_ENDPOINTS).permitAll() // các get của public endpoints được phép truy cập mà không cần xác thực)
+                        .pathMatchers(HttpMethod.GET, PUBLIC_GET_ENDPOINTS).permitAll() // các get của public endpoints được phép truy cập mà không cần xác thực
+                        .pathMatchers(HttpMethod.POST, "/api/products/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.PUT, "/api/products/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.DELETE, "/api/products/**").hasRole("ADMIN")
                         .anyExchange().authenticated()
                 )
 
-                .oauth2ResourceServer(oauth2 -> oauth2 // cấu hình xác thực OAuth2 Resource Server với các api yêu cầu xác thực bằng JWT 
-                        .jwt(jwt -> jwt.jwtDecoder(authenticationFilter) // chuyển hướng sang AuthenticationFilter để xác thực JWT
+                .oauth2ResourceServer(oauth2 -> oauth2 // cấu hình xác thực OAuth2 Resource Server với các api yêu cầu xác thực bằng JWT
+                        .jwt(jwt -> jwt
+                            .jwtDecoder(authenticationFilter)  // chuyển hướng sang AuthenticationFilter để xác thực JWT
+                            .jwtAuthenticationConverter(jwtAuthenticationConverter()) // chuyển đổi scope thành roles để Spring Security có thể sử dụng
                         )
                         .authenticationEntryPoint(new JwtAuthenticationEntryPoint()) // nếu sai thì chuyển sang JwtAuthenticationEntryPoint để trả về lỗi 401
                 );
@@ -81,7 +93,23 @@ public class SecurityConfig {
     }
 
 
-    
+    @Bean
+    public Converter<Jwt, Mono<AbstractAuthenticationToken>> jwtAuthenticationConverter() {
+        JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
+        grantedAuthoritiesConverter.setAuthoritiesClaimName("scope");
+        grantedAuthoritiesConverter.setAuthorityPrefix("ROLE_");
+
+        JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
+        converter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter);
+
+        return new ReactiveJwtAuthenticationConverterAdapter(converter);
+    }
+
+    @Bean
+    public HttpMessageConverters httpMessageConverters(ObjectMapper objectMapper) {
+        return new HttpMessageConverters(new MappingJackson2HttpMessageConverter(objectMapper));
+    }
+
     /*
     // đã tắt cors ở trên
     private final String FRONTEND_URL = "http://127.0.0.1:5501";
@@ -99,13 +127,4 @@ public class SecurityConfig {
     }
    */
     // hàm này chỉ dùng đổi đổi scope thành roles
-    @Bean
-    public JwtAuthenticationConverter jwtAuthenticationConverter() {
-        JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
-        grantedAuthoritiesConverter.setAuthorityPrefix("ROLE_"); // đổi tên scope -> ROLE_
-
-        JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
-        converter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter);
-        return converter;
-    }
 }
