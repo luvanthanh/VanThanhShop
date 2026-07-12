@@ -6,6 +6,7 @@ USE ProductDatabase;
 
 CREATE TABLE products (
     product_id INT AUTO_INCREMENT PRIMARY KEY,
+    
     product_brand VARCHAR(50),
     product_name VARCHAR(255),
     product_screen_size DECIMAL(3,1),
@@ -13,8 +14,6 @@ CREATE TABLE products (
     product_release_date DATE,
     product_stock_quantity INT,
     product_warranty INT,
-    product_price BIGINT,
-    product_formatted_price VARCHAR(50),
     product_image_thubnail VARCHAR(500)
 );
 
@@ -22,7 +21,7 @@ create table images(
 image_id INT AUTO_INCREMENT primary key,
 product_id int,
 image_url varchar(200),
-image_describle varchar(500),
+image_describe varchar(500),
 foreign key(product_id) references products(product_id)
 );
 
@@ -53,8 +52,6 @@ INSERT INTO products (
     product_release_date,
     product_stock_quantity,
     product_warranty,
-    product_price,
-    product_formatted_price,
     product_image_thubnail
 ) VALUES
 ( 'iphone', 'iPhone 15 Pro Max 512GB', 6.9, 'Titanium', 8, 256, 'Màn hình Super Retina XDR sắc nét, cùng nhiều tính năng công nghệ mới...', '2025-07-24', 100, 24, 33990000, '33.990.000', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone_air.jpg','https://cdnv2.tgdd.vn/mwg-static/tgdd/Products/Images/42/342670/Kit/iphone-air-bbh-638947425000996482.jpg','https://cdnv2.tgdd.vn/mwg-static/tgdd/Products/Images/42/342670/iphone-air-xanh-2-638930804039872382-750x500.jpg','https://cdnv2.tgdd.vn/mwg-static/tgdd/Products/Images/42/342670/iphone-air-xanh-4-638930804050688764-750x500.jpg'),

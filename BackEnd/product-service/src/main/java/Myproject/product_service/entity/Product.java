@@ -15,7 +15,6 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 @Entity
-
 @Table(name = "products")
 public class Product {
     @Id
@@ -25,18 +24,10 @@ public class Product {
     private String productBrand;
     private String productName;
     private float productScreenSize;
-    private String productColor;
-    private int productRam;
-    private int productRom;
     private String productDescription;
     private Date productReleaseDate;
     private int productStockQuantity;
     private int productWarranty;
-    private long productPrice;
-    private String productFormattedPrice;
-    private String productImage;
-    private String productImage1;
-    private String productImage2;
-    private String productImage3;
+    private String productImageThubnail;
 
 }
