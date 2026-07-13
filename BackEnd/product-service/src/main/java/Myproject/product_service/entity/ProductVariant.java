@@ -20,9 +20,11 @@ public class ProductVariant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int productVariantId;
 
-    private int ram;
-    private int cpu;
-    private int rom;
-
+    private int productRam;
+    private int productCpu;
+    private int productRom;
+    private double productPrice;
+    private int productStockQuantity;
     private int productId;
+
 }
