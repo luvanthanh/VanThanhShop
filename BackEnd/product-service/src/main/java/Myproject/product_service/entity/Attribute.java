@@ -18,6 +18,7 @@ public class Attribute {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int  AttributeId;
     private int productId;
+
     private String AttributeName;
     private String AttributeValue;
 

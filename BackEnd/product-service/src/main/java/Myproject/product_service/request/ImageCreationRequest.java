@@ -1,0 +1,17 @@
+package Myproject.product_service.request;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class ImageCreationRequest {
+    private int productId;
+
+    private String imageUrl;
+    private String imageDescribe;
+}

@@ -1,0 +1,18 @@
+package Myproject.product_service.request;
+
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+
+public class AttributeCreationRequest {
+    private int productId;
+    private String AttributeName;
+    private String AttributeValue;
+}

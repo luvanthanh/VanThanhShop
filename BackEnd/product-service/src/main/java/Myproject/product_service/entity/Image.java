@@ -18,7 +18,6 @@ public class Image {
     private int imageId;
     private int productId;
 
-    private String imageName;
     private String imageUrl;
     private String imageDescribe ;
 }

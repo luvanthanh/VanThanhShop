@@ -1,11 +1,15 @@
 package Myproject.product_service.service;
 
 
+import Myproject.product_service.Repository.AttributeRepository;
+import Myproject.product_service.Repository.ImageRepository;
 import Myproject.product_service.Repository.ProductRepository;
+import Myproject.product_service.Repository.ProductVariantRepository;
 import Myproject.product_service.entity.Product;
 import Myproject.product_service.mapper.ProductMapper;
 import Myproject.product_service.request.ProductCreationRequest;
 import Myproject.product_service.request.ProductUpdateRequest;
+import Myproject.product_service.request.ProductVariantCreationRequest;
 import Myproject.product_service.response.ProductResponse;
 
 import lombok.Builder;
@@ -21,15 +25,23 @@ import java.util.List;
 
 public class ProductService {
 
-
-
     @Autowired
     private ProductRepository productRepository;
 
     @Autowired
     private ProductMapper productMapper;
 
+    @Autowired
+    private ImageRepository imageRepository;
 
+    @Autowired
+    private AttributeRepository attributeRepository;
+
+    @Autowired
+    private ProductVariantRepository variantRepository;
+
+
+//    lấy toàn bộ sản phẩm
     public  List<Product> getAllProducts(){
         List<Product> products = productRepository.findAll();
         if(products.isEmpty()){

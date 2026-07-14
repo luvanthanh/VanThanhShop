@@ -1,5 +1,6 @@
 package Myproject.product_service.request;
 
+import Myproject.product_service.entity.Image;
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -18,17 +20,14 @@ public class ProductCreationRequest {
     private String productBrand;
     private String productName;
     private float productScreenSize;
-    private String productColor;
-    private int productRam;
-    private int productRom;
     private String productDescription;
     private Date productReleaseDate;
-    private int productStockQuantity;
     private int productWarranty;
-    private long productPrice;
-    private String productFormattedPrice;
-    private String productImage;
-    private String productImage1;
-    private String productImage2;
-    private String productImage3;
+    private String productImageThumbnail;
+
+    private List<ProductVariantCreationRequest> variants;
+
+    private List<ImageCreationRequest> images;
+
+    private List<AttributeCreationRequest> attributes;
 }

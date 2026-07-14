@@ -26,8 +26,7 @@ public class Product {
     private float productScreenSize;
     private String productDescription;
     private Date productReleaseDate;
-    private int productStockQuantity;
     private int productWarranty;
-    private String productImageThubnail;
+    private String productImageThumbnail;
 
 }
