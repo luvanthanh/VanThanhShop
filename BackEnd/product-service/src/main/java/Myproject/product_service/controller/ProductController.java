@@ -19,17 +19,18 @@ public class ProductController {
     @Autowired
     ProductService productService;
 
+//    lấy toàn bộ sản phẩm
     @GetMapping
-    ApiResponse<List<Product>> getAllProducts(){
+    ApiResponse<List<ProductResponse>> getAllProducts(){
         var result =  productService.getAllProducts();
-        return ApiResponse.<List<Product>>builder()
+        return ApiResponse.<List<ProductResponse>>builder()
                 .code(1000)
                 .message(" get all products Success")
                 .data(result)
                 .build();
     }
-
-    @GetMapping("/getProductById/{productId}")
+// lấy sản phẩm theo id
+    @GetMapping("/id/{productId}")
     public ApiResponse<ProductResponse> getProductById(@PathVariable int productId){
         var result = productService.getProductById(productId);
         return ApiResponse.<ProductResponse>builder()
@@ -50,17 +51,19 @@ public class ProductController {
                 .build();
     }
 
-    @GetMapping("/getProductByName/{name}")
-    ApiResponse<List<Product>> getProductByName(@PathVariable String name){
+// tìm kiếm theo tên
+    @GetMapping("/name/{name}")
+    ApiResponse<List<ProductResponse>> getProductByName(@PathVariable String name){
         var  result = productService.getProductByName(name);
-        return ApiResponse.<List<Product>>builder()
+        return ApiResponse.<List<ProductResponse>>builder()
                 .code(1000)
                 .message("get product success")
                 .data(result)
                 .build();
     }
 
-    @PutMapping("/updateProductById/{productId}")
+//    sửa theo id
+    @PutMapping("/update/{productId}")
     ApiResponse<ProductResponse> updateProduct(@RequestBody ProductUpdateRequest request, @PathVariable("productId") int productId){
         var result =  productService.updateProduct(request,productId);
         return ApiResponse.<ProductResponse>builder()
@@ -70,8 +73,8 @@ public class ProductController {
                 .build();
     }
 
-
-    @DeleteMapping("/deleteProductById/{productId}")
+// xóa theo id
+    @DeleteMapping("/id/{productId}")
     ApiResponse<String> deleteProduct(@PathVariable("productId") int productId){
 
         var result = productService.deleteProduct(productId);
@@ -84,7 +87,7 @@ public class ProductController {
 
 
 // Tìm kiếm sản phẩm theo hãng
-    @GetMapping("/getProductByBrand/{productBrand}")
+    @GetMapping("/brand/{productBrand}")
     ApiResponse<List<ProductResponse>> getProductByBrand(@PathVariable("productBrand") String productBrand){
         var result = productService.getProductByBrand(productBrand);
         return ApiResponse.<List<ProductResponse>>builder()
@@ -97,7 +100,7 @@ public class ProductController {
 
 
 //    tìm kiếm theo giá.
-    @GetMapping("/getProductByPrice")
+    @GetMapping("/price")
     ApiResponse<List<ProductResponse>> getProductByPrice(@RequestParam Double min, @RequestParam Double max){
         var result =  productService.getProductByPrice(min,max);
         return ApiResponse.<List<ProductResponse>>builder()
@@ -108,10 +111,10 @@ public class ProductController {
     }
 
 
-    @GetMapping("/getProductByRam/{productRam}")
-    ApiResponse<List<Product>> getProductByRam(@PathVariable("productRam") int productRam){
+    @GetMapping("/ram/{productRam}")
+    ApiResponse<List<ProductResponse>> getProductByRam(@PathVariable("productRam") int productRam){
         var result = productService.getProductByRam(productRam);
-        return ApiResponse.<List<Product>>builder()
+        return ApiResponse.<List<ProductResponse>>builder()
                 .code(1000)
                 .message("get product by Ram  success")
                 .data(result)
@@ -119,20 +122,20 @@ public class ProductController {
     }
 
 
-    @GetMapping("/getProductByRom/{productRom}")
-    ApiResponse<List<Product>> getProductByRom(@PathVariable("productRom") int productRom){
+    @GetMapping("/rom/{productRom}")
+    ApiResponse<List<ProductResponse>> getProductByRom(@PathVariable("productRom") int productRom){
         var result = productService.getProductByRom(productRom);
-        return  ApiResponse.<List<Product>>builder()
+        return  ApiResponse.<List<ProductResponse>>builder()
                 .code(1000)
                 .message("get product by Rom  success")
                 .data(result)
                 .build();
     }
 
-    @GetMapping("/getProductByColor/{productColor}")
-    ApiResponse<List<Product>> getProductByColor(@PathVariable("productColor") String productColor){
+    @GetMapping("/color/{productColor}")
+    ApiResponse<List<ProductResponse>> getProductByColor(@PathVariable("productColor") String productColor){
         var result = productService.getProductByColor(productColor);
-        return ApiResponse.<List<Product>>builder()
+        return ApiResponse.<List<ProductResponse>>builder()
                 .code(1000)
                 .message("get product by color success")
                 .data(result)
@@ -140,31 +143,31 @@ public class ProductController {
     }
 
 
-    @GetMapping("/getProductByScreenSize")
-    ApiResponse<List<Product>> getProductByScreenSize(@RequestParam float min, @RequestParam float max){
+    @GetMapping("/screen")
+    ApiResponse<List<ProductResponse>> getProductByScreenSize(@RequestParam float min, @RequestParam float max){
         var result =  productService.getProductByScreenSize(min,max);
-        return ApiResponse.<List<Product>>builder()
+        return ApiResponse.<List<ProductResponse>>builder()
                 .code(1000)
                 .message("get product by screen size success")
                 .data(result)
                 .build();
     }
 
-    @GetMapping("/getAndSortByPrice/increase")
-    ApiResponse<List<Product>> getAndSortByPrice(){
+    @GetMapping("/sort/price/create")
+    ApiResponse<List<ProductResponse>> getAndSortByPrice(){
         var result =  productService.getAndSortByPrice();
 
-        return ApiResponse.<List<Product>>builder()
+        return ApiResponse.<List<ProductResponse>>builder()
                 .code(1000)
                 .message("get product by price success")
                 .data(result)
                 .build();
     }
 
-    @GetMapping("/getAndSortByPrice/decrease")
-    ApiResponse<List<Product>> getAndSortBYPrice(){
+    @GetMapping("/sort/price/decrease")
+    ApiResponse<List<ProductResponse>> getAndSortBYPrice(){
         var result = productService.getAndSortByPrice2();
-        return ApiResponse.<List<Product>>builder()
+        return ApiResponse.<List<ProductResponse>>builder()
                 .code(1000)
                 .message("get product by price success")
                 .data(result)

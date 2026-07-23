@@ -7,11 +7,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
+@Table(name = "product_variants")
 public class ProductVariant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,9 +26,9 @@ public class ProductVariant {
 
     private int productRam;
     private int productRom;
-    private String color;
+    private String productColor;
 
-    private double productPrice;
+    private BigDecimal productPrice;
     private int productStockQuantity;
 
 }

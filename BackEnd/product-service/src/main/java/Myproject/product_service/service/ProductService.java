@@ -19,7 +19,6 @@ import Myproject.product_service.response.ProductResponse;
 import jakarta.transaction.Transactional;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,29 +29,27 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductService {
 
-    private ProductMapper productMapper;
-    private ImageMapper imageMapper;
-    private AttributeMapper attributeMapper;
-    private ProductVariantMapper productVariantMapper;
+    private final ProductMapper productMapper;
+    private final ImageMapper imageMapper;
+    private final AttributeMapper attributeMapper;
+    private final ProductVariantMapper productVariantMapper;
 
-    private ProductRepository productRepository;
-    private ImageRepository imageRepository;
-    private AttributeRepository attributeRepository;
-    private ProductVariantRepository productVariantRepository;
+    private final ProductRepository productRepository;
+    private final ImageRepository imageRepository;
+    private final AttributeRepository attributeRepository;
+    private final ProductVariantRepository productVariantRepository;
 
 
 //    lấy toàn bộ sản phẩm
-    public  List<Product> getAllProducts(){
+    public  List<ProductResponse> getAllProducts(){
         List<Product> products = productRepository.findAll();
         if(products.isEmpty()){
             throw new RuntimeException(" don't have any products");
         }
-        else{
-            return products;
-        }
+            return productMapper.toProductResponseList(products);
     }
 
-
+// lấy sản phẩm theo id
     public ProductResponse getProductById(int productId){
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("product not found"));
@@ -104,7 +101,7 @@ public class ProductService {
         Product product = productRepository.findById(productId)
                         .orElseThrow(() -> new RuntimeException((" product chưa tồn tại !")));
 
-        productMapper.toUpdateProduct(product,request);
+        productMapper.updateProductFromRequest(request,product);
 
         productRepository.save(product);
         if(request.getImages() != null){
@@ -153,105 +150,91 @@ public class ProductService {
     public List<ProductResponse> getProductByBrand(String productBrand){
         List<Product> listProducts = productRepository.findByProductBrand(productBrand);
 
-        List<ProductResponse> listProductResponse = new ArrayList<>();
-
         if (listProducts.isEmpty()){
             throw new RuntimeException("Don't have any products");
         }
-        else {
-            for(Product product: listProducts){
-                ProductResponse productResponse = productMapper.toProductResponse(product);
-                listProductResponse.add(productResponse);
-            }
-            return listProductResponse;
-        }
+            return productMapper.toProductResponseList(listProducts);
     }
 
-
+// lọc theo giá sản phẩm
     public List<ProductResponse> getProductByPrice(double priceMin, double priceMax){
-
         List<Product> list =productRepository.findByProductPriceBetween(priceMin, priceMax);
-        List<ProductResponse> listProductResponse = new ArrayList<>();
 
         if( list.isEmpty()){
             throw new RuntimeException(" don't have any products");
         }
-        else{
-            for(Product product: list){
-                ProductResponse productResponse = productMapper.toProductResponse(product);
-                listProductResponse.add(productResponse);
-            }
-            return listProductResponse;
-        }
+            return productMapper.toProductResponseList(list);
     }
 
-
-    public List<Product> getProductByRam(int ram){
+// lọc sản phẩm theo ram
+    public List<ProductResponse> getProductByRam(int ram){
         List<Product> list = productRepository.findByProductRam(ram);
+
         if ( list.isEmpty()){
-        throw new RuntimeException(" don't have any products");
+            throw new RuntimeException(" don't have any products");
         }
-        else {
-            return list;
-        }
+            return productMapper.toProductResponseList(list);
     }
 
-    public List<Product> getProductByRom(int rom){
+//    lọc sản phẩm theo rom
+    public List<ProductResponse> getProductByRom(int rom){
         List<Product> list = productRepository.findByProductRom(rom);
+
+
         if(list.isEmpty()){
             throw new RuntimeException(" don't have any products");
         }
-        else{
-            return list;
-        }
+
+            return productMapper.toProductResponseList(list);
     }
 
-
-    public List<Product> getProductByColor(String color){
+// lọc sản phẩm theo màu
+    public List<ProductResponse> getProductByColor(String color){
         List<Product> list = productRepository.findByProductColor(color);
         if(list.isEmpty()){
             throw new RuntimeException(" don't have any products");
         }
-        else{
-            return list;
-        }
+            return  productMapper.toProductResponseList(list);
     }
 
-
-    public List<Product> getProductByScreenSize(float min, float max){
+// lọc sản phẩm theo size màn hình.
+    public List<ProductResponse> getProductByScreenSize(float min, float max){
         List<Product> list = productRepository.findByProductScreenSizeBetween(min, max);
+
         if(list.isEmpty()){
             throw new RuntimeException(" don't have any products");
         }
-        else{
-            return list;
-        }
+            return  productMapper.toProductResponseList(list);
     }
 
 
-
-    public List<Product> getAndSortByPrice(){
-        List<Product> list = productRepository.findAll(Sort.by(Sort.Direction.ASC,"productPrice"));
+// lọc sản phẩm theo giá tăng dần.
+    public List<ProductResponse> getAndSortByPrice(){
+        List<Product> list = productRepository.sortByLowestPriceAsc();
         if(list.isEmpty()){
             throw new RuntimeException(" don't have any products");
         }
-        else{
-            return list;
-        }
+            return  productMapper.toProductResponseList(list);
     }
 
-    public List<Product> getAndSortByPrice2(){
-        List<Product> list = productRepository.findAll(Sort.by(Sort.Direction.DESC,"productPrice"));
+// lọc sản phẩm theo giá giảm dần.
+    public List<ProductResponse> getAndSortByPrice2(){
+        List<Product> list = productRepository.sortByLowestPriceDesc();
+
         if(list.isEmpty()){
             throw new RuntimeException(" don't have any products");
         }
-        else{
-            return list;
-        }
+            return  productMapper.toProductResponseList(list);
     }
 
-    public List<Product> getProductByName(String name){
-        return  productRepository.findByProductNameContainingIgnoreCase(name);
+//     tìm kiếm theo tên.
+    public List<ProductResponse> getProductByName(String name){
+        List<Product> products = productRepository.findByProductNameContainingIgnoreCase(name);
 
+        if(products.isEmpty()){
+            throw new RuntimeException(" don't have any products");
+
+        }
+        return  productMapper.toProductResponseList(products);
     }
 }

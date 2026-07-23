@@ -9,15 +9,19 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface ProductMapper {
     @Mapping(target = "productId" ,ignore = true)
     Product toProduct(ProductCreationRequest request);
-    Product toUpdateProduct(Product product ,ProductUpdateRequest request);
+
     ProductResponse toProductResponse(Product product);
     void updateProductFromRequest(
             ProductUpdateRequest request,
             @MappingTarget Product product
     );
+
+    List<ProductResponse> toProductResponseList(List<Product> products);
 
 }

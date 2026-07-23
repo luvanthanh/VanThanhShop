@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProductVariantRepository extends JpaRepository<ProductVariant,Integer> {
     void deleteByProduct(Product product);
+
+
 }
