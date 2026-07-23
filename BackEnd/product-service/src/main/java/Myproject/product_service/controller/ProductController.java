@@ -39,6 +39,7 @@ public class ProductController {
                 .build();
     }
 
+//    thêm sản phẩm mới
     @PostMapping
     ApiResponse<ProductResponse> addProduct(@RequestBody ProductCreationRequest request){
         var result  = productService.createProduct(request);
@@ -60,9 +61,9 @@ public class ProductController {
     }
 
     @PutMapping("/updateProductById/{productId}")
-    ApiResponse<Product> updateProduct(@RequestBody ProductUpdateRequest request, @PathVariable("productId") int productId){
+    ApiResponse<ProductResponse> updateProduct(@RequestBody ProductUpdateRequest request, @PathVariable("productId") int productId){
         var result =  productService.updateProduct(request,productId);
-        return ApiResponse.<Product>builder()
+        return ApiResponse.<ProductResponse>builder()
                 .code(1000)
                 .message("update product success")
                 .data(result)
@@ -82,11 +83,11 @@ public class ProductController {
     }
 
 
-
+// Tìm kiếm sản phẩm theo hãng
     @GetMapping("/getProductByBrand/{productBrand}")
-    ApiResponse<List<Product>> getProductByBrand(@PathVariable("productBrand") String productBrand){
+    ApiResponse<List<ProductResponse>> getProductByBrand(@PathVariable("productBrand") String productBrand){
         var result = productService.getProductByBrand(productBrand);
-        return ApiResponse.<List<Product>>builder()
+        return ApiResponse.<List<ProductResponse>>builder()
                 .code(1000)
                 .message("get product by brand  success")
                 .data(result)
@@ -95,10 +96,11 @@ public class ProductController {
 
 
 
+//    tìm kiếm theo giá.
     @GetMapping("/getProductByPrice")
-    ApiResponse<List<Product>> getProductByPrice(@RequestParam Double min, @RequestParam Double max){
+    ApiResponse<List<ProductResponse>> getProductByPrice(@RequestParam Double min, @RequestParam Double max){
         var result =  productService.getProductByPrice(min,max);
-        return ApiResponse.<List<Product>>builder()
+        return ApiResponse.<List<ProductResponse>>builder()
                 .code(1000)
                 .message("get product by price  success")
                 .data(result)

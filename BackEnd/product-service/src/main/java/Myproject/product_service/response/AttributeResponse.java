@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AttributeResponse {
-    private int productId;
 
     private String AttributeName;
     private String AttributeValue;

@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @Builder
 
 public class AttributeCreationRequest {
-    private int productId;
     private String AttributeName;
     private String AttributeValue;
 }

@@ -15,5 +15,5 @@ public class ProductVariantResponse {
     private int productRom;
     private double productPrice;
     private int productStockQuantity;
-    private int productId;
+
 }

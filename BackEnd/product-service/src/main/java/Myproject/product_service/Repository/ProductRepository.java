@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface ProductRepository extends JpaRepository<Product,Integer>
 {
    Optional<Product>  findById(int id);
-   List<Product> findByProductBrand(String brand);
+   List<Product> findByProductBrand(String productBrand);
    List<Product> findByProductPriceBetween(Double minPrice, Double maxPrice);
    List<Product> findByProductRam(int ram);
    List<Product>  findByProductRom(int rom);

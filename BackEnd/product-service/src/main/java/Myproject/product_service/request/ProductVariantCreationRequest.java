@@ -11,11 +11,11 @@ import lombok.NoArgsConstructor;
 @Builder
 
 public class ProductVariantCreationRequest {
-    private int productId;
 
     private int productRam;
     private int productRom;
     private String productColor;
+
     private int productStockQuantity;
     private double  productPrice;
 }
