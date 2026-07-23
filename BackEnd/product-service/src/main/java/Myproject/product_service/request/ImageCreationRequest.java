@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class ImageCreationRequest {
-    private int productId;
 
     private String imageUrl;
     private String imageDescribe;

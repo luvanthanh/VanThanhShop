@@ -1,8 +1,6 @@
 package Myproject.product_service.request;
 
-import Myproject.product_service.entity.Image;
-import jakarta.persistence.Column;
-import jakarta.persistence.Id;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

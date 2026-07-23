@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 
 public class ImageResponse {
-    private int productId;
 
     private String imageUrl;
     private String imageDescribe ;

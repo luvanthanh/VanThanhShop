@@ -39,6 +39,7 @@ public class ProductController {
                 .build();
     }
 
+//    thêm sản phẩm
     @PostMapping
     ApiResponse<ProductResponse> addProduct(@RequestBody ProductCreationRequest request){
         var result  = productService.createProduct(request);

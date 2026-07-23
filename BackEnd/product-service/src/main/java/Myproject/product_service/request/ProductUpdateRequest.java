@@ -1,6 +1,6 @@
 package Myproject.product_service.request;
 
-import jakarta.persistence.Id;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

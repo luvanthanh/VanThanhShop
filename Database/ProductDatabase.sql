@@ -20,6 +20,7 @@ CREATE TABLE products (
 create table images(
 image_id INT AUTO_INCREMENT primary key,
 product_id int,
+
 image_url varchar(200),
 image_describe varchar(500),
 FOREIGN KEY(product_id)
@@ -30,8 +31,10 @@ ON DELETE CASCADE
 create table attributes(
 attribute_id int  auto_increment primary key,
 product_id int,
+
 attribute_name varchar(50),
 attribute_value varchar(100),
+
 FOREIGN KEY(product_id)
 REFERENCES products(product_id)
 ON DELETE CASCADE
@@ -1521,7 +1524,7 @@ VALUES
 
 select * from products;
 select * from images;
-select * from atrributes;
+select * from attributes;
 select * from product_variants;
 
 

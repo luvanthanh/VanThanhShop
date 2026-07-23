@@ -5,14 +5,21 @@ import Myproject.product_service.Repository.AttributeRepository;
 import Myproject.product_service.Repository.ImageRepository;
 import Myproject.product_service.Repository.ProductRepository;
 import Myproject.product_service.Repository.ProductVariantRepository;
+import Myproject.product_service.entity.Attribute;
+import Myproject.product_service.entity.Image;
 import Myproject.product_service.entity.Product;
+import Myproject.product_service.entity.ProductVariant;
+import Myproject.product_service.mapper.AttributeMapper;
+import Myproject.product_service.mapper.ImageMapper;
 import Myproject.product_service.mapper.ProductMapper;
-import Myproject.product_service.request.ProductCreationRequest;
-import Myproject.product_service.request.ProductUpdateRequest;
-import Myproject.product_service.request.ProductVariantCreationRequest;
+import Myproject.product_service.mapper.ProductVariantMapper;
+import Myproject.product_service.request.*;
+import Myproject.product_service.response.ImageResponse;
 import Myproject.product_service.response.ProductResponse;
 
+import jakarta.transaction.Transactional;
 import lombok.Builder;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -22,23 +29,18 @@ import java.util.List;
 
 @Service
 @Builder
-
+@RequiredArgsConstructor
 public class ProductService {
 
-    @Autowired
-    private ProductRepository productRepository;
-
-    @Autowired
     private ProductMapper productMapper;
-
-    @Autowired
+    private ImageMapper imageMapper;
+    private AttributeMapper attributeMapper;
+    private ProductVariantMapper productVariantMapper;
+    
+    private ProductRepository productRepository;
     private ImageRepository imageRepository;
-
-    @Autowired
     private AttributeRepository attributeRepository;
-
-    @Autowired
-    private ProductVariantRepository variantRepository;
+    private ProductVariantRepository productVariantRepository;
 
 
 //    lấy toàn bộ sản phẩm
@@ -61,12 +63,39 @@ public class ProductService {
 
     }
 
-//tạo sản phẩm
+//tạo sản phẩm mới
+    @Transactional
     public ProductResponse createProduct(ProductCreationRequest request){
 
         Product product = productMapper.toProduct(request);
         product = productRepository.save(product);
 
+        List<ImageCreationRequest> imageRequests = request.getImages();
+        List<AttributeCreationRequest> attributeRequests = request.getAttributes();
+        List<ProductVariantCreationRequest> variantRequests = request.getVariants();
+
+        if(imageRequests != null){
+            for (ImageCreationRequest imageRequest : imageRequests){
+                Image image = imageMapper.toImage(imageRequest);
+                image.setProduct(product);
+                imageRepository.save(image);
+            }
+        }
+        if(attributeRequests != null){
+            for (AttributeCreationRequest attributeRequest : attributeRequests){
+                Attribute attribute = attributeMapper.toAttribute(attributeRequest);
+                attribute.setProduct(product);
+                attributeRepository.save(attribute);
+            }
+        }
+        if(variantRequests != null){
+            for (ProductVariantCreationRequest variantRequest : variantRequests){
+                ProductVariant productVariant = productVariantMapper.toProductVariant(variantRequest);
+                productVariant.setProduct(product);
+                productVariantRepository.save(productVariant);
+
+            }
+        }
         return productMapper.toProductResponse(product);
     }
 
