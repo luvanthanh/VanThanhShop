@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 @Builder
 
 public class AttributeCreationRequest {
-    private String AttributeName;
-    private String AttributeValue;
+    private String attributeName;
+    private String attributeValue;
 }

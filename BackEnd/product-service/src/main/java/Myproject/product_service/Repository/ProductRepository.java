@@ -16,6 +16,12 @@ public interface ProductRepository extends JpaRepository<Product,Integer>
    Optional<Product> findById(int id);
    List<Product> findByProductBrand(String productBrand);
     List<Product> findByProductScreenSizeBetween(float min, float max);
+    @Query("""
+    SELECT DISTINCT p
+    FROM Product p
+    JOIN p.variants v
+    WHERE v.productPrice BETWEEN :minPrice AND :maxPrice
+    """)
     List<Product> findByProductPriceBetween(Double minPrice, Double maxPrice);
     List<Product> findByProductNameContainingIgnoreCase(String name);
 
@@ -23,7 +29,7 @@ public interface ProductRepository extends JpaRepository<Product,Integer>
             SELECT DISTINCT p
             FROM Product p
             JOIN p.variants v
-            WHERE v.ram = :ram
+            WHERE v.productRam = :ram
             """)
     List<Product> findByProductRam(@Param("ram") int ram);
 
@@ -31,7 +37,7 @@ public interface ProductRepository extends JpaRepository<Product,Integer>
         SELECT DISTINCT p
         FROM Product p
         JOIN p.variants v
-        WHERE v.rom = :rom
+        WHERE v.productRom = :rom
         """)
     List<Product> findByProductRom(@Param("rom") int rom);
 
@@ -39,7 +45,7 @@ public interface ProductRepository extends JpaRepository<Product,Integer>
         SELECT DISTINCT p
         FROM Product p
         JOIN p.variants v
-        WHERE v.color = :color
+        WHERE v.productColor = :color
         """)
     List<Product> findByProductColor(@Param("color") String color);
 
@@ -49,7 +55,7 @@ public interface ProductRepository extends JpaRepository<Product,Integer>
     FROM Product p
     JOIN p.variants v
     GROUP BY p
-    ORDER BY MIN(v.price) ASC
+    ORDER BY MIN(v.productPrice) ASC
     """)
     List<Product> sortByLowestPriceAsc();
 
@@ -58,7 +64,7 @@ public interface ProductRepository extends JpaRepository<Product,Integer>
     FROM Product p
     JOIN p.variants v
     GROUP BY p
-    ORDER BY MIN(v.price) DESC
+    ORDER BY MIN(v.productPrice) DESC
 """)
     List<Product> sortByLowestPriceDesc();
 

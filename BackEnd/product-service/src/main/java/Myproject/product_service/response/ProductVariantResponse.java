@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ProductVariantResponse {
     private int productRam;
-    private int productCpu;
     private int productRom;
     private double productPrice;
     private int productStockQuantity;

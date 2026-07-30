@@ -11,11 +11,14 @@ import org.mapstruct.MappingTarget;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {ImageMapper.class, AttributeMapper.class, ProductVariantMapper.class})
 public interface ProductMapper {
     @Mapping(target = "productId" ,ignore = true)
     Product toProduct(ProductCreationRequest request);
 
+    @Mapping(target = "productVariantResponses", source = "variants")
+    @Mapping(target = "imageResponses", source = "images")
+    @Mapping(target = "attributeResponses", source = "attributes")
     ProductResponse toProductResponse(Product product);
     void updateProductFromRequest(
             ProductUpdateRequest request,

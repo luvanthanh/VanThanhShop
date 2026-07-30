@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AttributeResponse {
 
-    private String AttributeName;
-    private String AttributeValue;
+    private String attributeName;
+    private String attributeValue;
 }

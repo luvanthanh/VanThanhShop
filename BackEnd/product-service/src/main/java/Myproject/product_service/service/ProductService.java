@@ -41,6 +41,7 @@ public class ProductService {
 
 
 //    lấy toàn bộ sản phẩm
+    @Transactional
     public  List<ProductResponse> getAllProducts(){
         List<Product> products = productRepository.findAll();
         if(products.isEmpty()){
