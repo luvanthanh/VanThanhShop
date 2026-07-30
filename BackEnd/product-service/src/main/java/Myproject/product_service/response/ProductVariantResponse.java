@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class ProductVariantResponse {
     private int productRam;
     private int productRom;
+    private String productColor;
     private double productPrice;
     private int productStockQuantity;
 

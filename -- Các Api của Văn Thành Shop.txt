@@ -1,0 +1,15 @@
+-- Các Api của Văn Thành Shop
+GET 	http://localhost:8888/api/products 					: 	đã test ok
+GET 	http://localhost:8888/api/products/id/1 				: 	đã test ok
+POST	http://localhost:8888/api/products 					: 	đã test ok 
+GET 	http://localhost:8888/api/products/name/iphone 				: 	đã test ok
+PUT 	http://localhost:8888/api/products/update/1
+DELETE  http://localhost:8888/api/products/id/1
+GET 	http://localhost:8888/api/products/brand/Samsung 			:	đã test ok
+GET 	http://localhost:8888/api/products/price?min=1000000&max=5000000	:	đã test ok
+GET 	http://localhost:8888/api/products/ram/8 				:	đã test ok
+GET 	http://localhost:8888/api/products/rom/256 				:	đã test ok
+GET 	http://localhost:8888/api/products/color/Black 				: 	đã test ok
+GET 	http://localhost:8888/api/products/screen?min=5.5&max=6.5 		:	đã test ok
+GET 	http://localhost:8888/api/products/sort/price/create			:	đã test ok
+GET 	http://localhost:8888/api/products/sort/price/decrease 			: 	đã test ok

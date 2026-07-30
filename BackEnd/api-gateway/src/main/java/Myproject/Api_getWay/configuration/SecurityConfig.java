@@ -36,16 +36,21 @@ public class SecurityConfig {
 
     private final String[] PUBLIC_GET_ENDPOINTS = {
         "/api/products",
-        "/api/products/getProductById/{productId}",
-        "/api/products/getProductByName/{name}",
-        "/api/products/getProductByBrand/{productBrand}",
-        "/api/products/getProductByPrice",
-        "/api/products/getProductByRam/{productRam}",
-        "/api/products/getProductByRom/{productRom}",
-        "/api/products/getProductByColor/{productColor}",
-        "/api/products/getProductByScreenSize",
-        "/api/products/getAndSortByPrice/increase",
-        "/api/products/getAndSortByPrice/decrease",
+
+        "/api/products",                                  // GET  - getAllProducts
+        "/api/products/id/{productId}",                   // GET  - getProductById
+        "/api/products",                                  // POST - addProduct
+        "/api/products/name/{name}",                      // GET  - getProductByName
+        "/api/products/update/{productId}",               // PUT  - updateProduct
+        "/api/products/id/{productId}",                   // DELETE - deleteProduct
+        "/api/products/brand/{productBrand}",             // GET  - getProductByBrand
+        "/api/products/price",                            // GET  - getProductByPrice
+        "/api/products/ram/{productRam}",                 // GET  - getProductByRam
+        "/api/products/rom/{productRom}",                 // GET  - getProductByRom
+        "/api/products/color/{productColor}",             // GET  - getProductByColor
+        "/api/products/screen",                           // GET  - getProductByScreenSize
+        "/api/products/sort/price/create",                // GET  - getAndSortByPrice (tăng dần)
+        "/api/products/sort/price/decrease",              // GET  - getAndSortBYPrice (giảm dần)
 
         "/api/news",
         "/api/news/{newsId}",

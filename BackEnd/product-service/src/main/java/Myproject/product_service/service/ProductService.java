@@ -51,6 +51,7 @@ public class ProductService {
     }
 
 // lấy sản phẩm theo id
+    @Transactional
     public ProductResponse getProductById(int productId){
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("product not found"));
