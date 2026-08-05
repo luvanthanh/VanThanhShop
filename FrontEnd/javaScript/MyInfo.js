@@ -1,8 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("userId");
 
-    if (!token) {
+    if (!token || !userId) {
         alert("Vui lòng đăng nhập!");
         window.location.href = "LoginClient.html";
         return;
@@ -105,25 +106,54 @@ document.getElementById("editBtn")
 
     document.getElementById("saveBtn").style.display = "inline-block";
 
+    const editBtn = document.getElementById("editBtn");
+    const saveBtn = document.getElementById("saveBtn");
+
+    editBtn.addEventListener("click", () => {
+        document.getElementById("userName").removeAttribute("readonly");
+        document.getElementById("firstName").removeAttribute("readonly");
+        document.getElementById("lastName").removeAttribute("readonly");
+        document.getElementById("email").removeAttribute("readonly");
+        document.getElementById("phone").removeAttribute("readonly");
+        document.getElementById("address").removeAttribute("readonly");
+
+        saveBtn.style.display = "inline-block";
+    });
+
+    saveBtn.addEventListener("click", () => {
+        const updateData = {
+            userName: document.getElementById("userName").value,
+            userFirstName: document.getElementById("firstName").value,
+            userLastName: document.getElementById("lastName").value,
+            userEmail: document.getElementById("email").value,
+            userPhoneNumber: document.getElementById("phone").value,
+            userAddress: document.getElementById("address").value
+        };
+
+        fetch(`http://localhost:8888/api/users/${userId}`, {
+            method: "PUT",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(updateData)
+        })
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error("Cập nhật thất bại");
+                }
+                return res.json();
+            })
+            .then(() => {
+                alert("Cập nhật thành công!");
+                location.reload();
+            })
+            .catch(err => {
+                console.error(err);
+                alert("Có lỗi xảy ra!");
+            });
+    });
 });
-
-
-// nút lưu
-document.getElementById("saveBtn")
-.addEventListener("click", () => {
-
-    const updateData = {
-
-        userName: document.getElementById("userName").value,
-        userFirstName: document.getElementById("firstName").value,
-        userLastName: document.getElementById("lastName").value,
-        userEmail: document.getElementById("email").value,
-        userPhoneNumber: document.getElementById("phone").value,
-        userAddress: document.getElementById("address").value
-
-    };
-
-    fetch("http://localhost:8888/api/users/update", {
 
         method: "PUT",
 

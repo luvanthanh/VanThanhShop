@@ -1,9 +1,12 @@
 package Myproject.Api_getWay.configuration;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
@@ -15,11 +18,14 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.oauth2.server.resource.authentication.ReactiveJwtAuthenticationConverterAdapter;
 import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.reactive.CorsWebFilter;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import Myproject.Api_getWay.filter.AuthenticationFilter;
 import reactor.core.publisher.Mono;
-
-import org.springframework.core.convert.converter.Converter;
 
 
 @Configuration
@@ -95,17 +101,18 @@ public class SecurityConfig {
 
         http
                 .csrf(ServerHttpSecurity.CsrfSpec::disable) // tắt CSRF vì API dùng JWT, không dùng session/cookie form login
-                .cors(ServerHttpSecurity.CorsSpec::disable) // CORS sẽ được cấu hình riêng ở dưới
+                .cors(ServerHttpSecurity.CorsSpec::disable)// CORS sẽ được cấu hình riêng ở dưới
 
                 .authorizeExchange(exchange -> exchange
+                        .pathMatchers(HttpMethod.OPTIONS).permitAll()
                         .pathMatchers(HttpMethod.POST, PUBLIC_POST_ENDPOINTS).permitAll() // các post của public endpoints được phép truy cập mà không cần xác thực
                         .pathMatchers(HttpMethod.GET, PUBLIC_GET_ENDPOINTS).permitAll() // các get của public endpoints được phép truy cập mà không cần xác thực
                         .pathMatchers(HttpMethod.POST,SECURITY_POST_ENDPOINTS).hasRole("ADMIN")
                         .pathMatchers(HttpMethod.PUT, SECURITY_PUT_ENDPOINTS).hasRole("ADMIN")
                         .pathMatchers(HttpMethod.DELETE, SECURITY_DELETE_ENDPOINTS).hasRole("ADMIN")
-                        .anyExchange().authenticated()
                 )
-                    .exceptionHandling(exceptionHandling -> exceptionHandling
+                .cors(cors ->{} )
+                .exceptionHandling(exceptionHandling -> exceptionHandling
                         .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
                         .accessDeniedHandler(new JwtAccessDeniedHandler()))
 
@@ -114,7 +121,8 @@ public class SecurityConfig {
                             .jwtDecoder(authenticationFilter)  // chuyển hướng sang AuthenticationFilter để xác thực JWT
                             .jwtAuthenticationConverter(jwtAuthenticationConverter()) // chuyển đổi scope thành roles để Spring Security có thể sử dụng
                         )
-                        .authenticationEntryPoint(new JwtAuthenticationEntryPoint()) // nếu sai thì chuyển sang JwtAuthenticationEntryPoint để trả về lỗi 401
+                        .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
+                        // nếu sai thì chuyển sang JwtAuthenticationEntryPoint để trả về lỗi 401
                 );
 
         return http.build();
@@ -136,6 +144,21 @@ public class SecurityConfig {
     @Bean
     public HttpMessageConverters httpMessageConverters(ObjectMapper objectMapper) {
         return new HttpMessageConverters(new MappingJackson2HttpMessageConverter(objectMapper));
+    }
+
+    @Bean
+    public CorsWebFilter corsWebFilter() {
+        CorsConfiguration config = new CorsConfiguration();
+        // allow frontend dev origins; adjust for production
+        List<String> allowedOrigins = Arrays.asList("http://127.0.0.1:5501", "http://localhost:5501", "http://localhost:5500", "http://127.0.0.1:5500");
+        config.setAllowedOrigins(allowedOrigins);
+        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowedHeaders(List.of("*"));
+        config.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+        return new CorsWebFilter(source);
     }
 
     /*

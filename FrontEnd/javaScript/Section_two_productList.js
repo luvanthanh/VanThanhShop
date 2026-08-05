@@ -14,6 +14,24 @@ fetch(`http://localhost:8888/api/products`)
         let allProducts = result.data;
         let filteredProducts = result.data;
 
+        const formatCurrency = (value) => {
+            if (value == null || Number.isNaN(Number(value))) return "Liên hệ";
+            return Number(value).toLocaleString('vi-VN');
+        };
+
+        const getPrimaryVariant = (product) => {
+            if (!product || !Array.isArray(product.productVariantResponses)) return {};
+            return product.productVariantResponses[0] || {};
+        };
+
+        const getProductImage = (product) => {
+            if (product.productImageThumbnail) return product.productImageThumbnail;
+            if (product.imageResponses && product.imageResponses.length > 0) {
+                return product.imageResponses[0].imageUrl;
+            }
+            return 'https://via.placeholder.com/300x300?text=No+Image';
+        };
+
         // =========================
         // HIỂN THỊ SẢN PHẨM
         // =========================
@@ -29,6 +47,11 @@ fetch(`http://localhost:8888/api/products`)
             const productsToShow = data.slice(start, end);
 
             productsToShow.forEach(product => {
+                const variant = getPrimaryVariant(product);
+                const imageUrl = getProductImage(product);
+                const ramText = variant.productRam != null ? `${variant.productRam} GB` : 'N/A';
+                const romText = variant.productRom != null ? `${variant.productRom} GB` : 'N/A';
+                const priceText = variant.productPrice != null ? `${formatCurrency(variant.productPrice)}₫` : 'Liên hệ';
 
                 const productDiv = document.createElement("div");
 
@@ -36,7 +59,7 @@ fetch(`http://localhost:8888/api/products`)
 
                 productDiv.innerHTML = `
                     <a href="Phone.html?id=${product.productId}">
-                        <img src="${product.productImage}" alt="${product.productName}">
+                        <img src="${imageUrl}" alt="${product.productName}">
 
                         <div class="product-name">
                             ${product.productName}
@@ -44,24 +67,24 @@ fetch(`http://localhost:8888/api/products`)
 
                         <div class="configuration-product">
                             <span class="configuration-product-button">
-                                ${product.productScreenSize} inches
+                                ${product.productScreenSize ?? '-'} inches
                             </span>
 
                             <span class="configuration-product-button">
-                                ${product.productRam} GB
+                                ${ramText}
                             </span>
 
                             <span class="configuration-product-button">
-                                ${product.productRom} GB
+                                ${romText}
                             </span>
                         </div>
 
                         <div class="describe-product">
-                            ${product.productDescription}
+                            ${product.productDescription || ''}
                         </div>
 
                         <div class="price-product">
-                            ${product.productFormattedPrice}₫
+                            ${priceText}
                         </div>
                     </a>
 
@@ -169,7 +192,7 @@ fetch(`http://localhost:8888/api/products`)
                 return;
             }
 
-            fetch(`http://localhost:8888/api/products/getProductByName/${keyword}`)
+            fetch(`http://localhost:8888/api/products/name/${encodeURIComponent(keyword)}`)
 
                 .then(response => response.json())
 
@@ -220,7 +243,7 @@ fetch(`http://localhost:8888/api/products`)
 
             else {
 
-                fetch(`http://localhost:8888/api/products/getProductByBrand/${brand}`)
+                fetch(`http://localhost:8888/api/products/brand/${encodeURIComponent(brand)}`)
 
                     .then(response => response.json())
 
@@ -245,7 +268,7 @@ fetch(`http://localhost:8888/api/products`)
         // =========================
         window.filterByPrice = function (priceMin, priceMax) {
 
-            fetch(`http://localhost:8888/api/products/getProductByPrice?min=${priceMin}&max=${priceMax}`)
+            fetch(`http://localhost:8888/api/products/price?min=${priceMin}&max=${priceMax}`)
 
                 .then(response => response.json())
 
@@ -269,7 +292,7 @@ fetch(`http://localhost:8888/api/products`)
         // =========================
         window.filterByRam = function (ram) {
 
-            fetch(`http://localhost:8888/api/products/getProductByRam/${ram}`)
+            fetch(`http://localhost:8888/api/products/ram/${ram}`)
 
                 .then(response => response.json())
 
@@ -293,7 +316,7 @@ fetch(`http://localhost:8888/api/products`)
         // =========================
         window.filterByRom = function (rom) {
 
-            fetch(`http://localhost:8888/api/products/getProductByRom/${rom}`)
+            fetch(`http://localhost:8888/api/products/rom/${rom}`)
 
                 .then(response => response.json())
 
@@ -317,7 +340,7 @@ fetch(`http://localhost:8888/api/products`)
         // =========================
         window.filterByScreenSize = function (min, max) {
 
-            fetch(`http://localhost:8888/api/products/getProductByScreenSize?min=${min}&max=${max}`)
+            fetch(`http://localhost:8888/api/products/screen?min=${min}&max=${max}`)
 
                 .then(response => response.json())
 
@@ -341,7 +364,7 @@ fetch(`http://localhost:8888/api/products`)
         // =========================
         window.filterByColor = function (color) {
 
-            fetch(`http://localhost:8888/api/products/getProductByColor/${color}`)
+            fetch(`http://localhost:8888/api/products/color/${encodeURIComponent(color)}`)
 
                 .then(response => response.json())
 
@@ -365,7 +388,7 @@ fetch(`http://localhost:8888/api/products`)
         // =========================
         window.sortPriceIncrease = function () {
 
-            fetch(`http://localhost:8888/api/products/getAndSortByPrice/increase`)
+            fetch(`http://localhost:8888/api/products/sort/price/create`)
 
                 .then(response => response.json())
 
@@ -389,7 +412,7 @@ fetch(`http://localhost:8888/api/products`)
         // =========================
         window.sortPriceDecrease = function () {
 
-            fetch(`http://localhost:8888/api/products/getAndSortByPrice/decrease`)
+            fetch(`http://localhost:8888/api/products/sort/price/decrease`)
 
                 .then(response => response.json())
 

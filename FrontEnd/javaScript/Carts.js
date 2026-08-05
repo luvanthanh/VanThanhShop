@@ -9,12 +9,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   try {
     // 1. Tạo cart (đợi chạy xong)
-    await fetch(`http://localhost:8888/api/carts/createdCartByUserId/${userId}`, {
+    await fetch(`http://localhost:8888/api/carts/user/${userId}`, {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      }
     });
 
     // 2. Lấy cart
-    const cartRes = await fetch(`http://localhost:8888/api/carts/getCartByUserId/${userId}`);
+    const cartRes = await fetch(`http://localhost:8888/api/carts/user/${userId}`);
     const cartJson = await cartRes.json();
 
     const cartId = cartJson.data.cartId;
@@ -23,7 +26,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.log("CartId:", cartId);
 
     // 3. Lấy cartItems
-    const res = await fetch(`http://localhost:8888/api/carts/${cartId}/cartItems`);
+    const res = await fetch(`http://localhost:8888/api/carts/${cartId}/items`);
     const cartItemsJson = await res.json();
 
     const cartItems = cartItemsJson.data; // ⚠️ QUAN TRỌNG
@@ -159,13 +162,13 @@ function plus(index) {
   totalEl.textContent = (quantity * price).toLocaleString("vi-VN") + " VND";
 
   // 🔥 CALL API ĐÚNG FIELD
-  fetch(`http://localhost:8888/api/carts/cartItems/${item.cartItemId}`, {
+  fetch(`http://localhost:8888/api/carts/items/${item.cartItemId}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      productQuantity: quantity, // ✅ FIX Ở ĐÂY
+      productQuantity: quantity,
     }),
   })
     .then(res => res.json())
@@ -199,13 +202,13 @@ function minus(index) {
   totalEl.textContent = (quantity * price).toLocaleString("vi-VN") + " VND";
 
   // 🔥 CALL API ĐÚNG FIELD
-  fetch(`http://localhost:8888/api/carts/cartItems/${item.cartItemId}`, {
+  fetch(`http://localhost:8888/api/carts/items/${item.cartItemId}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      productQuantity: quantity, // ✅ FIX
+      productQuantity: quantity,
     }),
   })
     .then(res => res.json())
@@ -226,7 +229,7 @@ function deleteCart(index) {
 
   if (!confirm(`Xóa "${item.product.productName}"?`)) return;
 
-  fetch(`http://localhost:8888/api/carts/cartItems/${item.cartItemId}`, {
+  fetch(`http://localhost:8888/api/carts/items/${item.cartItemId}`, {
     method: "DELETE",
   }).then(() => {
     document.getElementById(`row-${index}`).remove();
