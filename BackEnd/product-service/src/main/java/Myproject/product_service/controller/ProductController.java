@@ -41,7 +41,7 @@ public class ProductController {
     }
 
 //    thêm sản phẩm mới
-    @PostMapping
+    @PostMapping("/post")
     ApiResponse<ProductResponse> addProduct(@RequestBody ProductCreationRequest request){
         var result  = productService.createProduct(request);
         return ApiResponse.<ProductResponse>builder()
@@ -74,7 +74,7 @@ public class ProductController {
     }
 
 // xóa theo id
-    @DeleteMapping("/id/{productId}")
+    @DeleteMapping("/delete/{productId}")
     ApiResponse<String> deleteProduct(@PathVariable("productId") int productId){
 
         var result = productService.deleteProduct(productId);

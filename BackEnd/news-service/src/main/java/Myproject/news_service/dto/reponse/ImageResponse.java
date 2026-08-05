@@ -1,7 +1,6 @@
-package Myproject.cart_service.dto.request;
+package Myproject.news_service.dto.reponse;
 
 
-import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CartItemUpdateRequest {
-    @Min(1)
-    private int productQuantity;
+public class ImageResponse {
+    private String imageUrl;
+    private String imageDescribe;
 }

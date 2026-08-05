@@ -2,54 +2,70 @@ package Myproject.news_service.service;
 
 import Myproject.news_service.dto.request.NewsCreationRequest;
 import Myproject.news_service.dto.request.NewsUpdateRequest;
+import Myproject.news_service.dto.reponse.NewsResponse;
 import Myproject.news_service.entity.News;
+import Myproject.news_service.exception.NewsNotFoundException;
 import Myproject.news_service.mapper.NewsMapper;
 import Myproject.news_service.repository.NewsRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
+
 
 @Service
 public class NewsService {
-    @Autowired
-     NewsRepository newsRepository;
+    private final NewsRepository newsRepository;
 
-    @Autowired
-     NewsMapper newsMapper;
+    private final NewsMapper newsMapper;
 
-    public List<News> getAllNews(){
+    public NewsService(NewsRepository newsRepository, NewsMapper newsMapper) {
+        this.newsRepository = newsRepository;
+        this.newsMapper = newsMapper;
+    }
+
+    @Transactional
+    public List<NewsResponse> getAllNews(){
+
         List<News> list = newsRepository.findAll();
-        if (list.isEmpty()){
-            throw new RuntimeException(" don't have any news");
+        if(list.isEmpty()){
+            throw new  RuntimeException(" don't have any news");
         }
-        else{
-            return list;
-        }
+
+        return  newsMapper.toNewsResponseList(list);
     }
 
-    public News getNewsById(int id){
-        return newsRepository.getNewsByNewsId(id)
-                .orElseThrow(()-> new RuntimeException(" lỗi khi lấy dữ liệu!"));
+    @Transactional
+    public NewsResponse getNewsById(int id){
+        News news = newsRepository.getNewsByNewsId(id)
+                .orElseThrow(()-> new  NewsNotFoundException(id));
+        return newsMapper.toNewsResponse(news);
 
     }
 
-    public News addNews(NewsCreationRequest request){
-        News news =newsMapper.toNews(request);
+    @Transactional
+    public NewsResponse addNews(NewsCreationRequest request){
+        News news =  newsMapper.toNews(request);
         newsRepository.save(news);
-        return news;
-    }
-
-    public News updateNews(NewsUpdateRequest request, int id){
-         News news = newsRepository.getNewsByNewsId(id)
-                .orElseThrow(()-> new RuntimeException(" lỗi khi lấy dữ liệu!"));
-        news = newsMapper.toNewsUpdate(request);
-        return  newsRepository.save(news);
+        return newsMapper.toNewsResponse(news);
 
     }
 
+    @Transactional
+    public NewsResponse updateNews(NewsUpdateRequest request, int id){
+        News news = newsRepository.getNewsByNewsId(id)
+                .orElseThrow(() -> new NewsNotFoundException(id));
+
+        newsMapper.toNewsFromNewsUpdate(request);
+        newsRepository.save(news);
+        return newsMapper.toNewsResponse(news);
+    }
+
+    @SuppressWarnings("null")
     public String deletedNews(int newsId){
-        newsRepository.deleteByNewsId(newsId);
+        News news = newsRepository.getNewsByNewsId(newsId)
+                .orElseThrow(() -> new NewsNotFoundException(newsId));
+        newsRepository.delete(news);
         return  "news has deleted";
     }
+
 }

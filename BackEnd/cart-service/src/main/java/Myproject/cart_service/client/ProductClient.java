@@ -10,6 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 // dùng để gọi đến service khác
 @FeignClient(name = "product-service")
 public interface ProductClient {
-    @GetMapping("/products/getProductById/{productId}")
+    @GetMapping("/products/id/{productId}")
     ApiResponse<ProductResponse> getProductById(@PathVariable("productId") int productId);
 }

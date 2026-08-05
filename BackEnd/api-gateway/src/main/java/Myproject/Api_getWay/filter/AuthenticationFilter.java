@@ -36,7 +36,6 @@ public class AuthenticationFilter implements ReactiveJwtDecoder {
             if (response == null || response.getData() == null || !response.getData().isCheckToken()) {
                 throw new JwtException("Invalid token");
             }
-
             // Nếu hợp lệ thì parse JWT và lấy claims để Spring Security dùng phân quyền
             return jwtDecoder.decode(token).block();
         }).subscribeOn(Schedulers.boundedElastic());

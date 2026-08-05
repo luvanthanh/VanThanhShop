@@ -27,11 +27,13 @@ import org.springframework.core.convert.converter.Converter;
 @EnableReactiveMethodSecurity
 public class SecurityConfig {
 
-    private final String[] PUBLIC_ENDPOINTS = {
+    private final String[] PUBLIC_POST_ENDPOINTS = {
             "/api/users",
             "/api/users/auth/login",
             "/api/users/auth/introspect",
-            "/api/users/auth/logout"
+            "/api/users/auth/logout",
+            "/api/carts/user/{userId}",
+            "/api/carts/{cartId}/items"
     };
 
     private final String[] PUBLIC_GET_ENDPOINTS = {
@@ -39,10 +41,8 @@ public class SecurityConfig {
 
         "/api/products",                                  // GET  - getAllProducts
         "/api/products/id/{productId}",                   // GET  - getProductById
-        "/api/products",                                  // POST - addProduct
         "/api/products/name/{name}",                      // GET  - getProductByName
         "/api/products/update/{productId}",               // PUT  - updateProduct
-        "/api/products/id/{productId}",                   // DELETE - deleteProduct
         "/api/products/brand/{productBrand}",             // GET  - getProductByBrand
         "/api/products/price",                            // GET  - getProductByPrice
         "/api/products/ram/{productRam}",                 // GET  - getProductByRam
@@ -53,15 +53,35 @@ public class SecurityConfig {
         "/api/products/sort/price/decrease",              // GET  - getAndSortBYPrice (giảm dần)
 
         "/api/news",
-        "/api/news/{newsId}",
+        "/api/news/id/{newsId}",
 
         "/api/orders",
         "/api/orders/getOrderByUserId/{userId}",
         "/api/orders/{orderId}/details",
 
-        "/api/carts/getCartByUserId/{userId}",
-        "/api/carts/{cartId}/cartItems"
+        "/api/carts/user/{userId}",
+        "/api/carts/{cartId}/items"
 };
+
+
+    private final String[] SECURITY_POST_ENDPOINTS={
+            "/api/products/post",
+            "/api/news/post",
+
+    };
+
+    private final String[] SECURITY_DELETE_ENDPOINTS={
+            "/api/products/delete/{productId}",
+            "/api/news/delete/{newsId}",
+
+    };
+
+    private final String[] SECURITY_PUT_ENDPOINTS={
+            "/api/products/update/{productId}",
+            "/api/news/update/{newsId}",
+
+    };
+
 
 
     private final AuthenticationFilter authenticationFilter;
@@ -78,13 +98,16 @@ public class SecurityConfig {
                 .cors(ServerHttpSecurity.CorsSpec::disable) // CORS sẽ được cấu hình riêng ở dưới
 
                 .authorizeExchange(exchange -> exchange
-                        .pathMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll() // các post của public endpoints được phép truy cập mà không cần xác thực
+                        .pathMatchers(HttpMethod.POST, PUBLIC_POST_ENDPOINTS).permitAll() // các post của public endpoints được phép truy cập mà không cần xác thực
                         .pathMatchers(HttpMethod.GET, PUBLIC_GET_ENDPOINTS).permitAll() // các get của public endpoints được phép truy cập mà không cần xác thực
-                        .pathMatchers(HttpMethod.POST, "/api/products/**").hasRole("ADMIN")
-                        .pathMatchers(HttpMethod.PUT, "/api/products/**").hasRole("ADMIN")
-                        .pathMatchers(HttpMethod.DELETE, "/api/products/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.POST,SECURITY_POST_ENDPOINTS).hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.PUT, SECURITY_PUT_ENDPOINTS).hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.DELETE, SECURITY_DELETE_ENDPOINTS).hasRole("ADMIN")
                         .anyExchange().authenticated()
                 )
+                    .exceptionHandling(exceptionHandling -> exceptionHandling
+                        .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
+                        .accessDeniedHandler(new JwtAccessDeniedHandler()))
 
                 .oauth2ResourceServer(oauth2 -> oauth2 // cấu hình xác thực OAuth2 Resource Server với các api yêu cầu xác thực bằng JWT
                         .jwt(jwt -> jwt

@@ -59,7 +59,6 @@ public class SecurityConfig {
         return http.build();
     }
 
-
 //     đã tắt cors ở trên
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
