@@ -99,7 +99,9 @@ public class SecurityConfig {
     };
     private final String[] USER_GET_ENDPOINTS = {
             "/api/orders/{userId}",
-            "/api/orders/{orderId}/details"
+            "/api/orders/{orderId}/details",
+
+            "/api/users/myInfo"
     };
 
 
