@@ -35,6 +35,7 @@ DELETE	 http://localhost:8888/api/carts/items/{cartItemId}			:	đã test thành 
 						orders
 
 
+GET ALL ORDER http://localhost:8888/api/orders                                  : đã test ok
 
 
 

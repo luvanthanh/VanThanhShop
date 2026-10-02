@@ -12,5 +12,4 @@ public class  ApiGetWayApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ApiGetWayApplication.class, args);
 	}
-
 }

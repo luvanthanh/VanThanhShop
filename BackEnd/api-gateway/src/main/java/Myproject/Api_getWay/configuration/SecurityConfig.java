@@ -48,7 +48,6 @@ public class SecurityConfig {
         "/api/products",                                  // GET  - getAllProducts
         "/api/products/id/{productId}",                   // GET  - getProductById
         "/api/products/name/{name}",                      // GET  - getProductByName
-        "/api/products/update/{productId}",               // PUT  - updateProduct
         "/api/products/brand/{productBrand}",             // GET  - getProductByBrand
         "/api/products/price",                            // GET  - getProductByPrice
         "/api/products/ram/{productRam}",                 // GET  - getProductByRam
@@ -69,24 +68,39 @@ public class SecurityConfig {
             "/api/carts/items/{cartItemId}"
     };
 
+
+    private final String[] SECURITY_GET_ENDPOINTS = {
+            "/api/users",
+            "/api/users/{userId}",
+            "/api/orders"
+    };
     private final String[] SECURITY_POST_ENDPOINTS={
             "/api/products/post",
             "/api/news/post",
-
     };
+
+
 
     private final String[] SECURITY_DELETE_ENDPOINTS={
             "/api/products/delete/{productId}",
             "/api/news/delete/{newsId}",
-
+            "/api/orders/{orderId}"
     };
 
     private final String[] SECURITY_PUT_ENDPOINTS={
             "/api/products/update/{productId}",
             "/api/news/update/{newsId}",
-
+            "/api/products/update/{productId}",               // PUT  - updateProduct
+            "/api/orders/{userId}",
     };
 
+    private final String[] USER_POST_ENDPOINTS = {
+            "/api/orders"
+    };
+    private final String[] USER_GET_ENDPOINTS = {
+            "/api/orders/{userId}",
+            "/api/orders/{orderId}/details"
+    };
 
 
     private final AuthenticationFilter authenticationFilter;
@@ -106,10 +120,25 @@ public class SecurityConfig {
                         .pathMatchers(HttpMethod.OPTIONS).permitAll()
                         .pathMatchers(HttpMethod.POST, PUBLIC_POST_ENDPOINTS).permitAll() // các post của public endpoints được phép truy cập mà không cần xác thực
                         .pathMatchers(HttpMethod.GET, PUBLIC_GET_ENDPOINTS).permitAll() // các get của public endpoints được phép truy cập mà không cần xác thực
-                        .pathMatchers(HttpMethod.POST,SECURITY_POST_ENDPOINTS).hasRole("ADMIN")
-                        .pathMatchers(HttpMethod.PUT, SECURITY_PUT_ENDPOINTS).hasRole("ADMIN")
                         .pathMatchers(HttpMethod.DELETE, PUBLIC_DELETE_ENDPOINTS).permitAll()
-                        .pathMatchers(HttpMethod.DELETE, SECURITY_DELETE_ENDPOINTS).hasRole("ADMIN")
+
+                        .pathMatchers(HttpMethod.POST, USER_POST_ENDPOINTS)
+                        .hasAnyRole("USER", "ADMIN")
+
+                        .pathMatchers(HttpMethod.GET, USER_GET_ENDPOINTS)
+                        .hasAnyRole("USER", "ADMIN")
+
+                        .pathMatchers(HttpMethod.POST, SECURITY_POST_ENDPOINTS)
+                        .hasRole("ADMIN")
+
+                        .pathMatchers(HttpMethod.PUT, SECURITY_PUT_ENDPOINTS)
+                        .hasRole("ADMIN")
+
+                        .pathMatchers(HttpMethod.GET, SECURITY_GET_ENDPOINTS)
+                        .hasRole("ADMIN")
+
+                        .pathMatchers(HttpMethod.DELETE, SECURITY_DELETE_ENDPOINTS)
+                        .hasRole("ADMIN")
                 )
                 .cors(cors ->{} )
                 .exceptionHandling(exceptionHandling -> exceptionHandling

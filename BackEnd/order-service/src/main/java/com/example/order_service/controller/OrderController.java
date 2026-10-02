@@ -36,12 +36,12 @@ public class OrderController {
                 .build();
     }
 
-    @GetMapping("getOrderByUserId/{userId}")
+    @GetMapping("/{userId}")
     public ApiResponse<List<OrderResponse>> getOrderByUserId(@PathVariable("userId") String userId){
         var result =  orderService.getOrderByUserId(userId);
         return ApiResponse.<List<OrderResponse>>builder()
                 .code(1000)
-                .message("get orders successful ")
+                .message("get orders of" + userId+ " successful ")
                 .data(result)
                 .build();
     }
