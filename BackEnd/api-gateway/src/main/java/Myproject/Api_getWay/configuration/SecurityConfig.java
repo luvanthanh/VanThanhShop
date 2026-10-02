@@ -39,7 +39,7 @@ public class SecurityConfig {
             "/api/users/auth/introspect",
             "/api/users/auth/logout",
             "/api/carts/user/{userId}",
-            "/api/carts/{cartId}/items"
+            "/api/carts/{cartId}/items",
     };
 
     private final String[] PUBLIC_GET_ENDPOINTS = {
@@ -60,10 +60,6 @@ public class SecurityConfig {
 
         "/api/news",
         "/api/news/id/{newsId}",
-
-        "/api/orders",
-        "/api/orders/getOrderByUserId/{userId}",
-        "/api/orders/{orderId}/details",
 
         "/api/carts/user/{userId}",
         "/api/carts/{cartId}/items"
