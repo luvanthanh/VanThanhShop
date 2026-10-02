@@ -1,6 +1,0 @@
-package com.example.payment_service.entity.enum_entity;
-
-public enum PaymentMethod {
-    VNPAY,
-    CASH
-}

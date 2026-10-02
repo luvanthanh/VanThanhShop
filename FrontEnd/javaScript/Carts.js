@@ -325,55 +325,17 @@ async function order() {
       throw new Error("Tạo order details thất bại");
     }
 
-    // ===== 3. CHECK PAYMENT METHOD =====
+    alert("🎉 Đặt hàng thành công! Bạn sẽ thanh toán khi nhận hàng.");
 
-    // ===== COD =====
-    if (paymentMethod === "receive") {
+    document.getElementById("list_carts").innerHTML =
+      "<p class='cartMessages'>Giỏ hàng trống!</p>";
+    document.getElementById("sum_money_carts").textContent = "0 VND";
+    window.cartData = [];
 
-      alert("🎉 Đặt hàng thành công!");
-
-      document.getElementById("list_carts").innerHTML =
-        "<p class='cartMessages'>Giỏ hàng trống!</p>";
-
-      window.cartData = [];
-
-      window.location.href = "OrderList.html";
-
-      return;
-    }
-
-    // ===== VNPAY =====
-    if (paymentMethod === "Viettel pay") {
-
-      const paymentRes = await fetch(
-        "http://localhost:8888/api/payments/create",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            orderId: orderId,
-            amount: totalAmount,
-            paymentMethod: "VNPAY"
-          }),
-        }
-      );
-
-      if (!paymentRes.ok) {
-        throw new Error("Tạo thanh toán VNPay thất bại");
-      }
-
-      // API trả về URL
-      const paymentUrl = await paymentRes.text();
-
-      console.log("VNPay URL:", paymentUrl);
-
-      // redirect sang VNPay
-      window.open(paymentUrl, "_blank");
-    }
+    window.location.href = "OrderList.html";
 
   } catch (err) {
+    console.error("Lỗi đặt hàng:", err);
     alert("❌ Đặt hàng thất bại!");
   }
 }
