@@ -69,6 +69,9 @@ public class SecurityConfig {
         "/api/carts/{cartId}/items"
 };
 
+    private final String[] PUBLIC_DELETE_ENDPOINTS = {
+            "/api/carts/items/{cartItemId}"
+    };
 
     private final String[] SECURITY_POST_ENDPOINTS={
             "/api/products/post",
@@ -109,6 +112,7 @@ public class SecurityConfig {
                         .pathMatchers(HttpMethod.GET, PUBLIC_GET_ENDPOINTS).permitAll() // các get của public endpoints được phép truy cập mà không cần xác thực
                         .pathMatchers(HttpMethod.POST,SECURITY_POST_ENDPOINTS).hasRole("ADMIN")
                         .pathMatchers(HttpMethod.PUT, SECURITY_PUT_ENDPOINTS).hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.DELETE, PUBLIC_DELETE_ENDPOINTS).permitAll()
                         .pathMatchers(HttpMethod.DELETE, SECURITY_DELETE_ENDPOINTS).hasRole("ADMIN")
                 )
                 .cors(cors ->{} )

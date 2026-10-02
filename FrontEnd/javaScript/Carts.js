@@ -58,6 +58,7 @@ function renderCart(data) {
 
   if (!data || data.length === 0) {
     listCartsDiv.innerHTML = "<p class='cartMessages'>Giỏ hàng trống!</p>";
+    document.getElementById("sum_money_carts").textContent = "0 VND";
     return;
   }
 
@@ -223,19 +224,28 @@ function minus(index) {
 }
 
 // ================= DELETE =================
-function deleteCart(index) {
+async function deleteCart(index) {
   const item = window.cartData[index];
   if (!item) return;
 
   if (!confirm(`Xóa "${item.product.productName}"?`)) return;
 
-  fetch(`http://localhost:8888/api/carts/items/${item.cartItemId}`, {
-    method: "DELETE",
-  }).then(() => {
-    document.getElementById(`row-${index}`).remove();
+  try {
+    const response = await fetch(
+      `http://localhost:8888/api/carts/items/${item.cartItemId}`,
+      { method: "DELETE" }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Xóa sản phẩm thất bại (HTTP ${response.status})`);
+    }
+
     window.cartData.splice(index, 1);
-    updateTotalSum();
-  });
+    renderCart(window.cartData);
+  } catch (err) {
+    console.error("Lỗi xóa sản phẩm khỏi giỏ hàng:", err);
+    alert("Không thể xóa sản phẩm khỏi giỏ hàng. Vui lòng thử lại.");
+  }
 }
 
 

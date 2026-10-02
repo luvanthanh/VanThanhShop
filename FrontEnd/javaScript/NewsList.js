@@ -16,6 +16,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
+            const getThumbnail = newsItem => {
+                return newsItem.newsImageThumbnail ||
+                    (newsItem.imageResponses && newsItem.imageResponses.length > 0 ? newsItem.imageResponses[0].imageUrl : null) ||
+                    'default.jpg';
+            };
+
             let html = "";
 
             newsList.data.forEach(news => {
@@ -36,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         <div class="news-item">
 
                             <div class="news-img">
-                                <img src="${news.newsImage || 'default.jpg'}">
+                                <img src="${getThumbnail(news)}" alt="${news.newsTitle || 'Tin tức'}">
                             </div>
 
                             <div class="news-content">
