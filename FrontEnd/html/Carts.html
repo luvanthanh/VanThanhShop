@@ -1,17 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Giỏ Hàng</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
   <link rel="stylesheet" href="../css/Home_header.css">
-  <script src="../javaScript/Home.js"></script>
-  <script src="../javaScript/Carts.js"></script>
-
   <link rel="stylesheet" href="../css/Carts.css">
   <link rel="stylesheet" href="../css/Home_footer.css">
   <link rel="stylesheet" href="../css/Home_section_three.css">
+  <script src="../javaScript/Home.js" defer></script>
+  <script src="../javaScript/Carts.js" defer></script>
 
 </head>
 <body>
@@ -72,61 +71,77 @@
     </div>
   </header>
 
-  <div class="section-one">
-    <div class="list-carts" id="list_carts"><!-- Các sản phẩm trong giỏ hàng sẽ được hiển thị ở đây --></div>
-    <div class = "information_cart">
-      <table>
-        <thead>
-          <tr>
-            <th></th>
-            <th>Vui lòng điền thông tin để nhận hàng</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td> Địa chỉ Văn Thành SHOPPING</td>
-            <td id="shopAddress"> Thôn 6 Vành Xã Bảo Yên Lào Cai</td>
-          </tr>
-          <tr>
-            <td>Họ Và Tên Người Nhận</td>
-            <td><input type="text" id="customerName"></td>
-          </tr>
-          <tr>
-            <td>Địa Chỉ nhận Hàng</td>
-            <td><input type="text" id="deliveryAddress"></td>
-          </tr>
-          <tr>
-            <td>Số Điện thoại người nhận</td>
-            <td><input type="text" id="customerPhoneNumber" ></td>
-          </tr>
-          <tr>
-            <td>Ghi chú</td>
-            <td><input type="text" id="note"></td>
-          </tr>
-          <tr>
-            <td>Chọn Phương thức thanh toán</td>
-            <td>
-              <select id="paymentMethod" name="paymentMethod">
-                <option value="COD">Thanh toán khi nhận hàng (COD)</option>
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td>Tổng tiền cần thanh toán</td>
-            <td class="sum_money_cart" id="sum_money_carts"></td>
-          </tr>
-          <tr>
-            <td> <div class="order_button" id="order_button" onclick="order()"><i class="fa-solid fa-cart-arrow-down"></i> Đặt hàng </div></td>
-            <td></td>
-          </tr>
-        </tbody>
-      </table>
-      
-      <div class="order-list">
-        <a href="OrderList.html"><i class="fa-brands fa-jedi-order"></i> Xem lịch sử đơn hàng</a>
+  <main class="cart-page">
+    <div class="cart-page-heading">
+      <div>
+        <p class="cart-eyebrow">VĂN THÀNH SHOP</p>
+        <h1>Giỏ hàng của bạn</h1>
+        <p class="cart-intro">Kiểm tra sản phẩm và điền thông tin nhận hàng để hoàn tất đơn.</p>
       </div>
+      <a class="continue-shopping" href="Home.html">
+        <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+        Tiếp tục mua sắm
+      </a>
     </div>
-  </div>
+
+    <div class="cart-layout">
+      <section class="list-carts cart-card" id="list_carts" aria-label="Sản phẩm trong giỏ hàng">
+        <!-- Các sản phẩm trong giỏ hàng sẽ được hiển thị ở đây -->
+      </section>
+
+      <section class="information_cart cart-card" aria-labelledby="checkout-title">
+        <div class="checkout-heading">
+          <span class="checkout-icon"><i class="fa-solid fa-truck-fast" aria-hidden="true"></i></span>
+          <div>
+            <h2 id="checkout-title">Thông tin nhận hàng</h2>
+            <p>Vui lòng nhập chính xác thông tin liên hệ.</p>
+          </div>
+        </div>
+
+        <div class="shop-address">
+          <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+          <div>
+            <span>Địa chỉ cửa hàng</span>
+            <strong id="shopAddress">Thôn 6 Vành, xã Bảo Yên, Lào Cai</strong>
+          </div>
+        </div>
+
+        <div class="checkout-fields">
+          <label for="customerName">Họ và tên người nhận <span>*</span></label>
+          <input type="text" id="customerName" name="customerName" autocomplete="name" placeholder="Ví dụ: Nguyễn Văn A">
+
+          <label for="deliveryAddress">Địa chỉ nhận hàng <span>*</span></label>
+          <input type="text" id="deliveryAddress" name="deliveryAddress" autocomplete="street-address" placeholder="Số nhà, đường, phường/xã, tỉnh/thành">
+
+          <label for="customerPhoneNumber">Số điện thoại <span>*</span></label>
+          <input type="tel" id="customerPhoneNumber" name="customerPhoneNumber" autocomplete="tel" placeholder="Nhập số điện thoại nhận hàng">
+
+          <label for="note">Ghi chú <span class="optional-label">(không bắt buộc)</span></label>
+          <input type="text" id="note" name="note" placeholder="Lưu ý khi giao hàng">
+
+          <label for="paymentMethod">Phương thức thanh toán</label>
+          <select id="paymentMethod" name="paymentMethod">
+            <option value="COD">Thanh toán khi nhận hàng (COD)</option>
+          </select>
+        </div>
+
+        <div class="checkout-total">
+          <span>Tổng thanh toán</span>
+          <strong class="sum_money_cart" id="sum_money_carts">0 VND</strong>
+        </div>
+
+        <button class="order_button" id="order_button" type="button" onclick="order()">
+          <i class="fa-solid fa-lock" aria-hidden="true"></i>
+          Đặt hàng
+        </button>
+
+        <a class="order-list" href="OrderList.html">
+          <i class="fa-solid fa-receipt" aria-hidden="true"></i>
+          Xem lịch sử đơn hàng
+        </a>
+      </section>
+    </div>
+  </main>
 
 
 

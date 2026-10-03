@@ -54,10 +54,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 function renderCart(data) {
   const listCartsDiv = document.getElementById("list_carts");
   listCartsDiv.innerHTML = "";
-  
 
   if (!data || data.length === 0) {
-    listCartsDiv.innerHTML = "<p class='cartMessages'>Giỏ hàng trống!</p>";
+    listCartsDiv.innerHTML = `
+      <div class="cartMessages">
+        <i class="fa-solid fa-basket-shopping" aria-hidden="true"></i>
+        <div>Giỏ hàng của bạn đang trống</div>
+        <span>Hãy khám phá sản phẩm và thêm món đồ yêu thích nhé.</span>
+        <a class="add_product" href="Home.html">
+          <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+          Tiếp tục mua sắm
+        </a>
+      </div>
+    `;
     document.getElementById("sum_money_carts").textContent = "0 VND";
     return;
   }
@@ -65,61 +74,87 @@ function renderCart(data) {
   let tongTien = 0;
 
   let html = `
-    <table>
-      <thead>
-        <tr>
-          <th>Hình ảnh</th>
-          <th>Tên sản phẩm</th>
-          <th>Giá</th>
-          <th>Số lượng</th>
-          <th>Tổng tiền</th>
-          <th>Xóa</th>
-        </tr>
-      </thead>
-      <tbody>
+    <div class="cart-table-wrap">
+      <table class="cart-products-table">
+        <thead>
+          <tr>
+            <th scope="col">Sản phẩm</th>
+            <th scope="col">Giá</th>
+            <th scope="col">Số lượng</th>
+            <th scope="col">Thành tiền</th>
+            <th scope="col"><span class="visually-hidden">Xóa sản phẩm</span></th>
+          </tr>
+        </thead>
+        <tbody>
   `;
 
   data.forEach((item, index) => {
     const { product, quantity } = item;
     const price = Number(product.productPrice);
     const total = price * quantity;
+    const productName = escapeHTML(product.productName);
+    const productImage = escapeHTML(product.productImage);
 
     tongTien += total;
 
     html += `
       <tr id="row-${index}">
-        <td><img src="${product.productImage}" width="80"></td>
-        <td>${product.productName}</td>
-        <td id="price-${index}" data-price="${price}">
+        <td class="cart-product-name">
+          <div class="cart-product">
+            <img class="cart-product-image" src="${productImage}" alt="${productName}">
+            <span>${productName}</span>
+          </div>
+        </td>
+        <td class="cart-product-price" id="price-${index}" data-price="${price}">
           ${price.toLocaleString("vi-VN")} VND
         </td>
-        <td>
-          <button onclick="minus(${index})">-</button>
+        <td class="cart-quantity-cell">
+          <div class="quantity-control" aria-label="Số lượng sản phẩm">
+          <button type="button" onclick="minus(${index})" aria-label="Giảm số lượng ${productName}">−</button>
           <span id="quantity-${index}">${quantity}</span>
-          <button onclick="plus(${index})">+</button>
+          <button type="button" onclick="plus(${index})" aria-label="Tăng số lượng ${productName}">+</button>
+          </div>
         </td>
-        <td id="total-${index}">
+        <td class="cart-line-total" id="total-${index}">
           ${total.toLocaleString("vi-VN")} VND
         </td>
-        <td><button onclick="deleteCart(${index})">Xóa</button></td>
+        <td>
+          <button class="remove-item" type="button" onclick="deleteCart(${index})" aria-label="Xóa ${productName}">
+            <i class="fa-regular fa-trash-can" aria-hidden="true"></i>
+          </button>
+        </td>
       </tr>
     `;
   });
 
   html += `
-      <tr>
-        <td colspan="3"></td>
-        <td><b>Tổng cộng:</b></td>
-        <td class= "sum_money" id="sum_money">${tongTien.toLocaleString("vi-VN")} VND</td>
-      </tr>
-    </tbody>
-    </table>
-    <a href="Home.html" class ="add_product"> Thêm Sản phẩm </a>
+        <tr class="cart-summary-row">
+          <td colspan="3">Tổng cộng</td>
+          <td class="sum_money" id="sum_money">${tongTien.toLocaleString("vi-VN")} VND</td>
+          <td></td>
+        </tr>
+      </tbody>
+      </table>
+    </div>
+    <a href="Home.html" class="add_product">
+      <i class="fa-solid fa-plus" aria-hidden="true"></i>
+      Thêm sản phẩm khác
+    </a>
   `;
 
   listCartsDiv.innerHTML = html;
   document.getElementById("sum_money_carts").textContent =
   tongTien.toLocaleString("vi-VN") + " VND";
+}
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, (character) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;",
+  })[character]);
 }
 
 // ================= UPDATE TOTAL =================
@@ -161,6 +196,7 @@ function plus(index) {
   // update UI trước
   quantityEl.textContent = quantity;
   totalEl.textContent = (quantity * price).toLocaleString("vi-VN") + " VND";
+  item.quantity = quantity;
 
   // 🔥 CALL API ĐÚNG FIELD
   fetch(`http://localhost:8888/api/carts/items/${item.cartItemId}`, {
@@ -201,6 +237,7 @@ function minus(index) {
   // update UI
   quantityEl.textContent = quantity;
   totalEl.textContent = (quantity * price).toLocaleString("vi-VN") + " VND";
+  item.quantity = quantity;
 
   // 🔥 CALL API ĐÚNG FIELD
   fetch(`http://localhost:8888/api/carts/items/${item.cartItemId}`, {
@@ -328,7 +365,11 @@ async function order() {
     alert("🎉 Đặt hàng thành công! Bạn sẽ thanh toán khi nhận hàng.");
 
     document.getElementById("list_carts").innerHTML =
-      "<p class='cartMessages'>Giỏ hàng trống!</p>";
+      `<div class="cartMessages">
+        <i class="fa-solid fa-basket-shopping" aria-hidden="true"></i>
+        <div>Giỏ hàng của bạn đang trống</div>
+        <span>Hãy khám phá sản phẩm và thêm món đồ yêu thích nhé.</span>
+      </div>`;
     document.getElementById("sum_money_carts").textContent = "0 VND";
     window.cartData = [];
 
