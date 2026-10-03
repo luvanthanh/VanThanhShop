@@ -1,9 +1,11 @@
 package com.example.order_service.dto.request;
 
-import jakarta.persistence.Column;
+
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
 @Getter
 @Setter
 @Data
@@ -25,4 +27,6 @@ public class OrderCreateRequest {
 
     private String userId;
     private int cartId;
+
+    private List<OrderDetailCreationRequest> orderDetails;
 }

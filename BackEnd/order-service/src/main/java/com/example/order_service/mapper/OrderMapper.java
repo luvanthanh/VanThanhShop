@@ -1,6 +1,5 @@
 package com.example.order_service.mapper;
 
-
 import com.example.order_service.dto.request.OrderCreateRequest;
 import com.example.order_service.dto.request.OrderUpdateRequest;
 import com.example.order_service.dto.response.OrderDetailsResponse;
@@ -10,17 +9,19 @@ import com.example.order_service.entity.OrderDetails;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import java.util.Optional;
-
-@Mapper(componentModel = "Spring")
+@Mapper(componentModel = "spring")
 public interface OrderMapper {
+
+    // Tạo Order từ OrderCreateRequest
     @Mapping(target = "orderId", ignore = true)
     Order toOrder(OrderCreateRequest request);
-    @Mapping(source = "orderId", target = "orderId")
+
+    // Order -> OrderResponse
     OrderResponse toOrderResponse(Order order);
 
-    @Mapping(source = "orderDetailId", target = "orderDetailId")
+    // OrderDetails -> OrderDetailsResponse
     OrderDetailsResponse toOrderDetailsResponse(OrderDetails orderDetails);
 
+    // Update Order
     Order toOrderUpdate(OrderUpdateRequest request);
 }

@@ -51,26 +51,7 @@ public class OrderController {
         var result = orderService.createOrder(request);
         return ApiResponse.<OrderResponse>builder()
                 .code(1000)
-                .message(" create order successful ")
-                .data(result)
-                .build();
-    }
-    @PostMapping("/{orderId}/details")
-    public ApiResponse<List<OrderDetailsResponse>> createOrderDetails(@PathVariable String  orderId){
-        var result = orderService.createdOrderDetails(orderId);
-        return ApiResponse.<List<OrderDetailsResponse>>builder()
-                .code(1000)
-                .message(" create order details successful ")
-                .data(result)
-                .build();
-    }
-
-    @GetMapping("/{orderId}/details")
-    ApiResponse<List<OrderDetailsResponse>>  getOrderDetails(@PathVariable String orderId){
-        var result = orderService.getOrderDetails(orderId);
-        return ApiResponse.<List<OrderDetailsResponse>>builder()
-                .code(1000)
-                .message(" get order details successful ")
+                .message(" Create order successful! ")
                 .data(result)
                 .build();
     }

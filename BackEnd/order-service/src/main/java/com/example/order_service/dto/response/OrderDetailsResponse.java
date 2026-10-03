@@ -14,7 +14,6 @@ import lombok.*;
 
 public class OrderDetailsResponse {
     private String orderDetailId;
-    private String orderId;
 
     private String productName;
     private String productImage;

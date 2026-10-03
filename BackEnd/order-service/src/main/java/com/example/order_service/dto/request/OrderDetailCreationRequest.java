@@ -10,8 +10,6 @@ import lombok.*;
 @Builder
 
 public class OrderDetailCreationRequest {
-    private String orderId;
-
     private String productName;
     private String productImage;
     private double productPrice;
