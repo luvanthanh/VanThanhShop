@@ -116,7 +116,7 @@ public class OrderService {
 
 //    lấy chi tiết đơn hàng
     public List<OrderDetailsResponse> getOrderDetails(String orderId){
-        List<OrderDetails> listOrderDetails = orderDetailsRepository.findByOrderId(orderId);
+        List<OrderDetails> listOrderDetails = orderDetailsRepository.findByOrder_OrderId(orderId);
         List<OrderDetailsResponse> orderDetailsResponses = new ArrayList<>();
         if(listOrderDetails.isEmpty()){
             throw new RuntimeException(" don't find any order ");

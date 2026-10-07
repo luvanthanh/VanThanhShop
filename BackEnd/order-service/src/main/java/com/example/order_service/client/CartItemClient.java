@@ -11,6 +11,6 @@ import java.util.List;
 @FeignClient(name = "cart-service")
 public interface CartItemClient {
 
-    @GetMapping("/carts/{cartId}/cartItems")
+    @GetMapping("/carts/{cartId}/items")
     public ApiResponse<List<CartItemResponse>> getCartItemByCartId(@PathVariable int cartId);
 }
