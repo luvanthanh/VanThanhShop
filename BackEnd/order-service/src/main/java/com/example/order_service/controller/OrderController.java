@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.order_service.dto.request.OrderCreateRequest;
-import com.example.order_service.dto.request.OrderUpdateRequest;
 import com.example.order_service.dto.response.ApiResponse;
-import com.example.order_service.dto.response.OrderDetailsResponse;
 import com.example.order_service.dto.response.OrderResponse;
 import com.example.order_service.service.OrderService;
 
@@ -56,15 +54,7 @@ public class OrderController {
                 .build();
     }
 
-    @PutMapping("/{orderID}")
-    public ApiResponse<OrderResponse> updateOrder(@PathVariable String orderID, @RequestBody OrderUpdateRequest request){
-        var result = orderService.updateOrder(orderID, request);
-        return ApiResponse.<OrderResponse>builder()
-                .code(1000)
-                .message(" update order successful ")
-                .data(result)
-                .build();
-    }
+
 
     @DeleteMapping("/orderId")
     public void deleteOrder(@PathVariable("orderId") String orderId){

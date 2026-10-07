@@ -3,18 +3,17 @@ package com.example.order_service.service;
 
 import com.example.order_service.client.CartItemClient;
 import com.example.order_service.dto.request.OrderCreateRequest;
-import com.example.order_service.dto.request.OrderUpdateRequest;
 import com.example.order_service.dto.response.ApiResponse;
 import com.example.order_service.dto.response.CartItemResponse;
 import com.example.order_service.dto.response.OrderDetailsResponse;
 import com.example.order_service.dto.response.OrderResponse;
 import com.example.order_service.entity.Order;
 import com.example.order_service.entity.OrderDetails;
+import com.example.order_service.mapper.OrderDetailMapper;
 import com.example.order_service.mapper.OrderMapper;
 import com.example.order_service.repository.OrderDetailsRepository;
 import com.example.order_service.repository.OrderRepository;
 import jakarta.transaction.Transactional;
-import jakarta.validation.Constraint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,16 +32,20 @@ public class OrderService {
     private OrderMapper orderMapper;
 
     @Autowired
-    OrderDetailsRepository orderDetailsRepository;
-// thêm đơn hàng
+    private OrderDetailMapper orderDetailMapper;
 
+    @Autowired
+    OrderDetailsRepository orderDetailsRepository;
+
+
+    // thêm đơn hàng
     @Transactional
     public OrderResponse createOrder(OrderCreateRequest request){
 
         Order order = orderMapper.toOrder(request);
-        Order saveOrder = orderRepository.save(order);
+        Order savedOrder = orderRepository.save(order);
 
-        ApiResponse<List<CartItemResponse>> cartItemsResponse = cartItemClient.getCartItemByCartId(saveOrder.getCartId());
+        ApiResponse<List<CartItemResponse>> cartItemsResponse = cartItemClient.getCartItemByCartId(savedOrder.getCartId());
 
         List<CartItemResponse> listItems = cartItemsResponse.getData();
 
@@ -51,17 +54,30 @@ public class OrderService {
         for( CartItemResponse item : listItems){
             OrderDetails orderDetails = new OrderDetails();
 
+            // Liên kết Order với OrderDetails
+            orderDetails.setOrder(savedOrder);
+
             orderDetails.setProductImage(item.getProductImage());
             orderDetails.setProductName(item.getProductName());
             orderDetails.setProductPrice(item.getProductPrice());
             orderDetails.setProductQuantity(item.getProductQuantity());
             orderDetails.setProductTotalPrice(item.getProductPrice() * item.getProductQuantity());
-            orderDetailsRepository.save(orderDetails);
+            // Lưu OrderDetails
+            OrderDetails savedOrderDetails = orderDetailsRepository.save(orderDetails);
 
-            OrderDetailsResponse orderDetailsResponse = orderMapper.toOrderDetailsResponse(orderDetails);
+            // Chuyển sang Response
+            OrderDetailsResponse orderDetailsResponse = orderDetailMapper.toOrderDetailsResponse(savedOrderDetails);
+
+            listOrderDetailsResponse.add(orderDetailsResponse);
+
         }
-        OrderResponse orderResponse = orderMapper.toOrderResponse()
-//        return orderMapper.toOrderResponse(saveOrder);
+        // 5. Tạo OrderResponse
+        OrderResponse orderResponse = orderMapper.toOrderResponse(savedOrder);
+
+        // 6. Gắn danh sách OrderDetails vào response
+        orderResponse.setOrderDetails(listOrderDetailsResponse);
+
+        return orderResponse;
     }
 
 // lấy tất cả đơn hàng
@@ -107,19 +123,13 @@ public class OrderService {
         }
         else{
             for(OrderDetails orderDetails : listOrderDetails){
-                OrderDetailsResponse orderDetailsResponse = orderMapper.toOrderDetailsResponse(orderDetails);
+                OrderDetailsResponse orderDetailsResponse = orderDetailMapper.toOrderDetailsResponse(orderDetails);
                 orderDetailsResponses.add(orderDetailsResponse);
             }
         }
         return orderDetailsResponses;
     }
 
-    public OrderResponse updateOrder (String orderId, OrderUpdateRequest request){
-        Order  order = orderRepository.findByOrderId(orderId)
-                .orElseThrow(() -> new RuntimeException("order not found"));
-        order = orderMapper.toOrderUpdate(request);
-        return orderMapper.toOrderResponse(orderRepository.save(order));
-    }
 
 //    xóa đơn hàng
     public void deleteOrder(String orderId){

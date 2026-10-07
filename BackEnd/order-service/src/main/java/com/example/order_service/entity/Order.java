@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Entity
@@ -32,4 +33,9 @@ public class Order{
     private Double totalMoney;
     private LocalDateTime createdAt = LocalDateTime.now();
     private String order_status;
+
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderDetails> orderDetails;
+
 }

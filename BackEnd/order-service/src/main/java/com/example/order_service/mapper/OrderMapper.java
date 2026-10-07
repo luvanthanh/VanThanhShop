@@ -1,7 +1,6 @@
 package com.example.order_service.mapper;
 
 import com.example.order_service.dto.request.OrderCreateRequest;
-import com.example.order_service.dto.request.OrderUpdateRequest;
 import com.example.order_service.dto.response.OrderDetailsResponse;
 import com.example.order_service.dto.response.OrderResponse;
 import com.example.order_service.entity.Order;
@@ -19,9 +18,4 @@ public interface OrderMapper {
     // Order -> OrderResponse
     OrderResponse toOrderResponse(Order order);
 
-    // OrderDetails -> OrderDetailsResponse
-    OrderDetailsResponse toOrderDetailsResponse(OrderDetails orderDetails);
-
-    // Update Order
-    Order toOrderUpdate(OrderUpdateRequest request);
 }

@@ -31,7 +31,6 @@
         private String order_status;
 
         private String userId; // lấy danh sách order
-        private int cartId; // sẽ lấy listCartItem bằng CartID
 
         private List<OrderDetailsResponse> orderDetails;
     }

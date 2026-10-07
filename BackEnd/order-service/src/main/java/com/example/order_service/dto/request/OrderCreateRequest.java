@@ -28,5 +28,4 @@ public class OrderCreateRequest {
     private String userId;
     private int cartId;
 
-    private List<OrderDetailCreationRequest> orderDetails;
 }

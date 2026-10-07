@@ -21,7 +21,6 @@ public class OrderDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String orderDetailId;
-    private String orderId;
 
     private String productName;
     private String productImage;
@@ -30,4 +29,7 @@ public class OrderDetails {
 
     private double productTotalPrice;
 
+    @ManyToOne
+    @JoinColumn(name="order_id")
+    private  Order order;
 }
