@@ -1,80 +1,64 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Văn Thành Shop - điện thoại chính hãng, giá tốt, tư vấn tận tâm và giao hàng nhanh.">
     <title>Văn Thành Shop</title>
-    <!-- link icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
     <link rel="stylesheet" href="../css/Home_header.css">
     <link rel="stylesheet" href="../css/Home_section_one.css">
     <link rel="stylesheet" href="../css/Home_section_two.css">
     <link rel="stylesheet" href="../css/Home_section_three.css">
     <link rel="stylesheet" href="../css/Home_footer.css">
-    <script src="../javascript/Section_one_slide.js"></script>
-    <script src="../javaScript/Section_two_productList.js"></script>
-    <script src="../javaScript/section_one_news.js"></script>
-    <script src="../javaScript/Home.js"></script>
 </head>
 <body>
 
-  <!-- header -->
   <header class="navbar">
-  <div class="top-bar">
+    <div class="top-bar">
       <div class="top-bar-content">
-        <span>Xin chào mọi người tới với Văn Thành Shop</span>
-        <span> | Sản phẩm Chính hãng - Uy tín- Chất lượng cao</span>
-        <span> | Giao nhanh - Miễn phí cho đơn 300k</span>
-        <span> | Tra cứu đơn hàng</span>
-        <span> | Hotline: 9999999 99</span>
+        <span><i class="fa-solid fa-shield-halved"></i> Sản phẩm chính hãng</span>
+        <span><i class="fa-solid fa-truck-fast"></i> Miễn phí giao hàng từ 300.000₫</span>
+        <span><i class="fa-solid fa-headset"></i> Hotline: 999 999 999</span>
       </div>
     </div>
 
     <div class="main-bar">
-      <!-- Logo -->
       <div class="logo">
         <a href="Home.html">
-        <span class="logo-s" style="color: Orange">VĂN THÀNH</span>
+          <span class="logo-mark"><i class="fa-solid fa-mobile-screen-button"></i></span>
+          <span class="logo-s">VĂN THÀNH<span class="logo-caption">SHOP CÔNG NGHỆ</span></span>
         </a>
       </div>
 
-      <!-- Menu -->
       <div class="btn">
-        <i class="fa-solid fa-house-user"></i><a href="Home.html">Trang Chủ </a>
+        <i class="fa-solid fa-house-user"></i><a href="Home.html">Trang chủ</a>
       </div>
 
-      <!-- gioio thieu -->
       <div class="btn">
-        <i class="fa-solid fa-newspaper"></i> <a href="Introduce.html" rel="noopener noreferrer" >Giới Thiệu</a>
+        <i class="fa-solid fa-circle-info"></i><a href="Introduce.html">Giới thiệu</a>
       </div>
-        <!-- tin tucws -->
       <div class="news-btn">
-        <a href="ListNews.html" ><i class="fa-solid fa-pager"></i> Tin Tức</a>
+        <a href="ListNews.html"><i class="fa-solid fa-newspaper"></i> Tin tức</a>
       </div>
 
-      <!-- Search -->
       <div class="search-box">
-    <input
-        type="text"
-        id="search-input"
-        placeholder="Bạn muốn mua gì hôm nay?"
-    >
-    <i class="fa-solid fa-magnifying-glass" onclick="searchProduct()"></i>
-</div>
-
-      <!-- Cart -->
-      <div class="cart">
-        <a href="Carts.html"> <i class="fa-solid fa-cart-shopping"></i>Giỏ hàng</a>
+        <input type="search" id="search-input" placeholder="Tìm điện thoại bạn yêu thích..." aria-label="Tìm kiếm sản phẩm">
+        <button class="search-submit" type="button" onclick="searchProduct()" aria-label="Tìm kiếm">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
       </div>
 
-      <!-- Login nút đăng nhập  -->
-      
+      <div class="cart">
+        <a href="Carts.html"><i class="fa-solid fa-cart-shopping"></i><span>Giỏ hàng</span></a>
+      </div>
+
       <div class="login-button" id="login_button">
-        <i class="fa fa-user"></i> Tài khoản
+        <i class="fa-regular fa-user"></i><span class="account-label">Tài khoản</span>
         <div class="accout-menu-two">
           <ul>
             <li><a href="LoginClient.html">Đăng nhập</a></li>
-            <li><a href="Profile.html">Profile </a></li>
+            <li><a href="Profile.html">Tài khoản</a></li>
             <li><a id="logout_button" onclick="logout()">Đăng xuất</a></li>
           </ul>
         </div>
@@ -83,33 +67,63 @@
     </div>
   </header>
 
-  <!-- section 1 -->
-  <div class="section-one">
+  <main>
+  <section class="section-one" aria-label="Tin tức và chương trình nổi bật">
     <div class="section-one-content">
-      <div class="section-one-left" id="section_one_news"></div>
+      <div class="section-one-left" id="section_one_news">
+        <a href="ListNews.html" aria-label="Xem ưu đãi Samsung Galaxy S25">
+          <img src="../images/section_one_img1.png" alt="Ưu đãi Samsung Galaxy S25 Ultra 5G">
+        </a>
+        <a href="ListNews.html" aria-label="Xem tin tức Apple Watch">
+          <img src="../images/section_one_img2.png" alt="Apple Watch Series 11">
+        </a>
+        <a href="ListNews.html" aria-label="Xem ưu đãi laptop">
+          <img src="../images/section_one_img3.png" alt="Ưu đãi laptop tại Văn Thành Shop">
+        </a>
+      </div>
 
       <div class="section-one-right">
         <div class="slider-controls">
-            <button id="prev-slide" class="slider-btn"><i class="fa fa-chevron-left"></i></button>
-            <button id="next-slide" class="slider-btn"><i class="fa fa-chevron-right"></i></button>
-          </div>
-          <div class="list-slides">
-              <img src="https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung_galaxy_s25_ultra_-_5_1.png" alt="iPhone 17">
-              <img src="https://cdn2.cellphones.com.vn/insecure/rs:fill:690:300/q:90/plain/https://dashboard.cellphones.com.vn/storage/galaxy-s25-fe-home-0925.png" alt="Galaxy S25">
-              <img src="https://cdn2.cellphones.com.vn/insecure/rs:fill:690:300/q:90/plain/https://dashboard.cellphones.com.vn/storage/app3-home.jpg" alt="AirPods Pro 3">
-              <img src="https://cdn-media.sforum.vn/storage/app/media/haianh/xiaomi-15t-series-hyperos-3-toan-cau-thumb.jpg" alt="Xiaomi 15T">
-              <img src="https://cdn2.cellphones.com.vn/insecure/rs:fill:1036:450/q:100/plain/https://dashboard.cellphones.com.vn/storage/x8d-home.png" alt="Asus Vivobook">
-          </div>
+          <button id="prev-slide" class="slider-btn" type="button" aria-label="Ảnh trước"><i class="fa fa-chevron-left"></i></button>
+          <button id="next-slide" class="slider-btn" type="button" aria-label="Ảnh tiếp theo"><i class="fa fa-chevron-right"></i></button>
+        </div>
+        <div class="list-slides">
+          <img src="../images/slide1.png" alt="Ưu đãi iPhone 17 Pro">
+          <img src="../images/slide2.png" alt="Ưu đãi Samsung Galaxy S25">
+          <img src="../images/slide3.png" alt="Ưu đãi AirPods Pro 3">
+          <img src="../images/slide4.png" alt="Ưu đãi loa Xiaomi">
+          <img src="../images/slide5.png" alt="Ưu đãi laptop Asus Vivobook">
+        </div>
       </div>
     </div>
-  </div>
+  </section>
 
+  <section class="service-highlights" aria-label="Cam kết dịch vụ">
+    <div class="service-highlight">
+      <span class="service-icon"><i class="fa-solid fa-award"></i></span>
+      <span><strong>Chính hãng 100%</strong><small>An tâm chọn mua</small></span>
+    </div>
+    <div class="service-highlight">
+      <span class="service-icon"><i class="fa-solid fa-truck-fast"></i></span>
+      <span><strong>Giao hàng nhanh</strong><small>Miễn phí từ 300.000₫</small></span>
+    </div>
+    <div class="service-highlight">
+      <span class="service-icon"><i class="fa-solid fa-arrows-rotate"></i></span>
+      <span><strong>Đổi trả dễ dàng</strong><small>Hỗ trợ tận tâm</small></span>
+    </div>
+    <div class="service-highlight">
+      <span class="service-icon"><i class="fa-solid fa-headset"></i></span>
+      <span><strong>Luôn có người hỗ trợ</strong><small>Tư vấn mỗi ngày</small></span>
+    </div>
+  </section>
 
-  <!-- section two  -->
-  <div class="section-two">
+  <section class="section-two" aria-labelledby="products-heading">
     <div class="top">
-      <div class="top-content">ĐIỆN THOẠI NỔI BẬT</div>
-      <div class="top-list">
+      <div class="section-heading">
+        <span class="section-eyebrow">Khám phá sản phẩm</span>
+        <h1 class="top-content" id="products-heading">Điện thoại nổi bật</h1>
+      </div>
+      <div class="top-list" aria-label="Lọc theo thương hiệu">
         <div class="top-list-box" onclick="filterByBrand('all')">ALL</div>
         <div class="top-list-box" onclick="filterByBrand('iphone')">IPHONE</div>
         <div class="top-list-box" onclick="filterByBrand('samsung')">SAMSUNG</div>
@@ -121,7 +135,6 @@
         <div class="top-list-box" onclick="filterByBrand('honor')">HONOR</div>
         <div class="top-list-box" onclick="filterByBrand('nothing')">NOTHING</div>
       </div>
-
     </div>
 
     <div class="content">
@@ -132,7 +145,7 @@
           <div class="filter-list-box"><i class="fa-solid fa-mobile-button"></i>Sắp Xếp 
             <div class="filter-list-box-menu2">
               <ul>
-                <li onclick="sortPriceIncrease()">Giá tiền tằng dần</li>
+                <li onclick="sortPriceIncrease()">Giá tiền tăng dần</li>
                 <li onclick="sortPriceDecrease()">Giá tiền giảm dần</li>
                 
               </ul>
@@ -209,48 +222,47 @@
     </div>
 
     <div class="pagination">
-      <button id="prev-page">&lt;</button>
+      <button id="prev-page" type="button" aria-label="Trang trước">&lt;</button>
       <span id="page-numbers"></span>
-      <button id="next-page">&gt;</button>
+      <button id="next-page" type="button" aria-label="Trang sau">&gt;</button>
     </div>
-  </div>
+  </section>
+  </main>
 
-      <!-- section 3 -->
-
-      <div class="section-three">
+      <footer class="section-three">
         <div class="section-three-content">
-          <div class="box">22
-            <div class="box-Head"> Về Văn Thành Shop </div>
+          <div class="box">
+            <div class="box-Head">Về Văn Thành Shop</div>
             <a href="Introduce.html">Giới Thiệu Công Ty</a>
             <a href="">Tuyển Dụng</a>
             <a href="">Liên Hệ</a>
         </div>
           <div class="box">
-            <div class="box-Head"> Tổng Dài hỗ trợ miễn phí </div>
+            <div class="box-Head">Tổng đài hỗ trợ</div>
             <div class="box-Body"> Tư Vấn-Mua Hàng : 999999999 (7h - 22h thứ 2-7)</div>
             <div class="box-Body"> CSKH: 999999999 (8h - 21h hàng ngày)</div>
           </div>
           <div class="box">
-          <div class="box-Head"> Hỗ trợ khách hàng </div>
+          <div class="box-Head">Hỗ trợ khách hàng</div>
           <a href="">Chính sách bảo hành</a>
           <a href="">Chính sách đổi trả</a>
           <a href="">Hướng dẫn mua hàng</a>
           </div>
         <div class="box">
-            <div class="box-Head"> Kết nối với chúng tôi </div>
-            <a href="facebook.com"><i class="fa-brands fa-facebook"></i> Facebook</a>
+            <div class="box-Head">Kết nối với chúng tôi</div>
+            <a href="https://facebook.com"><i class="fa-brands fa-facebook"></i> Facebook</a>
             <a href=""><i class="fa-brands fa-instagram"></i> Instagram</a>
             <a href=""><i class="fa-brands fa-youtube"></i> Youtube</a>
             <a href=""><i class="fa-brands fa-tiktok"></i> Tiktok</a>
           </div>
         </div>
-      </div>
+      </footer>
 
       <div class="footer">
-        <span>© 2025 Công ty Văn Thành Shop. GPDKKD: 123456789 do Sở KHĐT TP.Lào Cai cấp ngày 24/07/2025. Địa chỉ: Lào Cai. Điện thoại: 999999999. Email:luvanthanh@gmail.com
+        <span>© 2025 Văn Thành Shop. Địa chỉ: Lào Cai. Điện thoại: 999 999 999. Email: luvanthanh@gmail.com</span>
       </div>
 
-    <script src="../javascript/Section_one_slide.js"></script>
+    <script src="../javaScript/Section_one_slide.js"></script>
     <script src="../javaScript/Section_two_productList.js"></script>
     <script src="../javaScript/section_one_news.js"></script>
     <script src="../javaScript/Home.js"></script>

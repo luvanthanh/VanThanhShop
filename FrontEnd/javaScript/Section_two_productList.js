@@ -89,7 +89,7 @@ fetch(`http://localhost:8888/api/products`)
                     </a>
 
                     <button class="product-phone">
-                        Xem thêm
+                        Mua ngay
                     </button>
                 `;
 

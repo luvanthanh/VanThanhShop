@@ -9,3 +9,13 @@
     width: 100%;
     height: 50px;
 }
+
+.footer {
+    min-height: 52px;
+    height: auto;
+    padding: 16px 24px;
+    background: #19121f;
+    color: #bdb3c5;
+    font-size: 11px;
+    line-height: 1.6;
+}

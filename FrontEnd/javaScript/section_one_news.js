@@ -10,8 +10,10 @@ document.addEventListener("DOMContentLoaded", () => {
         .then(news => {
             const newsSection = document.getElementById("section_one_news");
             if (!newsSection) return;
+            const items = (news.data || []).slice(-3);
+            if (items.length === 0) return;
             newsSection.innerHTML = "";
-            (news.data || []).slice(-3).forEach(item => {
+            items.forEach(item => {
                 newsSection.innerHTML += `
                     <a href="News.html?id=${item.newsId}"><img src="${getThumbnail(item)}" alt="${item.newsTitle || ''}" class="news-image"></a>
                 `;
