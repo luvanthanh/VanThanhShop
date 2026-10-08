@@ -20,6 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .then(news => {
             const data = news.data || {};
+            const title = data.newsTitle || data.newsName || 'Tin tức';
 
             const date = data.newsDate
                 ? new Date(data.newsDate).toLocaleDateString("vi-VN")
@@ -40,16 +41,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const extraImagesHtml = (data.imageResponses || []).slice(1).map(image => `
                 <div class="news-section">
-                    <img src="${image.imageUrl}" alt="${image.imageDescribe || data.newsTitle || 'Tin tức'}">
+                    <img src="${image.imageUrl}" alt="${image.imageDescribe || title}">
                     ${image.imageDescribe ? `<p>${image.imageDescribe}</p>` : ""}
                 </div>
             `).join("");
 
+            document.title = `${title} | Văn Thành Shop`;
             newsDiv.innerHTML = `
-                <div class="news-container">
-
+                <article class="news-container">
                     <div class="news-header">
-                        <h1>${data.newsTitle || data.newsName || 'Tin tức'}</h1>
+                        <div class="article-kicker"><i class="fa-solid fa-newspaper"></i> Tin tức công nghệ</div>
+                        <h1>${title}</h1>
                         <div class="meta">
                             <span><i class="fa-regular fa-clock"></i> ${data.newsTime || ""}</span>
                             <span><i class="fa-regular fa-calendar"></i> ${date}</span>
@@ -57,19 +59,21 @@ document.addEventListener("DOMContentLoaded", () => {
                     </div>
 
                     <div class="news-main">
-                        <img src="${getThumbnail(data)}" class="main-img" alt="${data.newsTitle || data.newsName || 'Tin tức'}">
+                        <img src="${getThumbnail(data)}" class="main-img" alt="${title}">
                         ${contentHtml}
                     </div>
 
                     ${extraImagesHtml}
 
-                    <div class="product-box">
-                        <a href="Phone.html?id=${data.newsProductId || ''}">
-                            🛒 Xem sản phẩm liên quan
-                        </a>
+                    <div class="news-actions">
+                        <a href="ListNews.html"><i class="fa-solid fa-arrow-left"></i> Tất cả tin tức</a>
+                        ${data.newsProductId ? `
+                            <a class="related-product" href="Phone.html?id=${data.newsProductId}">
+                                <i class="fa-solid fa-bag-shopping"></i> Xem sản phẩm liên quan
+                            </a>
+                        ` : ""}
                     </div>
-
-                </div>
+                </article>
             `;
         })
         .catch(error => {

@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đơn Hàng Của Bạn</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
     <link rel="stylesheet" href="../css/Home_header.css">
-    <script src="../javaScript/Home.js"></script>
-    <script src="../javaScript/OrderList.js"></script>
     <link rel="stylesheet" href="../css/OrderList.css">
     <link rel="stylesheet" href="../css/Home_footer.css">
+    <script src="../javaScript/Home.js" defer></script>
+    <script src="../javaScript/OrderList.js" defer></script>
     
 </head>
 <body>
@@ -74,11 +74,29 @@
     </div>
 </header>
 
-<div class="section-one">
-    <div class="order-list" id="order_list"></div>
-</div>
-<div class="section-two">
-    <div class="listItems" id="list_items"></div>
-</div>
+<main class="order-page">
+    <div class="order-page-heading">
+        <div>
+            <p class="order-eyebrow">VĂN THÀNH SHOP</p>
+            <h1>Đơn hàng của bạn</h1>
+            <p class="order-page-intro">Theo dõi trạng thái và xem lại các sản phẩm bạn đã đặt.</p>
+        </div>
+        <a class="continue-shopping" href="Home.html">
+            <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+            Tiếp tục mua sắm
+        </a>
+    </div>
+    <section class="order-list" id="order_list" aria-label="Danh sách đơn hàng">
+        <div class="order-state">
+            <span class="order-state-icon"><i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i></span>
+            <h2>Đang tải đơn hàng</h2>
+            <p>Vui lòng chờ trong giây lát.</p>
+        </div>
+    </section>
+</main>
+
+<footer class="footer">
+    © 2025 Văn Thành Shop · Cảm ơn bạn đã mua sắm cùng chúng tôi.
+</footer>
 </body>
 </html>

@@ -16,56 +16,51 @@
 <body>
   <header class="navbar">
   <div class="top-bar">
-      <div class="top-bar-content">
-        <span>Xin chào mọi người tới với Văn Thành Shop</span>
-        <span> | Sản phẩm Chính hãng - Uy tín- Chất lượng cao</span>
-        <span> | Giao nhanh - Miễn phí cho đơn 300k</span>
-        <span> | Tra cứu đơn hàng</span>
-        <span> | Hotline: 9999999 99</span>
-      </div>
+    <div class="top-bar-content">
+      <span><i class="fa-solid fa-shield-halved"></i> Sản phẩm chính hãng</span>
+      <span><i class="fa-solid fa-truck-fast"></i> Miễn phí giao hàng từ 300.000₫</span>
+      <span><i class="fa-solid fa-headset"></i> Hotline: 999 999 999</span>
+    </div>
+  </div>
+
+  <div class="main-bar">
+    <div class="logo">
+      <a href="Home.html">
+        <span class="logo-mark"><img src="../images/avatar.jpg"></span>
+        <span class="logo-s">VĂN THÀNH<span class="logo-caption">SHOP CÔNG NGHỆ</span></span>
+      </a>
     </div>
 
-    <div class="main-bar">
-      <!-- Logo -->
-      <div class="logo">
-        <a href="Home.html">
-        <span class="logo-s" style="color: Orange">VĂN THÀNH</span>
-        </a>
-      </div>
+    <div class="btn">
+      <i class="fa-solid fa-house-user"></i><a href="Home.html">Trang chủ</a>
+    </div>
+    <div class="btn">
+      <i class="fa-solid fa-circle-info"></i><a href="Introduce.html">Giới thiệu</a>
+    </div>
 
-      <!-- Menu -->
-      <div class="btn">
-        <i class="fa-solid fa-house-user"></i><a href="Home.html">Trang Chủ </a>
-      </div>
-      <div class="btn">
-        <i class="fa-solid fa-newspaper"></i> <a href="Introduce.html"  rel="noopener noreferrer" >Giới Thiệu</a>
-      </div>
+    <div class="news-btn">
+      <a href="ListNews.html"><i class="fa-solid fa-newspaper"></i> Tin tức</a>
+    </div>
 
-      <div class="news-btn">
-        <a href="ListNews.html" ><i class="fa-solid fa-pager"></i> Tin Tức</a>
-      </div>
-
-
-      <!-- Search -->
-      <div class="search-box">
-        <input type="text" placeholder="Bạn muốn mua gì hôm nay?">
+    <div class="search-box">
+      <input type="search" placeholder="Tìm điện thoại bạn yêu thích..." aria-label="Tìm kiếm sản phẩm">
+      <button class="search-submit" type="button" aria-label="Tìm kiếm">
         <i class="fa-solid fa-magnifying-glass"></i>
-      </div>
+      </button>
+    </div>
 
-      <!-- Cart -->
-      <div class="cart">
-        <a href="Carts.html"> <i class="fa-solid fa-cart-shopping"></i>Giỏ hàng</a>
-      </div>
+    <div class="cart">
+      <a href="Carts.html"><i class="fa-solid fa-cart-shopping"></i><span>Giỏ hàng</span></a>
+    </div>
 
-      <!-- Login nút đăng nhập  -->
-      <div class="login-button" id="login_button">
-        <i class="fa fa-user"></i> Tài khoản
-        <div class="accout-menu-two">
-          <ul>
-            <li><a href="LoginClient.html">Đăng nhập</a></li>
-            <li><a href="Profile.html">Profile </a></li>
-            <li><a id="logout_button" onclick="logout()">Đăng xuất</a></li>
-          </ul>
+    <div class="login-button" id="login_button">
+      <i class="fa-regular fa-user"></i><span class="account-label">Tài khoản</span>
+      <div class="accout-menu-two">
+        <ul>
+          <li><a href="LoginClient.html">Đăng nhập</a></li>
+          <li><a href="Profile.html">Tài khoản</a></li>
+          <li><a id="logout_button" onclick="logout()">Đăng xuất</a></li>
+        </ul>
         </div>
       </div>
     </div>
@@ -108,7 +103,7 @@
 
         <div class="checkout-fields">
           <label for="customerName">Họ và tên người nhận <span>*</span></label>
-          <input type="text" id="customerName" name="customerName" autocomplete="name" placeholder="Ví dụ: Nguyễn Văn A">
+          <input type="text" id="customerName" name="customerName" autocomplete="name" placeholder="Ví dụ: Lù Văn Thành">
 
           <label for="deliveryAddress">Địa chỉ nhận hàng <span>*</span></label>
           <input type="text" id="deliveryAddress" name="deliveryAddress" autocomplete="street-address" placeholder="Số nhà, đường, phường/xã, tỉnh/thành">

@@ -41,6 +41,21 @@ async function register() {
 
         if (!response.ok) {
             const errText = await response.text();
+            let error;
+            try {
+                error = JSON.parse(errText);
+            } catch {
+                error = null;
+            }
+
+            if (error?.code === 1002) {
+                throw new Error("Tên đăng nhập đã tồn tại! \n Vui lòng đổi lại tên đăng nhập!");
+            }
+
+            if (error?.message) {
+                throw new Error(error.message);
+            }
+
             throw new Error(errText || "Đăng ký thất bại");
         }
 
@@ -48,7 +63,7 @@ async function register() {
         window.location.href = "LoginClient.html";
 
     } catch (err) {
-        alert("Lỗi: " + err.message);
+        alert(+ err.message );
     }
 
     resetBtn(btn);

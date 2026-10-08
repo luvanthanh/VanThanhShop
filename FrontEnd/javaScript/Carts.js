@@ -291,7 +291,19 @@ async function deleteCart(index) {
 // ================= ORDER =================
 async function order() {
   const userId = localStorage.getItem("userId");
+  const token = localStorage.getItem("token");
   const cartId = localStorage.getItem("cartId");
+
+  if (!userId || !token) {
+    alert("Phiên đăng nhập không hợp lệ. Vui lòng đăng nhập lại!");
+    window.location.href = "LoginClient.html";
+    return;
+  }
+
+  if (!cartId || !Number.isFinite(Number(cartId))) {
+    alert("Không tìm thấy giỏ hàng. Vui lòng tải lại trang!");
+    return;
+  }
 
   const customerName = document.getElementById("customerName").value.trim();
   const deliveryAddress = document.getElementById("deliveryAddress").value.trim();
@@ -308,6 +320,13 @@ async function order() {
     ? Number(sumEl.textContent.replace(/\D/g, ""))
     : 0;
 
+  const now = new Date();
+  const createdAt = [
+    now.getFullYear(),
+    String(now.getMonth() + 1).padStart(2, "0"),
+    String(now.getDate()).padStart(2, "0"),
+  ].join("-") + `T${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}:${String(now.getSeconds()).padStart(2, "0")}`;
+
   // ===== VALIDATE =====
   if (!customerName || !deliveryAddress || !customerPhoneNumber) {
     alert("Vui lòng nhập đầy đủ thông tin!");
@@ -319,6 +338,11 @@ async function order() {
     return;
   }
 
+  const orderButton = document.getElementById("order_button");
+  if (orderButton) {
+    orderButton.disabled = true;
+  }
+
   try {
 
     // ===== 1. TẠO ORDER =====
@@ -326,41 +350,30 @@ async function order() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
       },
       body: JSON.stringify({
-        userId: userId,
-        cartId: cartId,
-        shopAddress: shopAddress,
-        customerName: customerName,
-        deliveryAddress: deliveryAddress,
-        customerPhoneNumber: customerPhoneNumber,
-        note: note,
-        paymentMethod: paymentMethod,
-        totalMoney: totalAmount
+        shopAddress,
+        note,
+        customerName,
+        deliveryAddress,
+        customerPhoneNumber,
+        paymentMethod,
+        totalMoney: totalAmount,
+        createdAt,
+        order_status: "PENDING",
+        userId,
+        cartId: Number(cartId),
       }),
     });
 
     if (!orderRes.ok) {
-      throw new Error("Tạo order thất bại");
+      throw new Error(`Tạo đơn hàng thất bại (HTTP ${orderRes.status})`);
     }
 
     const orderData = await orderRes.json();
 
     console.log("Order created:", orderData);
-
-    const orderId = orderData.data.orderId;
-
-    // ===== 2. TẠO ORDER DETAILS =====
-    const detailRes = await fetch(
-      `http://localhost:8888/api/orders/${orderId}/details`,
-      {
-        method: "POST",
-      }
-    );
-
-    if (!detailRes.ok) {
-      throw new Error("Tạo order details thất bại");
-    }
 
     alert("🎉 Đặt hàng thành công! Bạn sẽ thanh toán khi nhận hàng.");
 
@@ -377,6 +390,10 @@ async function order() {
 
   } catch (err) {
     console.error("Lỗi đặt hàng:", err);
-    alert("❌ Đặt hàng thất bại!");
+    alert(`❌ ${err.message || "Đặt hàng thất bại!"}`);
+  } finally {
+    if (orderButton) {
+      orderButton.disabled = false;
+    }
   }
 }

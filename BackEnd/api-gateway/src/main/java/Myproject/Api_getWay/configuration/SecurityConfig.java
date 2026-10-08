@@ -70,7 +70,7 @@ public class SecurityConfig {
 
 
     private final String[] SECURITY_GET_ENDPOINTS = {
-            "/api/users",
+
             "/api/users/{userId}",
             "/api/orders"
     };

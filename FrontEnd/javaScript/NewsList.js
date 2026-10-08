@@ -1,4 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
+    const newsListDiv = document.getElementById("news_list");
+    const newsCount = document.getElementById("news-count");
+    if (!newsListDiv) return;
 
     fetch(`http://localhost:8888/api/news`)
         .then(res => {
@@ -8,70 +11,77 @@ document.addEventListener("DOMContentLoaded", () => {
             return res.json();
         })
         .then(newsList => {
-
-            const newsListDiv = document.getElementById("news_list");
-
-            if (!newsList || !newsList.data || newsList.data.length === 0) {
-                newsListDiv.innerHTML = "<p class='empty'>Không có tin tức</p>";
+            const items = newsList && Array.isArray(newsList.data) ? newsList.data : [];
+            if (items.length === 0) {
+                if (newsCount) newsCount.textContent = "";
+                newsListDiv.innerHTML = `
+                    <p class="news-list-state">
+                        <i class="fa-regular fa-newspaper"></i>
+                        Hiện chưa có bài viết nào. Hãy quay lại sau nhé.
+                    </p>
+                `;
                 return;
             }
 
             const getThumbnail = newsItem => {
                 return newsItem.newsImageThumbnail ||
                     (newsItem.imageResponses && newsItem.imageResponses.length > 0 ? newsItem.imageResponses[0].imageUrl : null) ||
-                    'default.jpg';
+                    "";
             };
 
-            let html = "";
-
-            newsList.data.forEach(news => {
-
-                const date = news.newsDate 
-                    ? new Date(news.newsDate).toLocaleDateString("vi-VN") 
+            const cards = items.map(news => {
+                const date = news.newsDate
+                    ? new Date(news.newsDate).toLocaleDateString("vi-VN")
                     : "";
+                const content = [
+                    news.newsContent,
+                    news.newsContent1,
+                    news.newsContent2,
+                    ...(news.contentResponses || []).map(section => section.contentText)
+                ]
+                    .filter(Boolean)
+                    .join(" ")
+                    .replace(/\s+/g, " ")
+                    .trim();
+                const excerpt = content.length > 180
+                    ? `${content.slice(0, 180).trimEnd()}…`
+                    : content;
+                const imageUrl = getThumbnail(news);
+                const title = news.newsTitle || news.newsName || "Tin tức";
 
-                const content =
-                    (news.newsContent || "") +
-                    " " +
-                    (news.newsContent1 || "") +
-                    " " +
-                    (news.newsContent2 || "");
-
-                html += `
-                    <a href="News.html?id=${news.newsId}" class="news-link">
-                        <div class="news-item">
-
-                            <div class="news-img">
-                                <img src="${getThumbnail(news)}" alt="${news.newsTitle || 'Tin tức'}">
-                            </div>
-
-                            <div class="news-content">
-                                <h2>${news.newsTitle || "Tin tức"}</h2>
-
-                                <span class="date">
-                                    <i class="fa-regular fa-calendar"></i>
-                                    ${date}
+                return `
+                    <a href="News.html?id=${encodeURIComponent(news.newsId)}" class="news-card">
+                        <div class="news-card-image">
+                            ${imageUrl ? `<img src="${imageUrl}" alt="${title}" loading="lazy">` : ""}
+                        </div>
+                        <div class="news-card-content">
+                            <span class="news-card-category">Công nghệ</span>
+                            <h2>${title}</h2>
+                            ${date ? `
+                                <span class="news-card-date">
+                                    <i class="fa-regular fa-calendar"></i>${date}
                                 </span>
-
-                                <p>
-                                    ${content.substring(0, 180)}...
-                                </p>
-
-                                <span class="read-more">Xem chi tiết →</span>
-                            </div>
-
+                            ` : ""}
+                            ${excerpt ? `<p>${excerpt}</p>` : ""}
+                            <span class="news-card-read">Đọc bài viết <i class="fa-solid fa-arrow-right"></i></span>
                         </div>
                     </a>
                 `;
             });
 
-            newsListDiv.innerHTML = html;
-
+            newsListDiv.innerHTML = cards.join("");
+            if (newsCount) {
+                newsCount.textContent = `${items.length} bài viết`;
+            }
         })
         .catch(error => {
             console.error("Lỗi:", error);
-            document.getElementById("news_list").innerHTML =
-                "<p class='error'>Lỗi tải dữ liệu, vui lòng thử lại</p>";
+            newsListDiv.innerHTML = `
+                <p class="news-list-state error">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                    Không tải được tin tức. Vui lòng thử lại sau.
+                </p>
+            `;
         });
 
 });

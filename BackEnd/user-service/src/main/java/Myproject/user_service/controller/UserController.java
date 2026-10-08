@@ -23,16 +23,18 @@ public class UserController {
     private UserService userService;
 
 
+//   tạo mới người dùng
     @PostMapping
-    ApiResponse<UserResponse> addUser(@RequestBody UserCreationRequest request){
-        var authentication = SecurityContextHolder.getContext().getAuthentication();
+    public ApiResponse<UserResponse> addUser(
+            @RequestBody UserCreationRequest request) {
 
-        log.info(" User Name: " + authentication.getName());
-        authentication.getAuthorities().forEach(grantedAuthority -> log.info("roles: "+grantedAuthority.getAuthority()));
+        var result = userService.addUser(request);
 
-        ApiResponse<UserResponse> apiResponse = new ApiResponse<>();
-        apiResponse.setData(userService.addUser(request));
-        return apiResponse;
+        return ApiResponse.<UserResponse>builder()
+                .code(1000)
+                .message("Create user successfully")
+                .data(result)
+                .build();
     }
 
 //    lấy tất cả danh sách user
