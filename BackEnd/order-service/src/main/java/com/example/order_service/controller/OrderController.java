@@ -3,6 +3,7 @@ package com.example.order_service.controller;
 
 import java.util.List;
 
+import com.example.order_service.dto.response.OrderDetailsResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +25,8 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
+
+//    lấy tất cả order
     @GetMapping
     public ApiResponse<List<OrderResponse>> getAllOrders() {
         var result = orderService.getAllOrder();
@@ -33,7 +36,7 @@ public class OrderController {
                 .data(result)
                 .build();
     }
-
+//    lấy order theo userId
     @GetMapping("/{userId}")
     public ApiResponse<List<OrderResponse>> getOrderByUserId(@PathVariable("userId") String userId){
         var result =  orderService.getOrderByUserId(userId);
@@ -44,6 +47,18 @@ public class OrderController {
                 .build();
     }
 
+//    lấy chi tiết đơn hàng theo orderId
+    @GetMapping("/{orderId}/details")
+    public ApiResponse<List<OrderDetailsResponse>> getOrderDetailsByOrderId(@PathVariable String orderId){
+        var result = orderService.getOrderDetails(orderId);
+        return ApiResponse.<List<OrderDetailsResponse>>builder()
+                .code(1000)
+                .message("get orders of" + orderId+ " successful ")
+                .data(result)
+                .build();
+    }
+
+//    tạo mới order
     @PostMapping
     public ApiResponse<OrderResponse> createOrder(@RequestBody OrderCreateRequest request){
         var result = orderService.createOrder(request);
@@ -53,9 +68,7 @@ public class OrderController {
                 .data(result)
                 .build();
     }
-
-
-
+    
     @DeleteMapping("/orderId")
     public void deleteOrder(@PathVariable("orderId") String orderId){
         orderService.deleteOrder(orderId);
