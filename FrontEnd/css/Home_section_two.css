@@ -1,12 +1,12 @@
 .section-two{
     margin-left:290px;
-    margin-top: 3px;
+    margin-top: 10px;
     padding: 20px 0px 0px 0px;
     width:1300px;
 }
 
 .section-two .top{
-
+  margin-top: 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -378,7 +378,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: end;
-  gap: 20px;
+  gap: 14px;
   margin-bottom: 20px;
 }
 
@@ -408,8 +408,8 @@
 
 .section-two .top .top-list {
   width: auto;
-  flex: 1 1 650px;
-  justify-content: flex-end;
+  flex: 0 1 auto;
+  justify-content: flex-start;
   flex-wrap: wrap;
   gap: 8px;
 }
