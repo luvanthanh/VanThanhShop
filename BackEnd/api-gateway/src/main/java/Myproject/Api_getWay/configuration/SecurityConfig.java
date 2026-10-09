@@ -80,7 +80,6 @@ public class SecurityConfig {
     };
 
 
-
     private final String[] SECURITY_DELETE_ENDPOINTS={
             "/api/products/delete/{productId}",
             "/api/news/delete/{newsId}",
@@ -100,8 +99,14 @@ public class SecurityConfig {
     private final String[] USER_GET_ENDPOINTS = {
             "/api/orders/{userId}",
             "/api/orders/{orderId}/details",
-
             "/api/users/myInfo"
+    };
+
+    private final String[] USER_PUT_ENDPOINTS = {
+            "/api/users/{userId}"
+    };
+    private final  String[] USER_DELETE_ENDPOINTS = {
+            "/api/users/{userId}"
     };
 
 
@@ -120,29 +125,20 @@ public class SecurityConfig {
 
                 .authorizeExchange(exchange -> exchange
                         .pathMatchers(HttpMethod.OPTIONS).permitAll()
-                        .pathMatchers(HttpMethod.POST, PUBLIC_POST_ENDPOINTS).permitAll() // các post của public endpoints được phép truy cập mà không cần xác thực
-                        .pathMatchers(HttpMethod.GET, PUBLIC_GET_ENDPOINTS).permitAll() // các get của public endpoints được phép truy cập mà không cần xác thực
+                        .pathMatchers(HttpMethod.POST, PUBLIC_POST_ENDPOINTS).permitAll()
+                        .pathMatchers(HttpMethod.GET, PUBLIC_GET_ENDPOINTS).permitAll()
                         .pathMatchers(HttpMethod.DELETE, PUBLIC_DELETE_ENDPOINTS).permitAll()
 
-                        .pathMatchers(HttpMethod.POST, USER_POST_ENDPOINTS)
-                        .hasAnyRole("USER", "ADMIN")
+                        .pathMatchers(HttpMethod.POST, USER_POST_ENDPOINTS).hasAnyRole("USER", "ADMIN")
+                        .pathMatchers(HttpMethod.GET, USER_GET_ENDPOINTS).hasAnyRole("USER", "ADMIN")
+                        .pathMatchers(HttpMethod.PUT, USER_PUT_ENDPOINTS).hasAnyRole("USER", "ADMIN")
+                        .pathMatchers(HttpMethod.DELETE, USER_DELETE_ENDPOINTS).hasAnyRole("USER", "ADMIN")
 
-                        .pathMatchers(HttpMethod.GET, USER_GET_ENDPOINTS)
-                        .hasAnyRole("USER", "ADMIN")
+                        .pathMatchers(HttpMethod.POST, SECURITY_POST_ENDPOINTS).hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.PUT, SECURITY_PUT_ENDPOINTS).hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.GET, SECURITY_GET_ENDPOINTS).hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.DELETE, SECURITY_DELETE_ENDPOINTS).hasRole("ADMIN")
 
-                        .pathMatchers(HttpMethod.POST, SECURITY_POST_ENDPOINTS)
-                        .hasRole("ADMIN")
-
-                        .pathMatchers(HttpMethod.PUT, SECURITY_PUT_ENDPOINTS)
-                        .hasRole("ADMIN")
-
-                        .pathMatchers(HttpMethod.GET, SECURITY_GET_ENDPOINTS)
-                        .hasRole("ADMIN")
-
-                        .pathMatchers(HttpMethod.DELETE, SECURITY_DELETE_ENDPOINTS)
-                        .hasRole("ADMIN")
-                        .pathMatchers(HttpMethod.PUT, "/api/users/{userId}")
-                        .hasAnyRole("USER", "ADMIN")
                 )
                 .cors(cors ->{} )
                 .exceptionHandling(exceptionHandling -> exceptionHandling

@@ -1,80 +1,68 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyInfo</title>
+    <meta name="description" content="Quản lý thông tin tài khoản tại Văn Thành Shop.">
+    <title>Tài khoản của tôi | Văn Thành Shop</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
-    <script src="../javaScript/MyInfo.js"></script>
     <link rel="stylesheet" href="../css/Home_header.css">
     <link rel="stylesheet" href="../css/Profile.css">
-    <script src="../javaScript/Home.js"></script>
     <link rel="stylesheet" href="../css/Home_footer.css">
     <link rel="stylesheet" href="../css/Home_section_three.css">
-
+    <script src="../javaScript/Home.js" defer></script>
+    <script src="../javaScript/MyInfo.js" defer></script>
 </head>
 <body>
-<!-- header -->
 <header class="navbar">
-<div class="top-bar">
+  <div class="top-bar">
     <div class="top-bar-content">
-        <span>Xin chào mọi người tới với Văn Thành Shop</span>
-        <span> | Sản phẩm Chính hãng - Uy tín- Chất lượng cao</span>
-        <span> | Giao nhanh - Miễn phí cho đơn 300k</span>
-        <span> | Tra cứu đơn hàng</span>
-        <span> | Hotline: 9999999 99</span>
+      <span><i class="fa-solid fa-shield-halved" aria-hidden="true"></i> Sản phẩm chính hãng</span>
+      <span><i class="fa-solid fa-truck-fast" aria-hidden="true"></i> Miễn phí giao hàng từ 300.000₫</span>
+      <span><i class="fa-solid fa-headset" aria-hidden="true"></i> Hotline: 999 999 999</span>
     </div>
-</div>
+  </div>
 
-<div class="main-bar">
-    <!-- Logo -->
+  <div class="main-bar">
     <div class="logo">
-        <a href="Home.html">
-        <span class="logo-s" style="color: Orange">VĂN THÀNH</span>
-        </a>
+      <a href="Home.html" aria-label="Văn Thành Shop - Trang chủ">
+        <span class="logo-mark"><img src="../images/avatar.jpg" alt=""></span>
+        <span class="logo-s">VĂN THÀNH<span class="logo-caption">SHOP CÔNG NGHỆ</span></span>
+      </a>
     </div>
 
-    <!-- Menu -->
     <div class="btn">
-        <i class="fa-solid fa-house-user"></i><a href="Home.html">Trang Chủ </a>
+      <i class="fa-solid fa-house-user" aria-hidden="true"></i><a href="Home.html">Trang chủ</a>
     </div>
-
-    <!-- gioio thieu -->
     <div class="btn">
-        <i class="fa-solid fa-newspaper"></i> <a href="Introduce.html" rel="noopener noreferrer" >Giới Thiệu</a>
+      <i class="fa-solid fa-circle-info" aria-hidden="true"></i><a href="Introduce.html">Giới thiệu</a>
     </div>
-    <!-- tin tucws -->
     <div class="news-btn">
-        <a href="ListNews.html" ><i class="fa-solid fa-pager"></i> Tin Tức</a>
+      <a href="ListNews.html"><i class="fa-solid fa-newspaper" aria-hidden="true"></i> Tin tức</a>
     </div>
 
-
-    <!-- Search -->
     <div class="search-box">
-        <input type="text" placeholder="Bạn muốn mua gì hôm nay?">
-        <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="search" placeholder="Tìm điện thoại bạn yêu thích..." aria-label="Tìm kiếm sản phẩm">
+      <button class="search-submit" type="button" aria-label="Tìm kiếm">
+        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+      </button>
     </div>
 
-    <!-- Cart -->
     <div class="cart">
-        <a href="Carts.html"> <i class="fa-solid fa-cart-shopping"></i>Giỏ hàng</a>
+      <a href="Carts.html"><i class="fa-solid fa-cart-shopping" aria-hidden="true"></i><span>Giỏ hàng</span></a>
     </div>
 
-    <!-- Login nút đăng nhập  -->
-    
     <div class="login-button" id="login_button">
-    <i class="fa fa-user"></i> Tài khoản
-    <div class="accout-menu-two">
+      <i class="fa-regular fa-user" aria-hidden="true"></i><span class="account-label">Tài khoản</span>
+      <div class="accout-menu-two">
         <ul>
-        <li><a href="LoginClient.html">Đăng nhập</a></li>
-        <li><a href="Profile.html">Profile </a></li>
-        <li><a id="logout_button" onclick="logout()">Đăng xuất</a></li>
+          <li><a href="LoginClient.html">Đăng nhập</a></li>
+          <li><a href="Profile.html" aria-current="page">Tài khoản</a></li>
+          <li><a id="logout_button" onclick="logout()">Đăng xuất</a></li>
         </ul>
+      </div>
     </div>
-    </div>
-
-
-</div>
+  </div>
 </header>
 
 <div class="section-one">
