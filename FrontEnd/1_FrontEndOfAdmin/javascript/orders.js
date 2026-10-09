@@ -1,12 +1,24 @@
 import { apiRequest, getCollection, responseData } from "./api.js";
-import { badge, emptyState, errorState, escapeHtml, formatCurrency, formatDate, openModal, renderPagination } from "./ui.js";
+import { badge, emptyState, errorState, escapeHtml, formatCurrency, formatDate, openModal, renderPagination, showToast } from "./ui.js";
 
 const content = document.getElementById("page-content");
 const PAGE_SIZE = 9;
 let orders = [];
+let allOrders = [];
 let currentPage = 1;
 let sortKey = "createdAt";
 let sortDirection = "desc";
+
+const ORDER_STATUSES = [
+    "PENDING",
+    "CONFIRMED",
+    "PROCESSING",
+    "SHIPPING",
+    "DELIVERED",
+    "COMPLETED",
+    "CANCELLED",
+    "CANCELED"
+];
 
 function filteredOrders() {
     const query = document.getElementById("order-search")?.value.trim().toLocaleLowerCase("vi") || "";
@@ -46,7 +58,10 @@ function renderTable() {
       <td>${formatDate(order.createdAt)}</td>
       <td class="table-primary">${formatCurrency(order.totalMoney)}</td>
       <td>${badge(order.order_status)}</td>
-      <td><button class="button button-secondary" type="button" data-action="details" data-id="${escapeHtml(order.orderId)}">Chi tiết</button></td>
+      <td><div class="table-actions">
+        <button class="button button-secondary" type="button" data-action="details" data-id="${escapeHtml(order.orderId)}">Chi tiết</button>
+        <button class="button button-primary" type="button" data-action="edit-status" data-id="${escapeHtml(order.orderId)}">Cập nhật trạng thái</button>
+      </div></td>
     </tr>`).join("");
     if (!shown.length) body.innerHTML = `<tr><td colspan="6">${emptyState(orders.length ? "Không tìm thấy đơn hàng" : "Chưa có đơn hàng")}</td></tr>`;
     renderPagination(document.getElementById("orders-pagination"), currentPage, matches.length, PAGE_SIZE, page => {
@@ -57,17 +72,26 @@ function renderTable() {
 
 function renderPage() {
     content.innerHTML = `
-      <div class="inline-notice"><strong>Chưa thể cập nhật trạng thái:</strong> backend đã có API PUT nhưng route controller đang khai báo <code>/orders/orderId</code> trong khi yêu cầu <code>orderId</code> bằng <code>@PathVariable</code>. Gateway cũng đang bảo vệ route <code>/api/orders/{userId}</code>. Giao diện chỉ hiển thị trạng thái thực tế cho đến khi hai route được thống nhất.</div>
       <section class="panel">
         <header class="panel-header"><div><h2>Danh sách đơn hàng</h2><p>${orders.length} đơn hàng từ API</p></div></header>
-        <div class="panel-body"><div class="toolbar">
-          <input class="search-input" id="order-search" type="search" placeholder="Tìm mã đơn, tên, số điện thoại hoặc User ID..." aria-label="Tìm đơn hàng">
+        <div class="panel-body"><form class="toolbar" id="order-search-form">
+          <select class="filter-select" id="order-search-mode" aria-label="Phạm vi tìm kiếm">
+            <option value="all">Tìm trong danh sách</option>
+            <option value="customer">Tên khách hàng chính xác (API)</option>
+            <option value="phone">Số điện thoại chính xác (API)</option>
+          </select>
+          <input class="search-input" id="order-search" type="search" placeholder="Mã đơn, tên, số điện thoại hoặc User ID..." aria-label="Tìm đơn hàng">
           <select class="filter-select" id="order-status" aria-label="Lọc trạng thái"><option value="">Tất cả trạng thái</option></select>
-        </div></div>
+          <button class="button button-primary" type="submit">Tìm kiếm</button>
+          <button class="button button-secondary" type="button" data-action="clear-search">Xóa lọc</button>
+        </form>        <p class="form-note">Tìm theo tên/số điện thoại gọi API backend chính xác; tùy chọn danh sách lọc các kết quả đã tải.</p><p id="order-search-message" class="form-message" role="status"></p></div>
         <div class="table-wrap"><table class="data-table"><thead><tr><th>Mã đơn / User ID</th><th>Khách hàng</th><th><button class="sort-button" type="button" data-sort="createdAt">Ngày đặt ↕</button></th><th><button class="sort-button" type="button" data-sort="totalMoney">Tổng tiền ↕</button></th><th>Trạng thái</th><th>Thao tác</th></tr></thead><tbody id="orders-body"></tbody></table></div>
         <div class="pagination-bar" id="orders-pagination"></div>
       </section>`;
-    document.getElementById("order-search").addEventListener("input", () => { currentPage = 1; renderTable(); });
+    document.getElementById("order-search-form").addEventListener("submit", event => {
+        event.preventDefault();
+        searchOrders();
+    });
     document.getElementById("order-status").addEventListener("change", () => { currentPage = 1; renderTable(); });
     content.querySelectorAll("[data-sort]").forEach(button => button.addEventListener("click", () => {
         const nextKey = button.dataset.sort;
@@ -76,6 +100,98 @@ function renderPage() {
         renderTable();
     }));
     renderTable();
+}
+
+function searchOrders() {
+    const query = document.getElementById("order-search").value.trim();
+    const mode = document.getElementById("order-search-mode").value;
+    const message = document.getElementById("order-search-message");
+    message.textContent = "";
+
+    if (mode === "all") {
+        orders = allOrders;
+        currentPage = 1;
+        renderTable();
+        return;
+    }
+    if (!query) {
+        message.textContent = mode === "phone"
+            ? "Nhập số điện thoại để tìm đơn."
+            : "Nhập chính xác tên khách hàng để tìm đơn.";
+        return;
+    }
+
+    const button = document.querySelector('#order-search-form [type="submit"]');
+    button.disabled = true;
+    button.textContent = "Đang tìm...";
+    const endpoint = mode === "phone"
+        ? `/orders/getOrderByCustomerPhoneNumber/${encodeURIComponent(query)}`
+        : `/orders/getOrderByCustomer/${encodeURIComponent(query)}`;
+    apiRequest(endpoint).then(response => {
+        orders = getCollection(response);
+        currentPage = 1;
+        renderTable();
+    }).catch(error => {
+        message.textContent = `Không thể tìm đơn hàng: ${error.message}`;
+    }).finally(() => {
+        button.disabled = false;
+        button.textContent = "Tìm kiếm";
+    });
+}
+
+function editOrderStatus(order) {
+    const currentStatus = String(order.order_status || "");
+    const statuses = [...new Set([...ORDER_STATUSES, ...(currentStatus ? [currentStatus] : [])])];
+    const modal = openModal(`Cập nhật trạng thái đơn ${order.orderId || ""}`, `
+      <form id="order-status-form" class="form-stack">
+        <label class="field-label">Trạng thái đơn hàng
+          <select name="order_status" required>
+            <option value="">Chọn trạng thái</option>
+            ${statuses.map(status => `<option value="${escapeHtml(status)}" ${status === currentStatus ? "selected" : ""}>${escapeHtml(status)}</option>`).join("")}
+          </select>
+        </label>
+        <p class="form-note">Chọn một trạng thái được ứng dụng sử dụng. Giá trị hiện tại: ${escapeHtml(currentStatus || "Chưa cập nhật")}.</p>
+        <p id="order-status-message" class="form-message" role="alert"></p>
+        <div class="form-actions">
+          <button class="button button-secondary" type="button" data-close-modal>Hủy</button>
+          <button class="button button-primary" type="submit">Lưu trạng thái</button>
+        </div>
+      </form>`);
+    modal.querySelector("#order-status-form").addEventListener("submit", event => {
+        event.preventDefault();
+        const form = event.currentTarget;
+        if (!form.reportValidity()) return;
+        const status = String(new FormData(form).get("order_status") || "");
+        if (status === currentStatus) {
+            modal.innerHTML = "";
+            showToast("Trạng thái đơn hàng không thay đổi.", "error");
+            return;
+        }
+
+        const submit = form.querySelector('[type="submit"]');
+        submit.disabled = true;
+        submit.textContent = "Đang lưu...";
+        apiRequest(`/orders/${encodeURIComponent(order.orderId)}`, {
+            method: "PUT",
+            body: { order_status: status }
+        }).then(response => {
+            const updated = responseData(response);
+            if (updated && typeof updated === "object") Object.assign(order, updated);
+            order.order_status = status;
+            const originalOrder = allOrders.find(item => String(item.orderId) === String(order.orderId));
+            if (originalOrder && originalOrder !== order) {
+                if (updated && typeof updated === "object") Object.assign(originalOrder, updated);
+                originalOrder.order_status = status;
+            }
+            modal.innerHTML = "";
+            renderTable();
+            showToast(`Đã cập nhật trạng thái đơn ${order.orderId}.`);
+        }).catch(error => {
+            modal.querySelector("#order-status-message").textContent = error.message;
+            submit.disabled = false;
+            submit.textContent = "Lưu trạng thái";
+        });
+    });
 }
 
 function showOrderDetails(order, details) {
@@ -98,7 +214,8 @@ function showOrderDetails(order, details) {
 function loadOrders() {
     content.innerHTML = `<section class="panel panel-body"><span class="spinner" aria-hidden="true"></span> <span class="text-muted">Đang tải đơn hàng...</span></section>`;
     return apiRequest("/orders").then(response => {
-        orders = getCollection(response);
+        allOrders = getCollection(response);
+        orders = allOrders;
         renderPage();
     }).catch(error => { content.innerHTML = errorState(error.message); });
 }
@@ -107,6 +224,21 @@ export function initPage() {
     loadOrders();
     content.addEventListener("click", event => {
         if (event.target.closest('[data-action="retry"]')) return loadOrders();
+        if (event.target.closest('[data-action="clear-search"]')) {
+            document.getElementById("order-search").value = "";
+            document.getElementById("order-search-mode").value = "all";
+            document.getElementById("order-status").value = "";
+            document.getElementById("order-search-message").textContent = "";
+            orders = allOrders;
+            currentPage = 1;
+            return renderTable();
+        }
+        const statusButton = event.target.closest('[data-action="edit-status"]');
+        if (statusButton) {
+            const selectedOrder = orders.find(item => String(item.orderId) === statusButton.dataset.id);
+            if (selectedOrder) editOrderStatus(selectedOrder);
+            return;
+        }
         const button = event.target.closest('[data-action="details"]');
         if (!button) return;
         const order = orders.find(item => String(item.orderId) === button.dataset.id);

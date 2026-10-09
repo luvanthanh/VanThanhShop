@@ -70,7 +70,7 @@ public class OrderController {
                 .build();
     }
 //cập nhận trạng thái đơn hàng
-    @PutMapping("/orderId")
+    @PutMapping("/{orderId}")
     public ApiResponse<OrderResponse> updateOrderStatus (@PathVariable String orderId, @RequestBody OrderUpdateStatusRequest request){
         var result = orderService.updateOrderStatus(orderId,request);
 

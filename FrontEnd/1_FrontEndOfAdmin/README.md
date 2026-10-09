@@ -32,14 +32,15 @@ Các request dùng chung qua `javascript/api.js`. Token được gửi bằng `A
 | Cập nhật / xóa người dùng | `PUT /api/users/{userId}`, `DELETE /api/users/{userId}` |
 | Danh sách / chi tiết đơn hàng | `GET /api/orders`, `GET /api/orders/{orderId}/details` |
 | Tìm đơn theo tên / số điện thoại | `GET /api/orders/getOrderByCustomer/{customerName}`, `GET /api/orders/getOrderByCustomerPhoneNumber/{phoneNumber}` |
-| Cập nhật trạng thái đơn hàng | Có controller PUT nhưng route hiện không khớp biến `@PathVariable`; giao diện chưa gọi API này |
+| Cập nhật trạng thái đơn hàng | `PUT /api/orders/{orderId}`, body `{ "order_status": "..." }` |
 | Tin tức | `GET /api/news`, `POST /api/news/post`, `PUT /api/news/update/{newsId}`, `DELETE /api/news/delete/{newsId}` |
 
 ## Giới hạn cần backend bổ sung hoặc xác nhận
 
 - `UserUpdateRequest` chỉ nhận `userFirstName`, `userLastName`, `userAddress`, `userEmail` và `userPhoneNumber`; giao diện không gửi username, password hoặc roles khi cập nhật. Role chỉ được xem, không chỉnh sửa.
 - Gateway hiện cho phép cả `USER` và `ADMIN` gọi `PUT /api/users/{userId}` và `DELETE /api/users/{userId}`. Backend cần tự đảm bảo người dùng thường chỉ sửa/xóa tài khoản của chính họ; ẩn nút trên frontend không thay thế kiểm tra phân quyền phía server.
-- API cập nhật trạng thái đơn cần đồng bộ route giữa `OrderController` (hiện `@PutMapping("/orderId")` nhưng tham số là `@PathVariable orderId`) và Gateway (hiện bảo vệ `/api/orders/{userId}`) trước khi giao diện bật thao tác cập nhật.
+- API tìm theo tên/số điện thoại hiện dùng khớp chính xác với dữ liệu backend; tìm trong danh sách đã tải vẫn hỗ trợ lọc một phần theo mã đơn, tên, số điện thoại và User ID.
+- Trạng thái đơn hàng được gửi bằng `order_status`. Giao diện cung cấp các trạng thái đã được trang người dùng sử dụng; backend vẫn cần xác thực giá trị hợp lệ và quyền cập nhật.
 - Dashboard chỉ cộng `totalMoney` của mọi đơn để báo giá trị đơn hàng; chưa có dữ liệu tổng doanh thu đã thanh toán hoặc bộ lọc trạng thái thanh toán.
 - Không hiển thị nút xóa đơn hàng: controller hiện khai báo `@DeleteMapping("/orderId")` nhưng yêu cầu tham số `orderId` từ path, trong khi Gateway lại bảo vệ `/api/orders/{orderId}`. Cần thống nhất route ở backend trước khi bật thao tác này.
 - Upload ảnh chưa có endpoint: giao diện nhận URL ảnh và gửi các thuộc tính đúng cấu trúc request hiện có.

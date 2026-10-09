@@ -9,5 +9,5 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class OrderUpdateStatusRequest {
-    private  String status;
+    private  String order_status;
 }

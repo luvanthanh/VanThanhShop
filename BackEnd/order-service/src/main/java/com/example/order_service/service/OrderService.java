@@ -133,11 +133,13 @@ public class OrderService {
 
 
 //    cập nhận trạng thái đơn hàng
+    @Transactional
     public OrderResponse updateOrderStatus(String orderId, OrderUpdateStatusRequest request){
         Order order = orderRepository.findByOrderId(orderId)
                 .orElseThrow(() -> new RuntimeException("order not found"));
-        orderMapper.toUpdateOrderStatus(order,request);
-        return orderMapper.toOrderResponse(order);
+        order.setOrder_status(request.getOrder_status());
+        Order updatedOrder = orderRepository.save(order);
+        return orderMapper.toOrderResponse(updatedOrder);
     }
 
 
