@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const setFieldsEditable = editable => {
-        ["userName", "firstName", "lastName", "email", "phone", "address"].forEach(id => {
+        ["firstName", "lastName", "email", "phone", "address"].forEach(id => {
             const input = document.getElementById(id);
             if (input) {
                 if (editable) {
@@ -69,16 +69,22 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         document.getElementById("saveBtn").addEventListener("click", () => {
+            const currentToken = localStorage.getItem("token");
+            if (!currentToken) {
+                alert("Phiên đăng nhập không hợp lệ. Vui lòng đăng nhập lại!");
+                window.location.href = "LoginClient.html";
+                return;
+            }
+
             const updateData = {
-                userName: document.getElementById("userName").value,
-                userFirstName: document.getElementById("firstName").value,
-                userLastName: document.getElementById("lastName").value,
-                userEmail: document.getElementById("email").value,
-                userPhoneNumber: document.getElementById("phone").value,
-                userAddress: document.getElementById("address").value
+                userFirstName: document.getElementById("firstName").value.trim(),
+                userLastName: document.getElementById("lastName").value.trim(),
+                userAddress: document.getElementById("address").value.trim(),
+                userEmail: document.getElementById("email").value.trim(),
+                userPhoneNumber: document.getElementById("phone").value.trim()
             };
 
-            fetch(`http://localhost:8888/api/users/${userId}`, {
+            fetch(`http://localhost:8888/api/users/${encodeURIComponent(userId)}`, {
                 method: "PUT",
                 headers: {
                     "Authorization": `Bearer ${token}`,

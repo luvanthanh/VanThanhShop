@@ -141,6 +141,8 @@ public class SecurityConfig {
 
                         .pathMatchers(HttpMethod.DELETE, SECURITY_DELETE_ENDPOINTS)
                         .hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.PUT, "/api/users/{userId}")
+                        .hasAnyRole("USER", "ADMIN")
                 )
                 .cors(cors ->{} )
                 .exceptionHandling(exceptionHandling -> exceptionHandling

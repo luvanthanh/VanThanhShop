@@ -85,14 +85,10 @@ public class UserService {
     @PostAuthorize("hasRole('ADMIN') or returnObject.userName == authentication.name")
     public UserResponse updateUserById(@RequestBody UserUpdateRequest request, String userId){
         User user = userRepository.findById(userId)
-                .orElseThrow(()-> new AppException(ErrorCode.USER_EXITS));
-        user = userMapper.toUpdateUser(user,request);
+                .orElseThrow(()-> new AppException(ErrorCode.USER_NOTFIND));
 
-        if(request.getUserPassword() != null && !request.getUserPassword().isEmpty()){
-            PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
-            user.setUserPassword(passwordEncoder.encode(request.getUserPassword()));
-        }
-        return userMapper.toUserResponse(userRepository.save(user));
+            user = userMapper.toUpdateUser(user,request);
+            return userMapper.toUserResponse(userRepository.save(user));
     }
 
     @PostAuthorize("hasRole('ADMIN') or returnObject.userName == authentication.name")
