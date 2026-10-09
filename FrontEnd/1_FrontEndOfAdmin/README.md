@@ -29,19 +29,21 @@ Các request dùng chung qua `javascript/api.js`. Token được gửi bằng `A
 | Đăng nhập / kiểm tra / đăng xuất | `POST /api/users/auth/login`, `POST /api/users/auth/introspect`, `POST /api/users/auth/logout` |
 | Danh sách, chi tiết và CRUD sản phẩm | `GET /api/products`, `GET /api/products/id/{productId}`, `POST /api/products/post`, `PUT /api/products/update/{productId}`, `DELETE /api/products/delete/{productId}` |
 | Danh sách và hồ sơ người dùng | `GET /api/users`, `GET /api/users/myInfo` |
-| Cập nhật / xóa người dùng | `PUT /api/users/{userId}`, `DELETE /api/users/{userId}` (Gateway hiện chưa cấp quyền PUT cho endpoint này) |
+| Cập nhật / xóa người dùng | `PUT /api/users/{userId}`, `DELETE /api/users/{userId}` |
 | Danh sách / chi tiết đơn hàng | `GET /api/orders`, `GET /api/orders/{orderId}/details` |
+| Tìm đơn theo tên / số điện thoại | `GET /api/orders/getOrderByCustomer/{customerName}`, `GET /api/orders/getOrderByCustomerPhoneNumber/{phoneNumber}` |
+| Cập nhật trạng thái đơn hàng | Có controller PUT nhưng route hiện không khớp biến `@PathVariable`; giao diện chưa gọi API này |
 | Tin tức | `GET /api/news`, `POST /api/news/post`, `PUT /api/news/update/{newsId}`, `DELETE /api/news/delete/{newsId}` |
 
 ## Giới hạn cần backend bổ sung hoặc xác nhận
 
-- `../../BackEnd/api-gateway/src/main/java/Myproject/Api_getWay/configuration/SecurityConfig.java`: thêm quy tắc PUT cho `/api/users/{userId}` nếu cho phép Admin sửa hồ sơ người dùng/Admin. Controller có PUT nhưng Gateway hiện không đưa route vào nhóm `SECURITY_PUT_ENDPOINTS`.
-- `UserUpdateRequest` không nhận trường `roles`; giao diện chỉ xem role, không giả vờ hỗ trợ đổi USER/ADMIN. Trước khi mở PUT ở Gateway, cần xác nhận cách `UserMapper.toUpdateUser` xử lý `userPassword` null để sửa thông tin cá nhân không vô tình xóa mật khẩu hiện có.
-- Backend chưa có endpoint cập nhật trạng thái đơn hàng; giao diện chỉ hiển thị `order_status`.
+- `UserUpdateRequest` chỉ nhận `userFirstName`, `userLastName`, `userAddress`, `userEmail` và `userPhoneNumber`; giao diện không gửi username, password hoặc roles khi cập nhật. Role chỉ được xem, không chỉnh sửa.
+- Gateway hiện cho phép cả `USER` và `ADMIN` gọi `PUT /api/users/{userId}` và `DELETE /api/users/{userId}`. Backend cần tự đảm bảo người dùng thường chỉ sửa/xóa tài khoản của chính họ; ẩn nút trên frontend không thay thế kiểm tra phân quyền phía server.
+- API cập nhật trạng thái đơn cần đồng bộ route giữa `OrderController` (hiện `@PutMapping("/orderId")` nhưng tham số là `@PathVariable orderId`) và Gateway (hiện bảo vệ `/api/orders/{userId}`) trước khi giao diện bật thao tác cập nhật.
 - Dashboard chỉ cộng `totalMoney` của mọi đơn để báo giá trị đơn hàng; chưa có dữ liệu tổng doanh thu đã thanh toán hoặc bộ lọc trạng thái thanh toán.
 - Không hiển thị nút xóa đơn hàng: controller hiện khai báo `@DeleteMapping("/orderId")` nhưng yêu cầu tham số `orderId` từ path, trong khi Gateway lại bảo vệ `/api/orders/{orderId}`. Cần thống nhất route ở backend trước khi bật thao tác này.
 - Upload ảnh chưa có endpoint: giao diện nhận URL ảnh và gửi các thuộc tính đúng cấu trúc request hiện có.
 - Gateway đang cho phép truy cập danh sách sản phẩm và tin tức không cần xác thực (theo `PUBLIC_GET_ENDPOINTS`); các thao tác ghi được bảo vệ bởi role ADMIN.
-- `GET /api/users` trả về entity `User` có trường `userPassword`; giao diện tuyệt đối không hiển thị trường này, nhưng backend nên trả DTO an toàn chỉ có các trường công khai.
+- `GET /api/users` trả về `UserResponse`, không chứa trường mật khẩu.
 
 Frontend kiểm tra role trong JWT để chặn điều hướng thông thường, nhưng mọi quyền truy cập vẫn phải được kiểm tra ở backend/Gateway.

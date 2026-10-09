@@ -58,7 +58,7 @@ document.getElementById("admin-root").innerHTML = `
         </div>
       </header>
       <main class="page-main">
-        <div class="page-intro"><p>${page.subtitle}</p><span class="live-indicator"><i></i> Kết nối API</span></div>
+        <div class="page-intro"><p>${page.subtitle}</p><span class="live-indicator" id="admin-auth-status"><i></i> Đang xác thực phiên...</span></div>
         <section id="page-content" aria-live="polite"></section>
       </main>
       <footer class="app-footer"><span>© VAN THANH SHOP</span><span>Admin workspace</span></footer>
@@ -81,6 +81,7 @@ document.getElementById("logout-button").addEventListener("click", () => {
 });
 
 checkAuth().then(claims => {
+    document.getElementById("admin-auth-status").lastChild.textContent = " Admin đã xác thực";
     const name = claims.sub || "Admin";
     localStorage.setItem("adminUserName", name);
     document.getElementById("admin-name").textContent = name;
@@ -89,6 +90,7 @@ checkAuth().then(claims => {
 }).then(module => {
     module.initPage();
 }).catch(error => {
+    document.getElementById("admin-auth-status").lastChild.textContent = " Không thể xác thực";
     document.getElementById("page-content").innerHTML = `
       <div class="state-card error-state"><h3>Không thể xác thực Admin</h3><p>${error.message}</p></div>`;
 });

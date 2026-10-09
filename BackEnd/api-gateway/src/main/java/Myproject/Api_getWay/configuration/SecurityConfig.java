@@ -72,8 +72,10 @@ public class SecurityConfig {
     private final String[] SECURITY_GET_ENDPOINTS = {
 
             "/api/users/{userId}",
+            "/api/users",
             "/api/orders",
-            "/api/users"
+            "/api/orders/getOrderByCustomer/{customerName}",
+            "/api/orders/getOrderByCustomerPhoneNumber/{phoneNumber}",
     };
     private final String[] SECURITY_POST_ENDPOINTS={
             "/api/products/post",
@@ -92,6 +94,7 @@ public class SecurityConfig {
             "/api/news/update/{newsId}",
             "/api/products/update/{productId}",               // PUT  - updateProduct
             "/api/orders/{userId}",
+            "/api/orders/{orderId}"
     };
 
     private final String[] USER_POST_ENDPOINTS = {
@@ -127,7 +130,7 @@ public class SecurityConfig {
                 .cors(ServerHttpSecurity.CorsSpec::disable)// CORS sẽ được cấu hình riêng ở dưới
 
                 .authorizeExchange(exchange -> exchange
-                        .pathMatchers(HttpMethod.OPTIONS).permitAll()
+                        .pathMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .pathMatchers(HttpMethod.POST, PUBLIC_POST_ENDPOINTS).permitAll()
                         .pathMatchers(HttpMethod.GET, PUBLIC_GET_ENDPOINTS).permitAll()
                         .pathMatchers(HttpMethod.DELETE, PUBLIC_DELETE_ENDPOINTS).permitAll()
@@ -142,15 +145,6 @@ public class SecurityConfig {
                         .pathMatchers(HttpMethod.GET, SECURITY_GET_ENDPOINTS).hasRole("ADMIN")
                         .pathMatchers(HttpMethod.DELETE, SECURITY_DELETE_ENDPOINTS).hasRole("ADMIN")
 
-
-                        .pathMatchers(HttpMethod.PUT,USER_PUT_ENDPOINTS).hasAnyRole("USER", "ADMIN")
-                        .pathMatchers(HttpMethod.DELETE,USER_DELETE_ENDPOINTS).hasAnyRole("USER", "ADMIN")
-
-
-                        .pathMatchers(HttpMethod.POST, SECURITY_POST_ENDPOINTS).hasRole("ADMIN")
-                        .pathMatchers(HttpMethod.PUT, SECURITY_PUT_ENDPOINTS).hasRole("ADMIN")
-                        .pathMatchers(HttpMethod.GET, SECURITY_GET_ENDPOINTS).hasRole("ADMIN")
-                        .pathMatchers(HttpMethod.DELETE, SECURITY_DELETE_ENDPOINTS).hasRole("ADMIN")
 
                 )
                 .cors(cors ->{} )

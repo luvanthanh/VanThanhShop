@@ -57,11 +57,11 @@ function renderTable() {
 
 function renderPage() {
     content.innerHTML = `
-      <div class="inline-notice"><strong>Trạng thái đơn hàng chỉ đọc:</strong> backend hiện chưa có API cập nhật trạng thái. Giao diện chỉ hiển thị giá trị <code>order_status</code> thực tế, không tự tạo trạng thái hay gọi endpoint chưa tồn tại.</div>
+      <div class="inline-notice"><strong>Chưa thể cập nhật trạng thái:</strong> backend đã có API PUT nhưng route controller đang khai báo <code>/orders/orderId</code> trong khi yêu cầu <code>orderId</code> bằng <code>@PathVariable</code>. Gateway cũng đang bảo vệ route <code>/api/orders/{userId}</code>. Giao diện chỉ hiển thị trạng thái thực tế cho đến khi hai route được thống nhất.</div>
       <section class="panel">
         <header class="panel-header"><div><h2>Danh sách đơn hàng</h2><p>${orders.length} đơn hàng từ API</p></div></header>
         <div class="panel-body"><div class="toolbar">
-          <input class="search-input" id="order-search" type="search" placeholder="Tìm mã đơn, tên khách hàng hoặc User ID..." aria-label="Tìm đơn hàng">
+          <input class="search-input" id="order-search" type="search" placeholder="Tìm mã đơn, tên, số điện thoại hoặc User ID..." aria-label="Tìm đơn hàng">
           <select class="filter-select" id="order-status" aria-label="Lọc trạng thái"><option value="">Tất cả trạng thái</option></select>
         </div></div>
         <div class="table-wrap"><table class="data-table"><thead><tr><th>Mã đơn / User ID</th><th>Khách hàng</th><th><button class="sort-button" type="button" data-sort="createdAt">Ngày đặt ↕</button></th><th><button class="sort-button" type="button" data-sort="totalMoney">Tổng tiền ↕</button></th><th>Trạng thái</th><th>Thao tác</th></tr></thead><tbody id="orders-body"></tbody></table></div>

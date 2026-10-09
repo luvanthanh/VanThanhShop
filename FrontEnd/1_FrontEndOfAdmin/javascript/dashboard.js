@@ -2,6 +2,7 @@ import { apiRequest, getCollection } from "./api.js";
 import { badge, emptyState, errorState, escapeHtml, formatCurrency, formatDate, loadingState } from "./ui.js";
 
 const content = document.getElementById("page-content");
+let chartResizeObserver = null;
 
 function getOrders(response) {
     return getCollection(response);
@@ -98,10 +99,17 @@ function renderRevenueChart(orders) {
         });
     };
     draw();
-    if ("ResizeObserver" in window) new ResizeObserver(draw).observe(canvas.parentElement);
+    if ("ResizeObserver" in window) {
+        chartResizeObserver = new ResizeObserver(draw);
+        chartResizeObserver.observe(canvas.parentElement);
+    }
 }
 
 function renderDashboard(products, users, orders, failures) {
+    if (chartResizeObserver) {
+        chartResizeObserver.disconnect();
+        chartResizeObserver = null;
+    }
     const revenue = orders && orders.every(order => moneyOf(order) !== null)
         ? orders.reduce((sum, order) => sum + moneyOf(order), 0)
         : null;
@@ -112,6 +120,10 @@ function renderDashboard(products, users, orders, failures) {
     const latestOrders = [...(orders || [])].sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0)).slice(0, 6);
 
     content.innerHTML = `
+      <div class="dashboard-toolbar">
+        <div><h2>Tổng quan kinh doanh</h2><p>Dữ liệu được tải trực tiếp từ các API hiện có.</p></div>
+        <button class="button button-secondary" type="button" data-action="refresh-dashboard">Làm mới dữ liệu</button>
+      </div>
       <div class="stats-grid">
         <article class="stat-card" style="--stat-color:#2864dc;--stat-tint:#edf4ff"><span class="stat-label">Tổng sản phẩm</span><span class="stat-icon" aria-hidden="true">▣</span><div class="stat-value">${products ? products.length.toLocaleString("vi-VN") : "—"}</div></article>
         <article class="stat-card" style="--stat-color:#138a62;--stat-tint:#eaf8f2"><span class="stat-label">Người dùng</span><span class="stat-icon" aria-hidden="true">♙</span><div class="stat-value">${users ? users.length.toLocaleString("vi-VN") : "—"}</div></article>
@@ -166,5 +178,6 @@ export function initPage() {
     load();
     content.addEventListener("click", event => {
         if (event.target.closest('[data-action="retry"]')) load();
+        if (event.target.closest('[data-action="refresh-dashboard"]')) load();
     });
 }

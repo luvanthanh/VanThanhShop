@@ -54,7 +54,6 @@ function renderUsers() {
 
 function renderPage() {
     content.innerHTML = `
-      <div class="inline-notice"><strong>Bảo mật:</strong> API danh sách hiện trả về đối tượng User có trường mật khẩu. Giao diện không đọc hoặc hiển thị trường đó. Endpoint cập nhật người dùng chưa được cho phép trong danh sách PUT của API Gateway; thao tác sửa sẽ báo lỗi 403 cho đến khi backend mở quyền phù hợp. Vai trò chỉ hiển thị, API cập nhật hiện không nhận trường roles.</div>
       <section class="panel">
         <header class="panel-header"><div><h2>Danh sách người dùng</h2><p>${users.length} tài khoản từ API</p></div></header>
         <div class="panel-body"><div class="toolbar"><input class="search-input" id="user-search" type="search" placeholder="Tìm tên, email, số điện thoại..." aria-label="Tìm người dùng"></div></div>
@@ -84,18 +83,15 @@ function showDetails(user) {
 
 function editUser(user) {
     const modal = openModal("Chỉnh sửa người dùng", `
-      <div class="inline-notice">API Gateway hiện chưa cấp quyền <code>PUT /api/users/{userId}</code> cho ADMIN. Có thể lưu thử để nhận phản hồi thật từ backend; hệ thống sẽ không báo thành công nếu API từ chối.</div>
       <form id="user-form" class="form-stack">
         <div class="form-grid">
-          <label class="field-label">Tên đăng nhập<input name="userName" required maxlength="100" value="${escapeHtml(user.userName || "")}"></label>
           <label class="field-label">Email<input name="userEmail" type="email" required value="${escapeHtml(user.userEmail || "")}"></label>
           <label class="field-label">Họ<input name="userFirstName" required value="${escapeHtml(user.userFirstName || "")}"></label>
           <label class="field-label">Tên<input name="userLastName" required value="${escapeHtml(user.userLastName || "")}"></label>
           <label class="field-label">Số điện thoại<input name="userPhoneNumber" required value="${escapeHtml(user.userPhoneNumber || "")}"></label>
-          <label class="field-label">Mật khẩu mới (không bắt buộc)<input name="userPassword" type="password" autocomplete="new-password" placeholder="Để trống để giữ nguyên"></label>
           <label class="field-label field-full">Địa chỉ<textarea name="userAddress" required>${escapeHtml(user.userAddress || "")}</textarea></label>
         </div>
-        <p class="form-note">Vai trò hiện tại: ${escapeHtml((user.roles || []).join(", ") || "—")}. Backend UserUpdateRequest không hỗ trợ cập nhật role.</p>
+        <p class="form-note">Vai trò hiện tại: ${escapeHtml((user.roles || []).join(", ") || "—")}. Thông tin đăng nhập và vai trò được quản lý riêng.</p>
         <p id="user-form-message" class="form-message" role="alert"></p>
         <div class="form-actions"><button class="button button-secondary" type="button" data-close-modal>Hủy</button><button class="button button-primary" type="submit">Lưu thay đổi</button></div>
       </form>`);
@@ -104,12 +100,11 @@ function editUser(user) {
         const form = event.currentTarget;
         if (!form.reportValidity()) return;
         const fields = new FormData(form);
-        const payload = Object.fromEntries(["userName", "userFirstName", "userLastName", "userAddress", "userEmail", "userPhoneNumber"]
+        const payload = Object.fromEntries(["userFirstName", "userLastName", "userAddress", "userEmail", "userPhoneNumber"]
             .map(key => [key, String(fields.get(key)).trim()]));
-        const password = String(fields.get("userPassword") || "");
-        if (password) payload.userPassword = password;
         const submit = form.querySelector('[type="submit"]');
         submit.disabled = true;
+        submit.textContent = "Đang lưu...";
         apiRequest(`/users/${encodeURIComponent(user.userId)}`, { method: "PUT", body: payload })
             .then(() => {
                 modal.innerHTML = "";
@@ -118,6 +113,7 @@ function editUser(user) {
             }).catch(error => {
                 modal.querySelector("#user-form-message").textContent = error.message;
                 submit.disabled = false;
+                submit.textContent = "Lưu thay đổi";
             });
     });
 }
