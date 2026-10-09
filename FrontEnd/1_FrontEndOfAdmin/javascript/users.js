@@ -148,7 +148,7 @@ export function initPage() {
                 showToast("Không thể tự xóa tài khoản đang đăng nhập.", "error");
                 return;
             }
-            if (!window.confirm(`Xóa tài khoản "${user.userName}"? Thao tác này không thể hoàn tác.`)) return;
+            if (!window.confirm(`Xóa tài khoản "${user.userName}"? Bạn có chắc muốn xóa tài khoản này!`)) return;
             apiRequest(`/users/${encodeURIComponent(user.userId)}`, { method: "DELETE" })
                 .then(() => { showToast("Đã xóa tài khoản."); return loadUsers(); })
                 .catch(error => showToast(error.message, "error"));

@@ -103,7 +103,7 @@ public class SecurityConfig {
             "/api/users/myInfo"
     };
 
-<<<<<<< HEAD
+
     private final String[] USER_PUT_ENDPOINTS = {
             "/api/users/{userId}"
     };
@@ -111,14 +111,7 @@ public class SecurityConfig {
             "/api/users/{userId}"
     };
 
-=======
-    private final String[] USER_DELETE_ENDPOINTS = {
-            "/api/users/{userId}"
-    };
-    private final String[] USER_PUT_ENDPOINTS = {
-            "/api/users/{userId}"
-    };
->>>>>>> frontend_admin
+
 
     private final AuthenticationFilter authenticationFilter;
 
@@ -141,7 +134,6 @@ public class SecurityConfig {
 
                         .pathMatchers(HttpMethod.POST, USER_POST_ENDPOINTS).hasAnyRole("USER", "ADMIN")
                         .pathMatchers(HttpMethod.GET, USER_GET_ENDPOINTS).hasAnyRole("USER", "ADMIN")
-<<<<<<< HEAD
                         .pathMatchers(HttpMethod.PUT, USER_PUT_ENDPOINTS).hasAnyRole("USER", "ADMIN")
                         .pathMatchers(HttpMethod.DELETE, USER_DELETE_ENDPOINTS).hasAnyRole("USER", "ADMIN")
 
@@ -150,7 +142,7 @@ public class SecurityConfig {
                         .pathMatchers(HttpMethod.GET, SECURITY_GET_ENDPOINTS).hasRole("ADMIN")
                         .pathMatchers(HttpMethod.DELETE, SECURITY_DELETE_ENDPOINTS).hasRole("ADMIN")
 
-=======
+
                         .pathMatchers(HttpMethod.PUT,USER_PUT_ENDPOINTS).hasAnyRole("USER", "ADMIN")
                         .pathMatchers(HttpMethod.DELETE,USER_DELETE_ENDPOINTS).hasAnyRole("USER", "ADMIN")
 
@@ -159,7 +151,7 @@ public class SecurityConfig {
                         .pathMatchers(HttpMethod.PUT, SECURITY_PUT_ENDPOINTS).hasRole("ADMIN")
                         .pathMatchers(HttpMethod.GET, SECURITY_GET_ENDPOINTS).hasRole("ADMIN")
                         .pathMatchers(HttpMethod.DELETE, SECURITY_DELETE_ENDPOINTS).hasRole("ADMIN")
->>>>>>> frontend_admin
+
                 )
                 .cors(cors ->{} )
                 .exceptionHandling(exceptionHandling -> exceptionHandling

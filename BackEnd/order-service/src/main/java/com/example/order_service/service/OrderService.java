@@ -3,6 +3,7 @@ package com.example.order_service.service;
 
 import com.example.order_service.client.CartItemClient;
 import com.example.order_service.dto.request.OrderCreateRequest;
+import com.example.order_service.dto.request.OrderUpdateStatusRequest;
 import com.example.order_service.dto.response.ApiResponse;
 import com.example.order_service.dto.response.CartItemResponse;
 import com.example.order_service.dto.response.OrderDetailsResponse;
@@ -131,7 +132,41 @@ public class OrderService {
     }
 
 
-//    xóa đơn hàng
+//    cập nhận trạng thái đơn hàng
+    public OrderResponse updateOrderStatus(String orderId, OrderUpdateStatusRequest request){
+        Order order = orderRepository.findByOrderId(orderId)
+                .orElseThrow(() -> new RuntimeException("order not found"));
+        orderMapper.toUpdateOrderStatus(order,request);
+        return orderMapper.toOrderResponse(order);
+    }
+
+
+//    lấy danh sách đơn hàng theo tên khách hàng
+    public List<OrderResponse> getOrderByCustomer(String customerName){
+        List<Order> listOrder = orderRepository.findByCustomerName(customerName)
+                .orElseThrow(() -> new RuntimeException("order not found"));
+        List<OrderResponse> orderResponses = new ArrayList<>();
+        for( Order order : listOrder){
+            OrderResponse orderResponse = orderMapper.toOrderResponse(order);
+            orderResponses.add(orderResponse);
+        }
+        return  orderResponses;
+    }
+
+    //    lấy danh sách đơn hàng theo số điện thoại
+    public List<OrderResponse> getOrderByCustomerPhoneNumber(String phoneNumber){
+        List<Order> listOrder = orderRepository.findByCustomerPhoneNumber(phoneNumber)
+                .orElseThrow(() -> new RuntimeException("order not found"));
+        List<OrderResponse> orderResponses = new ArrayList<>();
+        for( Order order : listOrder){
+            OrderResponse orderResponse = orderMapper.toOrderResponse(order);
+            orderResponses.add(orderResponse);
+        }
+        return  orderResponses;
+    }
+
+
+    //    xóa đơn hàng
     public void deleteOrder(String orderId){
         orderRepository.deleteById(orderId);
     }

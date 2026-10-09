@@ -3,6 +3,7 @@ package com.example.order_service.controller;
 
 import java.util.List;
 
+import com.example.order_service.dto.request.OrderUpdateStatusRequest;
 import com.example.order_service.dto.response.OrderDetailsResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -68,6 +69,39 @@ public class OrderController {
                 .data(result)
                 .build();
     }
+//cập nhận trạng thái đơn hàng
+    @PutMapping("/orderId")
+    public ApiResponse<OrderResponse> updateOrderStatus (@PathVariable String orderId, @RequestBody OrderUpdateStatusRequest request){
+        var result = orderService.updateOrderStatus(orderId,request);
+
+        return ApiResponse.<OrderResponse>builder()
+                .code(1000)
+                .message("update order status successful! ")
+                .data(result)
+                .build();
+    }
+
+//  lấy đơn hàng theo tên khách hàng
+    @GetMapping("/getOrderByCustomer/{customerName}")
+    public ApiResponse<List<OrderResponse>> getOrderByCustomerName(@PathVariable("customerName") String customerName){
+        var result = orderService.getOrderByCustomer(customerName);
+        return ApiResponse.<List<OrderResponse>>builder()
+                .code(1000)
+                .message("get orders of" + customerName+ " successful ")
+                .data(result)
+                .build();
+    }
+
+    @GetMapping("/getOrderByCustomerPhoneNumber/{phoneNumber}")
+    public ApiResponse<List<OrderResponse>> getOrderByCustomerPhoneNumber(@PathVariable String  phoneNumber){
+        var result = orderService.getOrderByCustomerPhoneNumber(phoneNumber);
+        return ApiResponse.<List<OrderResponse>>builder()
+                .code(1000)
+                .message("get orders of" +phoneNumber+ " successful ")
+                .data(result)
+                .build();
+    }
+
 
     @DeleteMapping("/orderId")
     public void deleteOrder(@PathVariable("orderId") String orderId){
