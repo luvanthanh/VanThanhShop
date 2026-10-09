@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tìm hiểu về Văn Thành Shop và nền tảng công nghệ phía sau trải nghiệm mua sắm.">
+    <title>Giới thiệu | Văn Thành Shop</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <link rel="stylesheet" href="../css/Home_header.css">
+    <link rel="stylesheet" href="../css/Introduce.css">
+    <link rel="stylesheet" href="../css/Home_section_three.css">
+    <link rel="stylesheet" href="../css/Home_footer.css">
+    <script src="../javaScript/Home.js" defer></script>
+</head>
+<body>
+<header class="navbar">
+  <div class="top-bar">
+    <div class="top-bar-content">
+      <span><i class="fa-solid fa-shield-halved" aria-hidden="true"></i> Sản phẩm chính hãng</span>
+      <span><i class="fa-solid fa-truck-fast" aria-hidden="true"></i> Miễn phí giao hàng từ 300.000₫</span>
+      <span><i class="fa-solid fa-headset" aria-hidden="true"></i> Hotline: 999 999 999</span>
+    </div>
+  </div>
+
+  <div class="main-bar">
+    <div class="logo">
+      <a href="Home.html" aria-label="Văn Thành Shop - Trang chủ">
+        <span class="logo-mark"><img src="../images/avatar.jpg" alt=""></span>
+        <span class="logo-s">VĂN THÀNH<span class="logo-caption">SHOP CÔNG NGHỆ</span></span>
+      </a>
+    </div>
+
+    <div class="btn">
+      <i class="fa-solid fa-house-user" aria-hidden="true"></i><a href="Home.html">Trang chủ</a>
+    </div>
+    <div class="btn">
+      <i class="fa-solid fa-circle-info" aria-hidden="true"></i><a href="Introduce.html" aria-current="page">Giới thiệu</a>
+    </div>
+    <div class="news-btn">
+      <a href="ListNews.html"><i class="fa-solid fa-newspaper" aria-hidden="true"></i> Tin tức</a>
+    </div>
+
+    <div class="search-box">
+      <input type="search" placeholder="Tìm điện thoại bạn yêu thích..." aria-label="Tìm kiếm sản phẩm">
+      <button class="search-submit" type="button" aria-label="Tìm kiếm">
+        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <div class="cart">
+      <a href="Carts.html"><i class="fa-solid fa-cart-shopping" aria-hidden="true"></i><span>Giỏ hàng</span></a>
+    </div>
+
+    <div class="login-button" id="login_button">
+      <i class="fa-regular fa-user" aria-hidden="true"></i><span class="account-label">Tài khoản</span>
+      <div class="accout-menu-two">
+        <ul>
+          <li><a href="LoginClient.html">Đăng nhập</a></li>
+          <li><a href="Profile.html">Tài khoản</a></li>
+          <li><a id="logout_button" onclick="logout()">Đăng xuất</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="about-page">
+  <nav class="about-breadcrumb" aria-label="Điều hướng">
+    <a href="Home.html">Trang chủ</a>
+    <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+    <span>Giới thiệu</span>
+  </nav>
+
+  <section class="about-hero" aria-labelledby="about-title">
+    <div class="about-hero-copy">
+      <span class="about-eyebrow"><i class="fa-solid fa-sparkles" aria-hidden="true"></i> VỀ VĂN THÀNH SHOP</span>
+      <h1 id="about-title">Công nghệ kết nối<br><span>trải nghiệm mua sắm.</span></h1>
+      <p>Văn Thành Shop là website bán điện thoại được xây dựng với mục tiêu mang đến trải nghiệm tìm hiểu và mua sắm trực quan, thuận tiện.</p>
+      <div class="about-hero-actions">
+        <a class="about-button about-button-primary" href="Home.html">Khám phá sản phẩm <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+        <a class="about-button about-button-secondary" href="#about-project">Tìm hiểu dự án</a>
+      </div>
+    </div>
+    <div class="about-hero-art" aria-hidden="true">
+      <div class="about-art-glow"></div>
+      <div class="about-device">
+        <div class="about-device-speaker"></div>
+        <div class="about-device-screen">
+          <span class="about-device-icon"><i class="fa-solid fa-mobile-screen-button"></i></span>
+          <span class="about-device-caption">SHOP SMART</span>
+          <span class="about-device-title">Chọn điều<br>bạn yêu thích.</span>
+          <span class="about-device-line"></span>
+          <span class="about-device-dots"><i></i><i></i><i></i></span>
+        </div>
+      </div>
+      <span class="about-float about-float-top"><i class="fa-solid fa-bolt"></i> Trải nghiệm số</span>
+      <span class="about-float about-float-bottom"><i class="fa-solid fa-layer-group"></i> Microservices</span>
+    </div>
+  </section>
+
+  <section class="about-personal" aria-labelledby="personal-title">
+    <div class="about-personal-copy">
+      <span class="about-section-kicker">NGƯỜI ĐỨNG SAU DỰ ÁN</span>
+      <h2 id="personal-title">Xin chào, mình là Thành.</h2>
+      <p>Mình xây dựng Văn Thành Shop như một dự án kết hợp niềm yêu thích công nghệ với trải nghiệm mua sắm trực tuyến. Từ giao diện đến các chức năng sản phẩm, giỏ hàng và đơn hàng, mỗi phần đều là cơ hội để mình học hỏi và hoàn thiện kỹ năng phát triển web.</p>
+      <p>Mục tiêu của mình là tạo nên một nơi giúp bạn dễ dàng khám phá các thiết bị công nghệ và tìm được sản phẩm phù hợp.</p>
+      <a class="about-personal-link" href="Home.html">Khám phá sản phẩm <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+    </div>
+    <div class="about-personal-gallery" aria-label="Một vài hình ảnh của Thành">
+      <figure class="about-personal-photo about-personal-photo-main">
+        <img src="../images/introduct1.jpg" alt="Thành, người xây dựng dự án Văn Thành Shop">
+        <figcaption>Người xây dựng Văn Thành Shop</figcaption>
+      </figure>
+      <figure class="about-personal-photo about-personal-photo-top">
+        <img src="../images/introduct2.jpg" alt="Ảnh chân dung của Thành">
+      </figure>
+      <figure class="about-personal-photo about-personal-photo-bottom">
+        <img src="../images/introduct3.jpg" alt="Ảnh cá nhân của Thành">
+      </figure>
+      <span class="about-personal-decoration" aria-hidden="true"><i class="fa-solid fa-heart"></i> Công nghệ & trải nghiệm</span>
+    </div>
+  </section>
+
+  <section class="about-project" id="about-project" aria-labelledby="project-title">
+    <div class="about-section-heading">
+      <span class="about-section-kicker">CÂU CHUYỆN PHÍA SAU</span>
+      <h2 id="project-title">Một website, nhiều dịch vụ phối hợp</h2>
+      <p>Dự án được tổ chức theo kiến trúc microservices để từng nhóm chức năng có thể phát triển và vận hành độc lập.</p>
+    </div>
+
+    <div class="about-feature-grid">
+      <article class="about-feature-card">
+        <span class="about-feature-icon"><i class="fa-solid fa-bag-shopping" aria-hidden="true"></i></span>
+        <h3>Tập trung vào mua sắm</h3>
+        <p>Tìm hiểu sản phẩm, quản lý giỏ hàng, theo dõi đơn hàng và cập nhật thông tin tài khoản trên cùng một website.</p>
+      </article>
+      <article class="about-feature-card">
+        <span class="about-feature-icon"><i class="fa-solid fa-cubes-stacked" aria-hidden="true"></i></span>
+        <h3>Chia nhỏ theo chức năng</h3>
+        <p>Các nghiệp vụ sản phẩm, người dùng, giỏ hàng, đơn hàng và tin tức được xử lý bởi những service riêng.</p>
+      </article>
+      <article class="about-feature-card">
+        <span class="about-feature-icon"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i></span>
+        <h3>Nền tảng có cấu trúc</h3>
+        <p>Spring Security hỗ trợ xác thực và kiểm soát truy cập; dữ liệu của các service được lưu trong MySQL.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="about-architecture" aria-labelledby="architecture-title">
+    <div class="about-architecture-copy">
+      <span class="about-section-kicker">CÁCH HỆ THỐNG HOẠT ĐỘNG</span>
+      <h2 id="architecture-title">Từ giao diện đến từng dịch vụ</h2>
+      <p>Yêu cầu từ giao diện đi qua API Gateway, sau đó được định tuyến đến service phù hợp. Eureka hỗ trợ đăng ký và khám phá các service trong hệ thống.</p>
+      <div class="about-tech-list" aria-label="Công nghệ sử dụng">
+        <span>Java</span><span>Spring Boot</span><span>Spring Cloud</span><span>MySQL</span><span>HTML · CSS · JavaScript</span>
+      </div>
+    </div>
+    <div class="about-flow" aria-label="Sơ đồ luồng dịch vụ">
+      <div class="about-flow-entry">
+        <span class="about-flow-icon"><i class="fa-solid fa-display" aria-hidden="true"></i></span>
+        <span><strong>Giao diện</strong><small>HTML · CSS · JavaScript</small></span>
+      </div>
+      <div class="about-flow-connector"><span></span><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></div>
+      <div class="about-flow-gateway">
+        <span class="about-flow-icon"><i class="fa-solid fa-shuffle" aria-hidden="true"></i></span>
+        <span><strong>API Gateway</strong><small>Điều phối yêu cầu</small></span>
+      </div>
+      <div class="about-flow-services">
+        <div><i class="fa-solid fa-mobile-screen-button" aria-hidden="true"></i> Product</div>
+        <div><i class="fa-solid fa-user" aria-hidden="true"></i> User</div>
+        <div><i class="fa-solid fa-cart-shopping" aria-hidden="true"></i> Cart</div>
+        <div><i class="fa-solid fa-box" aria-hidden="true"></i> Order</div>
+        <div><i class="fa-solid fa-newspaper" aria-hidden="true"></i> News</div>
+      </div>
+      <div class="about-flow-note"><i class="fa-solid fa-diagram-project" aria-hidden="true"></i> Eureka hỗ trợ khám phá dịch vụ</div>
+    </div>
+  </section>
+
+  <section class="about-cta" aria-label="Khám phá Văn Thành Shop">
+    <div>
+      <span class="about-section-kicker">SẴN SÀNG KHÁM PHÁ?</span>
+      <h2>Đi tìm thiết bị phù hợp với bạn.</h2>
+      <p>Khám phá danh sách sản phẩm và những tin tức công nghệ mới trên Văn Thành Shop.</p>
+    </div>
+    <div class="about-cta-actions">
+      <a href="Home.html">Xem sản phẩm <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+      <a href="ListNews.html">Đọc tin tức</a>
+    </div>
+  </section>
+</main>
+
+<section class="section-three" aria-label="Thông tin hỗ trợ">
+  <div class="section-three-content">
+    <div class="box">
+      <div class="box-Head">Về Văn Thành Shop</div>
+      <a href="Introduce.html" aria-current="page">Giới thiệu</a>
+      <a href="Home.html">Sản phẩm</a>
+      <a href="ListNews.html">Tin tức</a>
+    </div>
+    <div class="box">
+      <div class="box-Head">Tổng đài hỗ trợ</div>
+      <div class="box-Body">Tư vấn mua hàng: 999 999 999</div>
+      <div class="box-Body">CSKH: 999 999 999</div>
+    </div>
+    <div class="box">
+      <div class="box-Head">Hỗ trợ khách hàng</div>
+      <a href="OrderList.html">Đơn hàng của bạn</a>
+      <a href="Carts.html">Giỏ hàng</a>
+      <a href="Profile.html">Tài khoản</a>
+    </div>
+    <div class="box">
+      <div class="box-Head">Kết nối với chúng tôi</div>
+      <a href="https://facebook.com"><i class="fa-brands fa-facebook" aria-hidden="true"></i> Facebook</a>
+      <a href="https://instagram.com"><i class="fa-brands fa-instagram" aria-hidden="true"></i> Instagram</a>
+      <a href="https://youtube.com"><i class="fa-brands fa-youtube" aria-hidden="true"></i> YouTube</a>
+      <a href="https://tiktok.com"><i class="fa-brands fa-tiktok" aria-hidden="true"></i> TikTok</a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  © 2025 Văn Thành Shop · Cảm ơn bạn đã mua sắm cùng chúng tôi.
+</footer>
+</body>
+</html>

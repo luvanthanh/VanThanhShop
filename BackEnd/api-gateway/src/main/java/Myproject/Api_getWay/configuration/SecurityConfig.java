@@ -72,13 +72,13 @@ public class SecurityConfig {
     private final String[] SECURITY_GET_ENDPOINTS = {
 
             "/api/users/{userId}",
-            "/api/orders"
+            "/api/orders",
+            "/api/users"
     };
     private final String[] SECURITY_POST_ENDPOINTS={
             "/api/products/post",
             "/api/news/post",
     };
-
 
 
     private final String[] SECURITY_DELETE_ENDPOINTS={
@@ -100,10 +100,15 @@ public class SecurityConfig {
     private final String[] USER_GET_ENDPOINTS = {
             "/api/orders/{userId}",
             "/api/orders/{orderId}/details",
-
             "/api/users/myInfo"
     };
 
+    private final String[] USER_DELETE_ENDPOINTS = {
+            "/api/users/{userId}"
+    };
+    private final String[] USER_PUT_ENDPOINTS = {
+            "/api/users/{userId}"
+    };
 
     private final AuthenticationFilter authenticationFilter;
 
@@ -124,23 +129,16 @@ public class SecurityConfig {
                         .pathMatchers(HttpMethod.GET, PUBLIC_GET_ENDPOINTS).permitAll() // các get của public endpoints được phép truy cập mà không cần xác thực
                         .pathMatchers(HttpMethod.DELETE, PUBLIC_DELETE_ENDPOINTS).permitAll()
 
-                        .pathMatchers(HttpMethod.POST, USER_POST_ENDPOINTS)
-                        .hasAnyRole("USER", "ADMIN")
+                        .pathMatchers(HttpMethod.POST, USER_POST_ENDPOINTS).hasAnyRole("USER", "ADMIN")
+                        .pathMatchers(HttpMethod.GET, USER_GET_ENDPOINTS).hasAnyRole("USER", "ADMIN")
+                        .pathMatchers(HttpMethod.PUT,USER_PUT_ENDPOINTS).hasAnyRole("USER", "ADMIN")
+                        .pathMatchers(HttpMethod.DELETE,USER_DELETE_ENDPOINTS).hasAnyRole("USER", "ADMIN")
 
-                        .pathMatchers(HttpMethod.GET, USER_GET_ENDPOINTS)
-                        .hasAnyRole("USER", "ADMIN")
 
-                        .pathMatchers(HttpMethod.POST, SECURITY_POST_ENDPOINTS)
-                        .hasRole("ADMIN")
-
-                        .pathMatchers(HttpMethod.PUT, SECURITY_PUT_ENDPOINTS)
-                        .hasRole("ADMIN")
-
-                        .pathMatchers(HttpMethod.GET, SECURITY_GET_ENDPOINTS)
-                        .hasRole("ADMIN")
-
-                        .pathMatchers(HttpMethod.DELETE, SECURITY_DELETE_ENDPOINTS)
-                        .hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.POST, SECURITY_POST_ENDPOINTS).hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.PUT, SECURITY_PUT_ENDPOINTS).hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.GET, SECURITY_GET_ENDPOINTS).hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.DELETE, SECURITY_DELETE_ENDPOINTS).hasRole("ADMIN")
                 )
                 .cors(cors ->{} )
                 .exceptionHandling(exceptionHandling -> exceptionHandling
@@ -192,21 +190,4 @@ public class SecurityConfig {
         return new CorsWebFilter(source);
     }
 
-    /*
-    // đã tắt cors ở trên
-    private final String FRONTEND_URL = "http://127.0.0.1:5501";
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {  // cấu hình CORS để cho phép truy cập từ front end
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of(FRONTEND_URL));
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("*"));
-        configuration.setAllowCredentials(true);
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
-   */
-    // hàm này chỉ dùng đổi đổi scope thành roles
 }

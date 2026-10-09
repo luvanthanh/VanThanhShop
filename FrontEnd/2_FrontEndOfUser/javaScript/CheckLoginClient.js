@@ -37,7 +37,7 @@ function login(event) {
         errorMsg.textContent = "✔️ Đăng nhập thành công...";
 
         setTimeout(() => {
-          window.location.href = "Home.html";
+          window.location.href = "Introduce.html";
         }, 800);
 
       } else {
