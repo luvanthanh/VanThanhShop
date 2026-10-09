@@ -19,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -51,16 +52,19 @@ public class UserService {
     }
 
 // lấy all user
-    @PreAuthorize("hasRole('ADMIN')")
-    public List<User> getAllUsers(){
+    public List<UserResponse> getAllUsers(){
         log.info("In methor get all users");
 
         List<User> listUser = userRepository.findAll();
-        return listUser;
+        List<UserResponse> listUserResponse = new ArrayList<>();
+        for(User user : listUser){
+            UserResponse userResponse = userMapper.toUserResponse(user);
+            listUserResponse.add(userResponse);
+        }
+        return listUserResponse;
     }
 
 //    lấy user theo userId
-    @PostAuthorize("returnObject.userName == authentication.name")
     public UserResponse getUserById(String userId){
         log.info("In methor get user by id: "+userId);
 
@@ -81,8 +85,6 @@ public class UserService {
     }
 
 
-
-    @PostAuthorize("hasRole('ADMIN') or returnObject.userName == authentication.name")
     public UserResponse updateUserById(@RequestBody UserUpdateRequest request, String userId){
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new AppException(ErrorCode.USER_NOTFIND));
@@ -91,12 +93,10 @@ public class UserService {
             return userMapper.toUserResponse(userRepository.save(user));
     }
 
-    @PostAuthorize("hasRole('ADMIN') or returnObject.userName == authentication.name")
-    public String deletedUserById(String userId){
+    public String deletedUser(String userId){
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(()-> new AppException(ErrorCode.USER_NOTFIND));
         userRepository.delete(user);
         return " user has been deleted ";
     }
-
 }

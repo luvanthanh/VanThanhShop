@@ -40,15 +40,18 @@ public class UserController {
 //    lấy tất cả danh sách user
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
-    public ApiResponse<List<User>> getAllUsers(){
+    public ApiResponse<List<UserResponse>> getAllUsers(){
         var authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        log.info(" User Name: " + authentication.getName());
+        log.info("User Name: " + authentication.getName());
         authentication.getAuthorities().forEach(grantedAuthority -> log.info("roles: "+grantedAuthority.getAuthority()));
 
-        ApiResponse<List<User>> apiResponse = new ApiResponse<>();
-        apiResponse.setData(userService.getAllUsers());
-        return apiResponse;
+        var result =  userService.getAllUsers();
+        return ApiResponse.<List<UserResponse>>builder()
+                .code(1000)
+                .message("Get all users")
+                .data(result)
+                .build();
     }
 
 //    lấy user theo id
@@ -84,15 +87,19 @@ public class UserController {
         return apiResponse;
     }
 
+
     @DeleteMapping("/{userId}")
-    ApiResponse<String> deleteUserById(@PathVariable("userId") String userId){
+    ApiResponse<String> deletedUser(@PathVariable("userId") String userId){
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         log.info(" User Name: " + authentication.getName());  // câu lệnh này sẽ in ra ở
-
         authentication.getAuthorities().forEach(grantedAuthority -> log.info("roles: "+grantedAuthority.getAuthority()));
-        ApiResponse<String> apiResponse = new ApiResponse<>();
 
-        apiResponse.setData(userService.deletedUserById(userId));
-        return apiResponse;
+        var result = userService.deletedUser(userId);
+        return ApiResponse.<String>builder()
+                .code(1000)
+                .message("Delete user!")
+                .data(result)
+                .build();
+
     }
 }
