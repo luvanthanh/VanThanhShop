@@ -136,9 +136,13 @@ public class OrderService {
     @Transactional
     public OrderResponse updateOrderStatus(String orderId, OrderUpdateStatusRequest request){
         Order order = orderRepository.findByOrderId(orderId)
-                .orElseThrow(() -> new RuntimeException("order not found"));
-        order.setOrder_status(request.getOrder_status());
+                .orElseThrow(() ->
+                        new RuntimeException("Order not found"));
+
+        orderMapper.toOrderUpdate(order, request);
+
         Order updatedOrder = orderRepository.save(order);
+
         return orderMapper.toOrderResponse(updatedOrder);
     }
 

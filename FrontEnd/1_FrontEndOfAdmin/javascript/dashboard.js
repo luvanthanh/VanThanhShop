@@ -13,7 +13,11 @@ function variantsOf(product) {
 }
 
 function productStock(product) {
-    return variantsOf(product).reduce((total, variant) => total + (Number(variant.productStockQuantity) || 0), 0);
+    const variants = variantsOf(product);
+    if (!variants.length) return null;
+    const quantities = variants.map(variant => Number(variant.productStockQuantity));
+    if (quantities.some(quantity => !Number.isFinite(quantity) || quantity < 0)) return null;
+    return quantities.reduce((total, quantity) => total + quantity, 0);
 }
 
 function moneyOf(order) {
@@ -29,18 +33,26 @@ function monthKey(date) {
 function renderRevenueChart(orders) {
     const canvas = document.getElementById("revenue-chart");
     const empty = document.getElementById("revenue-chart-empty");
+    const area = canvas?.parentElement;
+    const footnote = document.getElementById("revenue-chart-footnote");
     if (!canvas || !orders || !orders.length) {
         if (empty) {
             empty.textContent = orders ? "Chưa có đơn hàng để hiển thị biểu đồ." : "Không thể tải biểu đồ doanh thu từ API đơn hàng.";
             empty.hidden = false;
         }
+        if (footnote) footnote.hidden = true;
+        area?.classList.add("chart-area-empty");
         return;
     }
     if (orders.some(order => moneyOf(order) === null)) {
         empty.textContent = "Thiếu totalMoney ở một số đơn hàng; không thể lập biểu đồ đầy đủ.";
         empty.hidden = false;
+        if (footnote) footnote.hidden = true;
+        area?.classList.add("chart-area-empty");
         return;
     }
+    area?.classList.remove("chart-area-empty");
+    if (footnote) footnote.hidden = false;
     empty.hidden = true;
     const now = new Date();
     const months = Array.from({ length: 6 }, (_, index) => {
@@ -114,9 +126,8 @@ function renderDashboard(products, users, orders, failures) {
         ? orders.reduce((sum, order) => sum + moneyOf(order), 0)
         : null;
     const lowStock = (products || []).map(product => ({ product, stock: productStock(product) }))
-        .filter(item => item.stock >= 0 && item.stock <= 5)
-        .sort((a, b) => a.stock - b.stock)
-        .slice(0, 5);
+        .filter(item => item.stock !== null && item.stock <= 5)
+        .sort((a, b) => a.stock - b.stock || String(a.product.productName || "").localeCompare(String(b.product.productName || ""), "vi"));
     const latestOrders = [...(orders || [])].sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0)).slice(0, 6);
 
     content.innerHTML = `
@@ -135,14 +146,24 @@ function renderDashboard(products, users, orders, failures) {
         <section class="panel chart-panel">
           <header class="panel-header"><div><h2>Giá trị đơn hàng theo tháng</h2><p>Tổng totalMoney theo ngày tạo, lấy từ API đơn hàng.</p></div></header>
           <div class="chart-area"><canvas id="revenue-chart" aria-label="Biểu đồ tổng tiền đơn hàng sáu tháng gần nhất"></canvas><div class="chart-empty" id="revenue-chart-empty" hidden>Chưa có đơn hàng để hiển thị biểu đồ.</div></div>
-          <div class="chart-footnote">Cộng totalMoney của mọi trạng thái đơn hàng; đây không phải doanh thu đã thanh toán. Tháng không có đơn hiển thị 0.</div>
+          <div class="chart-footnote" id="revenue-chart-footnote">Cộng totalMoney của mọi trạng thái đơn hàng; đây không phải doanh thu đã thanh toán. Tháng không có đơn hiển thị 0.</div>
         </section>
         <section class="panel">
-          <header class="panel-header"><div><h2>Tồn kho thấp</h2><p>Sản phẩm có số lượng tồn từ 0 đến 5.</p></div><a class="button button-secondary button-small" href="products.html">Sản phẩm</a></header>
+          <header class="panel-header"><div><h2>Tồn kho thấp</h2><p>${products === null ? "Không thể xác định số lượng tồn." : `${lowStock.length} sản phẩm còn từ 0 đến 5 đơn vị.`}</p></div><a class="button button-secondary button-small" href="products.html">Sản phẩm</a></header>
           <div class="panel-body">
-            ${products === null ? `<p class="text-muted">Không thể tải dữ liệu tồn kho từ API sản phẩm.</p>` : lowStock.length ? `<div class="quick-list">${lowStock.map(({ product, stock }) => `
-              <div class="quick-row"><div class="quick-main"><strong>${escapeHtml(product.productName)}</strong><span>${escapeHtml(product.productBrand || "Chưa phân loại")}</span></div><span class="badge badge-danger">${stock} còn lại</span></div>`).join("")}</div>`
-                : emptyState("Không có sản phẩm tồn kho thấp", "Số lượng tồn được tính từ các biến thể API trả về.")}
+            ${products === null ? `<p class="text-muted">Không thể tải dữ liệu tồn kho từ API sản phẩm.</p>` : lowStock.length ? `<div class="stock-chart" role="list" aria-label="Biểu đồ số lượng tồn kho thấp">${lowStock.map(({ product, stock }) => {
+                const stockPercent = Math.min(stock / 5 * 100, 100);
+                const stockLevel = stock === 0 ? "empty" : stock <= 2 ? "critical" : "low";
+                return `<div class="stock-chart-row" role="listitem">
+                  <div class="stock-chart-heading"><div class="stock-chart-product"><strong title="${escapeHtml(product.productName || "Sản phẩm")}">${escapeHtml(product.productName || "Sản phẩm")}</strong><span>${escapeHtml(product.productBrand || "Chưa phân loại")}</span></div>
+                    <span class="stock-chart-count stock-${stockLevel}">${stock === 0 ? "Hết hàng" : `${stock} chiếc`}</span>
+                  </div>
+                  <div class="stock-chart-track" role="progressbar" aria-label="Tồn kho ${escapeHtml(product.productName || "sản phẩm")}" aria-valuemin="0" aria-valuemax="5" aria-valuenow="${stock}">
+                    <span class="stock-chart-fill stock-${stockLevel}" style="width:${stockPercent}%"></span>
+                  </div>
+                </div>`;
+            }).join("")}</div>`
+                : emptyState("Không có sản phẩm tồn kho thấp", "Số lượng tồn được cộng từ các biến thể mà API trả về.")}
           </div>
         </section>
       </div>

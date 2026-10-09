@@ -130,7 +130,7 @@ public class SecurityConfig {
                 .cors(ServerHttpSecurity.CorsSpec::disable)// CORS sẽ được cấu hình riêng ở dưới
 
                 .authorizeExchange(exchange -> exchange
-                        .pathMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .pathMatchers(HttpMethod.OPTIONS).permitAll()
                         .pathMatchers(HttpMethod.POST, PUBLIC_POST_ENDPOINTS).permitAll()
                         .pathMatchers(HttpMethod.GET, PUBLIC_GET_ENDPOINTS).permitAll()
                         .pathMatchers(HttpMethod.DELETE, PUBLIC_DELETE_ENDPOINTS).permitAll()
@@ -186,7 +186,11 @@ public class SecurityConfig {
     public CorsWebFilter corsWebFilter() {
         CorsConfiguration config = new CorsConfiguration();
         // allow frontend dev origins; adjust for production
-        List<String> allowedOrigins = Arrays.asList("http://127.0.0.1:5501", "http://localhost:5501", "http://localhost:5500", "http://127.0.0.1:5500");
+        List<String> allowedOrigins = Arrays.asList(
+                "http://127.0.0.1:5501",
+                "http://localhost:5501",
+                "http://localhost:5500",
+                "http://127.0.0.1:5500");
         config.setAllowedOrigins(allowedOrigins);
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));

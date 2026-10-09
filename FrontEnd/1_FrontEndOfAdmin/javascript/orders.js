@@ -11,12 +11,8 @@ let sortDirection = "desc";
 
 const ORDER_STATUSES = [
     "PENDING",
-    "CONFIRMED",
-    "PROCESSING",
     "SHIPPING",
     "DELIVERED",
-    "COMPLETED",
-    "CANCELLED",
     "CANCELED"
 ];
 

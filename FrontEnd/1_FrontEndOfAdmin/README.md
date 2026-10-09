@@ -13,7 +13,7 @@ Không mở trang bằng `file://`: các trang dùng JavaScript ES modules và c
 
 ## Các trang
 
-- `html/dashboard.html`: số sản phẩm, người dùng, đơn hàng, tổng `totalMoney`, biểu đồ 6 tháng và tồn kho thấp; tất cả đều tính từ API.
+- `html/dashboard.html`: số sản phẩm, người dùng, đơn hàng, tổng `totalMoney`, biểu đồ 6 tháng và biểu đồ thanh tồn kho thấp theo từng sản phẩm; số tồn được cộng từ các biến thể API trả về.
 - `html/products.html`: tìm kiếm/lọc/phân trang/sắp xếp, chi tiết và CRUD sản phẩm.
 - `html/users.html`: tìm kiếm/phân trang, chi tiết, sửa và xóa có xác nhận; tự xóa tài khoản đang đăng nhập bị chặn ở giao diện.
 - `html/orders.html`: tìm kiếm/lọc/phân trang, chi tiết đơn và sản phẩm.
