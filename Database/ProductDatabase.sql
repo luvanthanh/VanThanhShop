@@ -1,9 +1,6 @@
 CREATE DATABASE IF NOT EXISTS ProductDatabase;
 USE ProductDatabase;
 
--- Tạo bảng
--- drop database ProductDatabase;
-
 
 CREATE TABLE products (
     product_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -43,6 +40,7 @@ ON DELETE CASCADE
 create table product_variants(
 product_variant_id int auto_increment primary key,
 product_id int,
+
 product_ram int,
 product_rom int,
 product_color varchar(100),
@@ -1518,7 +1516,7 @@ VALUES
 (56,12,256,'Black',15,20990000),
 (56,12,512,'Black',8,22990000),
 (56,8,128,'Silver',18,18990000),
-(56,12,512,'Silver',6,22990000);
+(56,12,512,'Silver',6,22990000)
 ;
 
 

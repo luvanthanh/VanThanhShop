@@ -22,10 +22,10 @@ FROM eclipse-temurin:21-jre
 WORKDIR /app
 
 # Sao chép file JAR từ giai đoạn build
-COPY --from=build /app/target/cart-service-0.0.1-SNAPSHOT.jar app.jar
+COPY --from=build /app/target/product-service-0.0.1-SNAPSHOT.jar app.jar
 
-# Port của Cart Service
-EXPOSE 8084
+# Port của Product Service
+EXPOSE 8081
 
 # Khởi chạy ứng dụng
 ENTRYPOINT ["java", "-jar", "app.jar"]

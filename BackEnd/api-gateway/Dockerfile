@@ -1,3 +1,8 @@
+#FROM ubuntu:latest
+#LABEL authors="dell G15"
+#
+#ENTRYPOINT ["top", "-b"]
+
 
 # Giai đoạn 1: Build ứng dụng Spring Boot
 FROM maven:3.9-eclipse-temurin-21 AS build
@@ -22,10 +27,10 @@ FROM eclipse-temurin:21-jre
 WORKDIR /app
 
 # Sao chép file JAR từ giai đoạn build
-COPY --from=build /app/target/cart-service-0.0.1-SNAPSHOT.jar app.jar
+COPY --from=build /app/target/api-gateway-0.0.1-SNAPSHOT.jar app.jar
 
-# Port của Cart Service
-EXPOSE 8084
+# Port của API Gateway
+EXPOSE 8888
 
 # Khởi chạy ứng dụng
 ENTRYPOINT ["java", "-jar", "app.jar"]

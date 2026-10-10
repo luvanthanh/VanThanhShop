@@ -1,8 +1,6 @@
 CREATE DATABASE IF NOT EXISTS OrderDatabase;
 USE OrderDatabase;
 
-
-
 CREATE TABLE orders (
     order_id NVARCHAR(255) PRIMARY KEY,  
     shop_address NVARCHAR(255) NOT NULL,
@@ -27,9 +25,9 @@ product_price double,
 product_quantity int,
 product_total_price double, 
 foreign key (order_id) references orders(order_id)
-)
+);
 
-select * from order_details
-select * from orders
+select * from order_details;
+select * from orders;
 
 

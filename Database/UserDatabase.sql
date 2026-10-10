@@ -1,7 +1,9 @@
-CREATE DATABASE IF NOT EXISTS UserDatabase;
-USE UserDatabase;
 
--- Tạo bảng
+CREATE DATABASE IF NOT EXISTS UserDatabase
+    CHARACTER SET utf8mb4
+    COLLATE utf8mb4_unicode_ci;
+    
+USE UserDatabase;
 
 
 CREATE TABLE users(
@@ -16,12 +18,12 @@ user_phone_number nvarchar(500),
 roles varchar(50)
 );
 
-
 CREATE TABLE invalidated_token
 (
 id nvarchar(100),
 expiry_time DATETIME
-)
+);
+
 select * from invalidated_token;
 select * from users;
 
