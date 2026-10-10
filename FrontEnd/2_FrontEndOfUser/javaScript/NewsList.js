@@ -40,6 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     ...(news.contentResponses || []).map(section => section.contentText)
                 ]
                     .filter(Boolean)
+                    .map(window.repairVietnameseText)
                     .join(" ")
                     .replace(/\s+/g, " ")
                     .trim();
@@ -47,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     ? `${content.slice(0, 180).trimEnd()}…`
                     : content;
                 const imageUrl = getThumbnail(news);
-                const title = news.newsTitle || news.newsName || "Tin tức";
+                const title = window.repairVietnameseText(news.newsTitle || news.newsName || "Tin tức");
 
                 return `
                     <a href="News.html?id=${encodeURIComponent(news.newsId)}" class="news-card">

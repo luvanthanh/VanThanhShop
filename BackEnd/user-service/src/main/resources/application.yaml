@@ -6,7 +6,7 @@ spring:
     name: user-service
 
   datasource:
-    url: jdbc:mysql://localhost:3333/UserDatabase
+    url: jdbc:mysql://mysql:3306/UserDatabase
     username: root
     password: "123456"
 
@@ -23,7 +23,7 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://eureka-service:8761/eureka
 
 jwt:
   signerKey: "iibCe8bCDuK8ziYesVMoeyJcZ6Lmp9jwwOGTMc7KzMYVi3wU18uypgq0Mh6YHNQN"

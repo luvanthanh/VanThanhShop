@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .then(news => {
             const data = news.data || {};
-            const title = data.newsTitle || data.newsName || 'Tin tức';
+            const title = window.repairVietnameseText(data.newsTitle || data.newsName || 'Tin tức');
 
             const date = data.newsDate
                 ? new Date(data.newsDate).toLocaleDateString("vi-VN")
@@ -34,15 +34,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const contentHtml = (data.contentResponses || []).map(content => `
                 <div class="news-paragraph">
-                    ${content.contentName ? `<h3>${content.contentName}</h3>` : ""}
-                    <p>${content.contentText || ""}</p>
+                    ${content.contentName ? `<h3>${window.repairVietnameseText(content.contentName)}</h3>` : ""}
+                    <p>${window.repairVietnameseText(content.contentText || "")}</p>
                 </div>
-            `).join("") || `<p>${data.newsContent || ""}</p>`;
+            `).join("") || `<p>${window.repairVietnameseText(data.newsContent || "")}</p>`;
 
             const extraImagesHtml = (data.imageResponses || []).slice(1).map(image => `
                 <div class="news-section">
-                    <img src="${image.imageUrl}" alt="${image.imageDescribe || title}">
-                    ${image.imageDescribe ? `<p>${image.imageDescribe}</p>` : ""}
+                    <img src="${image.imageUrl}" alt="${window.repairVietnameseText(image.imageDescribe || title)}">
+                    ${image.imageDescribe ? `<p>${window.repairVietnameseText(image.imageDescribe)}</p>` : ""}
                 </div>
             `).join("");
 

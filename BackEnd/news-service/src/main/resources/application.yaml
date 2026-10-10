@@ -6,7 +6,7 @@ spring:
     name: news-service
 
   datasource:
-    url: jdbc:mysql://localhost:3333/NewsDatabase
+    url: jdbc:mysql://mysql:3306/NewsDatabase
     username: root
     password: "123456"
 
@@ -23,4 +23,4 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://eureka-service:8761/eureka

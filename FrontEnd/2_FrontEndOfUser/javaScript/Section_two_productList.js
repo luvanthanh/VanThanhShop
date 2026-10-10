@@ -49,6 +49,7 @@ fetch(`http://localhost:8888/api/products`)
             productsToShow.forEach(product => {
                 const variant = getPrimaryVariant(product);
                 const imageUrl = getProductImage(product);
+                const productName = window.repairVietnameseText(product.productName || '');
                 const ramText = variant.productRam != null ? `${variant.productRam} GB` : 'N/A';
                 const romText = variant.productRom != null ? `${variant.productRom} GB` : 'N/A';
                 const priceText = variant.productPrice != null ? `${formatCurrency(variant.productPrice)}₫` : 'Liên hệ';
@@ -59,10 +60,10 @@ fetch(`http://localhost:8888/api/products`)
 
                 productDiv.innerHTML = `
                     <a href="Phone.html?id=${product.productId}">
-                        <img src="${imageUrl}" alt="${product.productName}">
+                        <img src="${imageUrl}" alt="${productName}">
 
                         <div class="product-name">
-                            ${product.productName}
+                            ${productName}
                         </div>
 
                         <div class="configuration-product">
@@ -80,7 +81,7 @@ fetch(`http://localhost:8888/api/products`)
                         </div>
 
                         <div class="describe-product">
-                            ${product.productDescription || ''}
+                            ${window.repairVietnameseText(product.productDescription || '')}
                         </div>
 
                         <div class="price-product">

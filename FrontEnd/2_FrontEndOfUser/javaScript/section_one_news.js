@@ -14,8 +14,9 @@ document.addEventListener("DOMContentLoaded", () => {
             if (items.length === 0) return;
             newsSection.innerHTML = "";
             items.forEach(item => {
+                const title = window.repairVietnameseText(item.newsTitle || '');
                 newsSection.innerHTML += `
-                    <a href="News.html?id=${item.newsId}"><img src="${getThumbnail(item)}" alt="${item.newsTitle || ''}" class="news-image"></a>
+                    <a href="News.html?id=${item.newsId}"><img src="${getThumbnail(item)}" alt="${title}" class="news-image"></a>
                 `;
             });
         })
@@ -28,8 +29,9 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!listNews) return;
             listNews.innerHTML = "";
             (news.data || []).slice(-3).forEach(item => {
+                const title = window.repairVietnameseText(item.newsTitle || '');
                 listNews.innerHTML += `
-                    <a class="news-content" href="News.html?id=${item.newsId}"> <img src="${getThumbnail(item)}" alt="${item.newsTitle || ''}" class="news-image"> </a>
+                    <a class="news-content" href="News.html?id=${item.newsId}"> <img src="${getThumbnail(item)}" alt="${title}" class="news-image"> </a>
                 `;
             });
         })

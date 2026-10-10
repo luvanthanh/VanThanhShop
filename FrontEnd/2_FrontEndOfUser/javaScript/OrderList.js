@@ -159,9 +159,9 @@ function renderDetails(details) {
     <div class="order-products">
       ${details.map((item) => `
         <div class="order-product">
-          <img src="${escapeHTML(item.productImage || "")}" alt="${escapeHTML(item.productName || "Sản phẩm")}" loading="lazy">
+          <img src="${escapeHTML(item.productImage || "")}" alt="${escapeHTML(window.repairVietnameseText(item.productName || "Sản phẩm"))}" loading="lazy">
           <div class="order-product-info">
-            <strong>${escapeHTML(item.productName || "Sản phẩm")}</strong>
+            <strong>${escapeHTML(window.repairVietnameseText(item.productName || "Sản phẩm"))}</strong>
             <span>${escapeHTML(formatMoney(item.productPrice))} × ${escapeHTML(item.productQuantity ?? 0)}</span>
           </div>
           <strong class="order-product-total">${escapeHTML(formatMoney(item.productTotalPrice))}</strong>

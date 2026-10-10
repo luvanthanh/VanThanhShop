@@ -52,12 +52,21 @@ public class ProductService {
 
 // lấy sản phẩm theo id
     @Transactional
-    public ProductResponse getProductById(int productId){
+    public ProductResponse getProductById(int productId) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("product not found"));
 
-        return productMapper.toProductResponse(product);
+        // Kiểm tra dữ liệu đọc từ MySQL
+        System.out.println("BEFORE MAPPER: "
+                + product.getProductDescription());
 
+        ProductResponse response = productMapper.toProductResponse(product);
+
+        // Kiểm tra dữ liệu sau khi mapping
+        System.out.println("AFTER MAPPER: "
+                + response.getProductDescription());
+
+        return response;
     }
 
 //tạo sản phẩm mới

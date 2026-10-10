@@ -92,7 +92,7 @@ function renderCart(data) {
     const { product, quantity } = item;
     const price = Number(product.productPrice);
     const total = price * quantity;
-    const productName = escapeHTML(product.productName);
+    const productName = escapeHTML(window.repairVietnameseText(product.productName || ""));
     const productImage = escapeHTML(product.productImage);
 
     tongTien += total;

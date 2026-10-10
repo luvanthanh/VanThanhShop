@@ -9,6 +9,8 @@ fetch(`http://localhost:8888/api/products/id/${id}`)
         }
 
         const p = result.data;
+        const productName = window.repairVietnameseText(p.productName || 'Không xác định');
+        const productBrand = window.repairVietnameseText(p.productBrand || 'N/A');
         const container = document.getElementById("Phone");
         const mainImage = p.productImageThumbnail || (p.imageResponses && p.imageResponses[0]?.imageUrl) || 'https://via.placeholder.com/400x400?text=No+Image';
         const images = [
@@ -35,16 +37,16 @@ fetch(`http://localhost:8888/api/products/id/${id}`)
         container.innerHTML = `
             <div class="product-detail">
                 <div class="images">
-                    <img class="main-img" src="${mainImage}" alt="${p.productName}">
+                    <img class="main-img" src="${mainImage}" alt="${productName}">
                     <div class="sub-images">
                         ${images.slice(0, 3).map(url => `<img src="${url}">`).join('')}
                     </div>
                 </div>
 
                 <div class="info">
-                    <h1>${p.productName || 'Không xác định'}</h1>
+                    <h1>${productName}</h1>
 
-                    <p><b>Thương hiệu:</b> ${p.productBrand || 'N/A'}</p>
+                    <p><b>Thương hiệu:</b> ${productBrand}</p>
                     <p><b>Màn hình:</b> ${p.productScreenSize ?? 'N/A'} inch</p>
                     <div class="variant-list">
                         <p><b>Biến thể:</b></p>
@@ -55,7 +57,7 @@ fetch(`http://localhost:8888/api/products/id/${id}`)
                     <p><b>ROM:</b> <span id="selected-rom">${romText}</span></p>
                     <p><b>Bảo hành:</b> ${p.productWarranty ?? 'N/A'} tháng</p>
 
-                    <p class="desc">${p.productDescription || ''}</p>
+                    <p class="desc">${window.repairVietnameseText(p.productDescription || '')}</p>
 
                     <p class="old-price" id="selected-price">${priceText}</p>
                     <h2 class="price" id="selected-price-large">${priceText}</h2>
