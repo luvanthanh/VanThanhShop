@@ -55,7 +55,7 @@ function renderUsers() {
 function renderPage() {
     content.innerHTML = `
       <section class="panel">
-        <header class="panel-header"><div><h2>Danh sách người dùng</h2><p>${users.length} tài khoản từ API</p></div></header>
+        <header class="panel-header"><div><h2>Danh sách người dùng</h2><p>${users.length} tài khoản từ API</p></div><button class="button button-primary" type="button" id="add-user">＋ Thêm người dùng</button></header>
         <div class="panel-body"><div class="toolbar"><input class="search-input" id="user-search" type="search" placeholder="Tìm tên, email, số điện thoại..." aria-label="Tìm người dùng"></div></div>
         <div class="table-wrap"><table class="data-table"><thead><tr><th><button class="sort-button" type="button" data-sort="userName">Người dùng ↕</button></th><th><button class="sort-button" type="button" data-sort="userEmail">Email ↕</button></th><th>Số điện thoại</th><th>Vai trò</th><th>Thao tác</th></tr></thead><tbody id="users-body"></tbody></table></div>
         <div class="pagination-bar" id="users-pagination"></div>
@@ -67,7 +67,53 @@ function renderPage() {
         sortKey = nextKey;
         renderUsers();
     }));
+    document.getElementById("add-user").addEventListener("click", openCreateUserForm);
     renderUsers();
+}
+
+function openCreateUserForm() {
+    const modal = openModal("Thêm người dùng mới", `
+      <form id="create-user-form" class="form-stack">
+        <div class="form-grid">
+          <label class="field-label">Tên đăng nhập<input name="userName" autocomplete="username" maxlength="100" required></label>
+          <label class="field-label">Mật khẩu<input name="userPassword" type="password" autocomplete="new-password" required></label>
+          <label class="field-label">Họ<input name="userLastName" required></label>
+          <label class="field-label">Tên<input name="userFirstName" required></label>
+          <label class="field-label">Email<input name="userEmail" type="email" autocomplete="email" required></label>
+          <label class="field-label">Số điện thoại<input name="userPhoneNumber" type="tel" autocomplete="tel"></label>
+          <label class="field-label field-full">Địa chỉ<textarea name="userAddress" autocomplete="street-address" required></textarea></label>
+        </div>
+        <p class="form-note">Vai trò tài khoản sẽ do hệ thống/backend thiết lập.</p>
+        <p id="create-user-message" class="form-message" role="alert"></p>
+        <div class="form-actions"><button class="button button-secondary" type="button" data-close-modal>Hủy</button><button class="button button-primary" type="submit">Tạo người dùng</button></div>
+      </form>`);
+    modal.querySelector("#create-user-form").addEventListener("submit", event => {
+        event.preventDefault();
+        const form = event.currentTarget;
+        if (!form.reportValidity()) return;
+        const values = new FormData(form);
+        const payload = Object.fromEntries([
+            "userName", "userPassword", "userLastName", "userFirstName",
+            "userAddress", "userEmail", "userPhoneNumber"
+        ].map(key => {
+            const value = String(values.get(key) || "");
+            return [key, key === "userPassword" ? value : value.trim()];
+        }));
+        const submit = form.querySelector('[type="submit"]');
+        submit.disabled = true;
+        submit.textContent = "Đang tạo...";
+        apiRequest("/users", { method: "POST", body: payload })
+            .then(() => {
+                modal.innerHTML = "";
+                showToast("Đã tạo tài khoản người dùng.");
+                return loadUsers();
+            })
+            .catch(error => {
+                modal.querySelector("#create-user-message").textContent = error.message;
+                submit.disabled = false;
+                submit.textContent = "Tạo người dùng";
+            });
+    });
 }
 
 function showDetails(user) {

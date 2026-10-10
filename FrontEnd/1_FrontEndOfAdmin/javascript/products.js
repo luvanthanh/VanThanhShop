@@ -1,5 +1,5 @@
 import { apiRequest, getCollection, responseData } from "./api.js";
-import { badge, emptyState, errorState, escapeHtml, formatCurrency, formatDate, openModal, renderPagination, showToast } from "./ui.js";
+import { badge, emptyState, errorState, escapeHtml, formatCurrency, formatDate, openModal, renderPagination, repairVietnameseText, showToast } from "./ui.js";
 
 const content = document.getElementById("page-content");
 const PAGE_SIZE = 8;
@@ -42,7 +42,7 @@ function filteredProducts() {
     const min = minimum === "" || minimum == null ? null : Number(minimum);
     const max = maximum === "" || maximum == null ? null : Number(maximum);
     return products.filter(product => {
-        const matchesQuery = !query || `${product.productName || ""} ${product.productBrand || ""}`.toLocaleLowerCase("vi").includes(query);
+        const matchesQuery = !query || `${repairVietnameseText(product.productName || "")} ${repairVietnameseText(product.productBrand || "")}`.toLocaleLowerCase("vi").includes(query);
         const price = minPrice(product);
         return matchesQuery && (!brand || product.productBrand === brand)
             && (min === null || price !== null && price >= min)
@@ -75,8 +75,8 @@ function renderTable() {
         const stock = stockOf(product);
         return `<tr>
           <td>${thumbnail ? `<img class="table-thumb" src="${thumbnail}" alt="" loading="lazy">` : `<span class="table-thumb product-placeholder" aria-label="Không có ảnh">VT</span>`}</td>
-          <td><span class="table-primary">${escapeHtml(product.productName)}</span><div class="table-subtext">#${escapeHtml(product.productId)}</div></td>
-          <td>${escapeHtml(product.productBrand || "—")}</td>
+          <td><span class="table-primary">${escapeHtml(repairVietnameseText(product.productName || ""))}</span><div class="table-subtext">#${escapeHtml(product.productId)}</div></td>
+          <td>${escapeHtml(repairVietnameseText(product.productBrand || "—"))}</td>
           <td>${escapeHtml(config)}</td>
           <td class="table-primary">${price === null ? "—" : formatCurrency(price)}</td>
           <td>${stock <= 5 ? badge(`${stock} tồn`) : `${stock} tồn`}</td>
@@ -143,18 +143,18 @@ function openProductForm(product) {
     const modal = openModal(product ? "Chỉnh sửa sản phẩm" : "Thêm sản phẩm mới", `
       <form id="product-form" class="form-stack">
         <div class="form-grid">
-          <label class="field-label">Tên sản phẩm<input name="productName" required maxlength="180" value="${escapeHtml(product?.productName || "")}"></label>
-          <label class="field-label">Thương hiệu<input name="productBrand" required maxlength="100" value="${escapeHtml(product?.productBrand || "")}"></label>
+          <label class="field-label">Tên sản phẩm<input name="productName" required maxlength="180" value="${escapeHtml(repairVietnameseText(product?.productName || ""))}"></label>
+          <label class="field-label">Thương hiệu<input name="productBrand" required maxlength="100" value="${escapeHtml(repairVietnameseText(product?.productBrand || ""))}"></label>
           <label class="field-label">Kích thước màn hình (inch)<input name="productScreenSize" type="number" min="0" step="0.1" required value="${escapeHtml(product?.productScreenSize ?? "")}"></label>
           <label class="field-label">Bảo hành (tháng)<input name="productWarranty" type="number" min="0" required value="${escapeHtml(product?.productWarranty ?? "")}"></label>
           <label class="field-label">Ngày ra mắt<input name="productReleaseDate" type="date" value="${product?.productReleaseDate ? escapeHtml(String(product.productReleaseDate).slice(0, 10)) : ""}"></label>
           <label class="field-label">Ảnh đại diện (URL)<input name="productImageThumbnail" type="url" placeholder="https://..." value="${escapeHtml(product?.productImageThumbnail || "")}"></label>
-          <label class="field-label field-full">Mô tả<textarea name="productDescription" maxlength="5000">${escapeHtml(product?.productDescription || "")}</textarea></label>
+          <label class="field-label field-full">Mô tả<textarea name="productDescription" maxlength="5000">${escapeHtml(repairVietnameseText(product?.productDescription || ""))}</textarea></label>
         </div>
         <div><div class="section-subhead"><strong>Biến thể, giá và tồn kho</strong><button class="button button-secondary button-small" type="button" id="add-variant">＋ Thêm biến thể</button></div>
           <div id="variant-list">${variants.map(variantRow).join("")}</div></div>
-        <label class="field-label">Ảnh sản phẩm (mỗi dòng: URL | mô tả)<textarea name="images" placeholder="https://example.com/image.jpg | Mặt trước">${escapeHtml((product?.imageResponses || []).map(image => `${image.imageUrl || ""}${image.imageDescribe ? ` | ${image.imageDescribe}` : ""}`).join("\n"))}</textarea></label>
-        <label class="field-label">Thông số kỹ thuật (mỗi dòng: Tên: Giá trị)<textarea name="attributes" placeholder="Chip: Snapdragon&#10;Pin: 5000 mAh">${escapeHtml((product?.attributeResponses || []).map(attribute => `${attribute.attributeName}: ${attribute.attributeValue}`).join("\n"))}</textarea></label>
+        <label class="field-label">Ảnh sản phẩm (mỗi dòng: URL | mô tả)<textarea name="images" placeholder="https://example.com/image.jpg | Mặt trước">${escapeHtml((product?.imageResponses || []).map(image => `${image.imageUrl || ""}${image.imageDescribe ? ` | ${repairVietnameseText(image.imageDescribe)}` : ""}`).join("\n"))}</textarea></label>
+        <label class="field-label">Thông số kỹ thuật (mỗi dòng: Tên: Giá trị)<textarea name="attributes" placeholder="Chip: Snapdragon&#10;Pin: 5000 mAh">${escapeHtml((product?.attributeResponses || []).map(attribute => `${repairVietnameseText(attribute.attributeName || "")}: ${repairVietnameseText(attribute.attributeValue || "")}`).join("\n"))}</textarea></label>
         <p class="form-note">Dữ liệu được gửi theo ProductCreationRequest/ProductUpdateRequest của backend. Ảnh nhập bằng URL; backend hiện không cung cấp API tải tệp ảnh.</p>
         <p class="form-message" id="product-form-message" role="alert"></p>
         <div class="form-actions"><button class="button button-secondary" type="button" data-close-modal>Hủy</button><button class="button button-primary" type="submit">Lưu sản phẩm</button></div>
@@ -236,21 +236,21 @@ function showDetails(productId) {
         const images = product.imageResponses || [];
         openModal("Chi tiết sản phẩm", `
           <div class="detail-list">
-            <div class="detail-item"><span>Tên sản phẩm</span><strong>${escapeHtml(product.productName)}</strong></div>
-            <div class="detail-item"><span>Thương hiệu</span><strong>${escapeHtml(product.productBrand)}</strong></div>
+            <div class="detail-item"><span>Tên sản phẩm</span><strong>${escapeHtml(repairVietnameseText(product.productName || ""))}</strong></div>
+            <div class="detail-item"><span>Thương hiệu</span><strong>${escapeHtml(repairVietnameseText(product.productBrand || ""))}</strong></div>
             <div class="detail-item"><span>Màn hình</span><strong>${escapeHtml(product.productScreenSize)} inch</strong></div>
             <div class="detail-item"><span>Bảo hành</span><strong>${escapeHtml(product.productWarranty)} tháng</strong></div>
             <div class="detail-item"><span>Ngày ra mắt</span><strong>${formatDate(product.productReleaseDate)}</strong></div>
-            <div class="detail-item"><span>Mô tả</span><strong>${escapeHtml(product.productDescription || "Chưa có mô tả")}</strong></div>
+            <div class="detail-item"><span>Mô tả</span><strong>${escapeHtml(repairVietnameseText(product.productDescription || "Chưa có mô tả"))}</strong></div>
           </div>
           <h3 class="modal-section-title">Biến thể</h3>
           ${variants.length ? `<div class="table-wrap"><table class="data-table"><thead><tr><th>RAM</th><th>ROM</th><th>Màu</th><th>Giá</th><th>Tồn</th></tr></thead><tbody>${variants.map(variant => `<tr><td>${escapeHtml(variant.productRam)} GB</td><td>${escapeHtml(variant.productRom)} GB</td><td>${escapeHtml(variant.productColor)}</td><td>${formatCurrency(variant.productPrice)}</td><td>${escapeHtml(variant.productStockQuantity)}</td></tr>`).join("")}</tbody></table></div>` : `<p class="text-muted">Chưa có biến thể.</p>`}
           <h3 class="modal-section-title">Thông số</h3>
-          ${attributes.length ? `<div class="detail-list">${attributes.map(item => `<div class="detail-item"><span>${escapeHtml(item.attributeName)}</span><strong>${escapeHtml(item.attributeValue)}</strong></div>`).join("")}</div>` : `<p class="text-muted">Chưa có thông số.</p>`}
+          ${attributes.length ? `<div class="detail-list">${attributes.map(item => `<div class="detail-item"><span>${escapeHtml(repairVietnameseText(item.attributeName || ""))}</span><strong>${escapeHtml(repairVietnameseText(item.attributeValue || ""))}</strong></div>`).join("")}</div>` : `<p class="text-muted">Chưa có thông số.</p>`}
           <h3 class="modal-section-title">Hình ảnh</h3>
           ${images.length ? `<div class="image-preview-list">${images.map(image => {
               const url = imageUrl(image.imageUrl);
-              return url ? `<img src="${url}" alt="${escapeHtml(image.imageDescribe || product.productName)}" loading="lazy">` : "";
+              return url ? `<img src="${url}" alt="${escapeHtml(repairVietnameseText(image.imageDescribe || product.productName || ""))}" loading="lazy">` : "";
           }).join("")}</div>` : `<p class="text-muted">Chưa có hình ảnh bổ sung.</p>`}`, { wide: true });
     }).catch(error => showToast(error.message, "error"));
 }
@@ -274,7 +274,7 @@ export function initPage() {
         const product = products.find(item => String(item.productId) === button.dataset.id);
         if (button.dataset.action === "details") showDetails(button.dataset.id);
         if (button.dataset.action === "edit" && product) openProductForm(product);
-        if (button.dataset.action === "delete" && product && window.confirm(`Xóa sản phẩm "${product.productName}"? Thao tác này không thể hoàn tác.`)) {
+        if (button.dataset.action === "delete" && product && window.confirm(`Xóa sản phẩm "${repairVietnameseText(product.productName || "")}"? Thao tác này không thể hoàn tác.`)) {
             apiRequest(`/products/delete/${encodeURIComponent(product.productId)}`, { method: "DELETE" })
                 .then(() => { showToast("Đã xóa sản phẩm."); return loadProducts(); })
                 .catch(error => showToast(error.message, "error"));

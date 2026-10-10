@@ -1,5 +1,5 @@
 import { apiRequest, getCollection } from "./api.js";
-import { badge, emptyState, errorState, escapeHtml, formatDate, openModal, renderPagination, showToast } from "./ui.js";
+import { badge, emptyState, errorState, escapeHtml, formatDate, openModal, renderPagination, repairVietnameseText, showToast } from "./ui.js";
 
 const content = document.getElementById("page-content");
 const PAGE_SIZE = 8;
@@ -27,10 +27,10 @@ function filteredArticles() {
     const query = document.getElementById("news-search")?.value.trim().toLocaleLowerCase("vi") || "";
     const category = document.getElementById("news-category-filter")?.value || "";
     return articles.filter(article =>
-        (!query || `${article.newsTitle || ""} ${article.newsName || ""} ${article.newsCategory || ""}`.toLocaleLowerCase("vi").includes(query))
+        (!query || `${repairVietnameseText(article.newsTitle || "")} ${repairVietnameseText(article.newsName || "")} ${repairVietnameseText(article.newsCategory || "")}`.toLocaleLowerCase("vi").includes(query))
         && (!category || article.newsCategory === category)
     ).sort((a, b) => {
-        const comparison = String(a.newsTitle || "").localeCompare(String(b.newsTitle || ""), "vi");
+        const comparison = repairVietnameseText(String(a.newsTitle || "")).localeCompare(repairVietnameseText(String(b.newsTitle || "")), "vi");
         const dated = new Date(a.newsCreateAt || 0) - new Date(b.newsCreateAt || 0);
         const result = sortKey === "newsTitle" ? comparison : dated;
         return sortDirection === "asc" ? result : -result;
@@ -38,10 +38,10 @@ function filteredArticles() {
 }
 
 function renderTable() {
-    const categories = [...new Set(articles.map(article => article.newsCategory).filter(Boolean))].sort((a, b) => a.localeCompare(b, "vi"));
+    const categories = [...new Set(articles.map(article => article.newsCategory).filter(Boolean))].sort((a, b) => repairVietnameseText(a).localeCompare(repairVietnameseText(b), "vi"));
     const categorySelect = document.getElementById("news-category-filter");
     const selectedCategory = categorySelect.value;
-    categorySelect.innerHTML = `<option value="">Tất cả danh mục</option>${categories.map(category => `<option value="${escapeHtml(category)}">${escapeHtml(category)}</option>`).join("")}`;
+    categorySelect.innerHTML = `<option value="">Tất cả danh mục</option>${categories.map(category => `<option value="${escapeHtml(category)}">${escapeHtml(repairVietnameseText(category))}</option>`).join("")}`;
     categorySelect.value = categories.includes(selectedCategory) ? selectedCategory : "";
     const matches = filteredArticles();
     currentPage = Math.min(currentPage, Math.ceil(matches.length / PAGE_SIZE) || 1);
@@ -51,8 +51,8 @@ function renderTable() {
         const thumbnail = safeImage(article.newsImageThumbnail);
         return `<tr>
           <td>${thumbnail ? `<img class="table-thumb" src="${thumbnail}" alt="" loading="lazy">` : `<span class="table-thumb product-placeholder">VT</span>`}</td>
-          <td><span class="table-primary">${escapeHtml(article.newsTitle || article.newsName || "Không có tiêu đề")}</span><div class="table-subtext">#${escapeHtml(article.newsId)} · ${escapeHtml(article.newsName || "")}</div></td>
-          <td>${badge(article.newsCategory)}</td><td>${formatDate(article.newsCreateAt)}</td>
+          <td><span class="table-primary">${escapeHtml(repairVietnameseText(article.newsTitle || article.newsName || "Không có tiêu đề"))}</span><div class="table-subtext">#${escapeHtml(article.newsId)} · ${escapeHtml(repairVietnameseText(article.newsName || ""))}</div></td>
+          <td>${badge(repairVietnameseText(article.newsCategory))}</td><td>${formatDate(article.newsCreateAt)}</td>
           <td><div class="table-actions">
             <button class="button button-secondary" type="button" data-action="preview" data-id="${escapeHtml(article.newsId)}">Xem</button>
             <button class="button button-secondary" type="button" data-action="edit" data-id="${escapeHtml(article.newsId)}">Sửa</button>
@@ -92,16 +92,16 @@ function renderPage() {
 
 function contentBlock(item = {}) {
     return `<div class="content-editor">
-      <label class="field-label">Tên phần nội dung<input name="contentName" maxlength="180" value="${escapeHtml(item.contentName || "")}" placeholder="Ví dụ: Điểm nổi bật"></label>
-      <label class="field-label">Nội dung<textarea name="contentText" required>${escapeHtml(item.contentText || "")}</textarea></label>
+      <label class="field-label">Tên phần nội dung<input name="contentName" maxlength="180" value="${escapeHtml(repairVietnameseText(item.contentName || ""))}" placeholder="Ví dụ: Điểm nổi bật"></label>
+      <label class="field-label">Nội dung<textarea name="contentText" required>${escapeHtml(repairVietnameseText(item.contentText || ""))}</textarea></label>
       <button class="button button-danger button-small" type="button" data-remove-content>Xóa phần này</button>
     </div>`;
 }
 
 function previewMarkup(values, form) {
     const contentBlocks = [...form.querySelectorAll(".content-editor")].map(block => ({
-        contentName: block.querySelector('[name="contentName"]').value.trim(),
-        contentText: block.querySelector('[name="contentText"]').value.trim()
+        contentName: repairVietnameseText(block.querySelector('[name="contentName"]').value.trim()),
+        contentText: repairVietnameseText(block.querySelector('[name="contentText"]').value.trim())
     })).filter(block => block.contentText);
     const image = safeImage(values.get("newsImageThumbnail"));
     return `<div class="article-preview">
@@ -118,14 +118,14 @@ function openArticleForm(article) {
     const modal = openModal(article ? "Chỉnh sửa bài viết" : "Tạo bài viết mới", `
       <form id="news-form" class="form-stack">
         <div class="form-grid">
-          <label class="field-label">Tên bài viết<input name="newsName" maxlength="180" required value="${escapeHtml(article?.newsName || "")}"></label>
-          <label class="field-label">Tiêu đề<input name="newsTitle" maxlength="240" required value="${escapeHtml(article?.newsTitle || "")}"></label>
-          <label class="field-label">Danh mục<input name="newsCategory" maxlength="100" required value="${escapeHtml(article?.newsCategory || "")}"></label>
+          <label class="field-label">Tên bài viết<input name="newsName" maxlength="180" required value="${escapeHtml(repairVietnameseText(article?.newsName || ""))}"></label>
+          <label class="field-label">Tiêu đề<input name="newsTitle" maxlength="240" required value="${escapeHtml(repairVietnameseText(article?.newsTitle || ""))}"></label>
+          <label class="field-label">Danh mục<input name="newsCategory" maxlength="100" required value="${escapeHtml(repairVietnameseText(article?.newsCategory || ""))}"></label>
           <label class="field-label">ID sản phẩm liên quan<input name="newsProductId" type="number" min="0" required value="${escapeHtml(article?.newsProductId ?? "")}"></label>
           <label class="field-label">Ngày đăng<input name="newsCreateAt" type="date" required value="${article?.newsCreateAt ? escapeHtml(String(article.newsCreateAt).slice(0, 10)) : ""}"></label>
           <label class="field-label">Ảnh thumbnail (URL)<input name="newsImageThumbnail" type="url" placeholder="https://..." value="${escapeHtml(article?.newsImageThumbnail || "")}"></label>
         </div>
-        <label class="field-label">Ảnh liên quan (mỗi dòng: URL | mô tả)<textarea name="images" placeholder="https://example.com/image.jpg | Ảnh sản phẩm">${escapeHtml((article?.imageResponses || []).map(image => `${image.imageUrl || ""}${image.imageDescribe ? ` | ${image.imageDescribe}` : ""}`).join("\n"))}</textarea></label>
+        <label class="field-label">Ảnh liên quan (mỗi dòng: URL | mô tả)<textarea name="images" placeholder="https://example.com/image.jpg | Ảnh sản phẩm">${escapeHtml((article?.imageResponses || []).map(image => `${image.imageUrl || ""}${image.imageDescribe ? ` | ${repairVietnameseText(image.imageDescribe)}` : ""}`).join("\n"))}</textarea></label>
         <div><div class="section-subhead"><strong>Nội dung bài viết</strong><button class="button button-secondary button-small" type="button" id="add-content">＋ Thêm phần</button></div><div id="content-block-list">${existingBlocks.map(contentBlock).join("")}</div></div>
         <div id="article-preview" hidden></div>
         <p class="form-note">Ảnh được lưu bằng URL. Backend hiện không có API tải tệp. Dữ liệu gửi theo NewsCreationRequest/NewsUpdateRequest.</p>
@@ -207,11 +207,11 @@ function previewArticle(article) {
     const thumbnail = safeImage(article.newsImageThumbnail);
     const contentBlocks = article.contentResponses || [];
     openModal("Xem trước bài viết", `
-      ${thumbnail ? `<img class="article-preview-image" src="${thumbnail}" alt="${escapeHtml(article.newsTitle || "")}">` : ""}
-      <div class="article-preview-meta">${escapeHtml(article.newsCategory || "Chưa phân loại")} · ${formatDate(article.newsCreateAt)}</div>
-      <h1 class="article-preview-title">${escapeHtml(article.newsTitle || article.newsName || "")}</h1>
-      <p class="article-preview-name">${escapeHtml(article.newsName || "")}</p>
-      ${contentBlocks.map(block => `<section class="article-preview-content">${block.contentName ? `<h2>${escapeHtml(block.contentName)}</h2>` : ""}<p>${escapeHtml(block.contentText || "").replace(/\r?\n/g, "<br>")}</p></section>`).join("")}`, { wide: true });
+      ${thumbnail ? `<img class="article-preview-image" src="${thumbnail}" alt="${escapeHtml(repairVietnameseText(article.newsTitle || ""))}">` : ""}
+      <div class="article-preview-meta">${escapeHtml(repairVietnameseText(article.newsCategory || "Chưa phân loại"))} · ${formatDate(article.newsCreateAt)}</div>
+      <h1 class="article-preview-title">${escapeHtml(repairVietnameseText(article.newsTitle || article.newsName || ""))}</h1>
+      <p class="article-preview-name">${escapeHtml(repairVietnameseText(article.newsName || ""))}</p>
+      ${contentBlocks.map(block => `<section class="article-preview-content">${block.contentName ? `<h2>${escapeHtml(repairVietnameseText(block.contentName))}</h2>` : ""}<p>${escapeHtml(repairVietnameseText(block.contentText || "")).replace(/\r?\n/g, "<br>")}</p></section>`).join("")}`, { wide: true });
 }
 
 function loadArticles() {
@@ -232,7 +232,7 @@ export function initPage() {
         if (!article) return;
         if (button.dataset.action === "preview") previewArticle(article);
         if (button.dataset.action === "edit") openArticleForm(article);
-        if (button.dataset.action === "delete" && window.confirm(`Xóa bài viết "${article.newsTitle || article.newsName}"? Thao tác này không thể hoàn tác.`)) {
+        if (button.dataset.action === "delete" && window.confirm(`Xóa bài viết "${repairVietnameseText(article.newsTitle || article.newsName || "")}"? Thao tác này không thể hoàn tác.`)) {
             apiRequest(`/news/delete/${encodeURIComponent(article.newsId)}`, { method: "DELETE" })
                 .then(() => { showToast("Đã xóa bài viết."); return loadArticles(); })
                 .catch(error => showToast(error.message, "error"));

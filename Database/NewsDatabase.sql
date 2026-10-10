@@ -195,6 +195,236 @@ VALUES
 'Chương trình kéo dài đến hết ngày 31/12/2025, đừng bỏ lỡ! iPhone 17 mang đến chip A19 mạnh mẽ cùng trí tuệ nhân tạo AI thế hệ mới, màn hình Super Retina XDR 120Hz sắc nét và camera kép 48MP. Thiết kế mỏng nhẹ, sang trọng cùng màu sắc tinh tế giúp iPhone 17 trở thành lựa chọn hấp dẫn cho người dùng yêu thích công nghệ.'
 );
 
+
+INSERT INTO news (
+    news_product_id,
+    news_name,
+    news_title,
+    news_create_at,
+    news_category,
+    news_image_thumbnail
+) VALUES
+(
+    14,
+    'iPhone 17 Pro Max chính thức ra mắt',
+    'Khám phá iPhone 17 Pro Max với thiết kế mới, camera nâng cấp và hiệu năng mạnh mẽ',
+    '2026-01-10 09:00:00',
+    'Sản Phẩm Mới',
+    'https://cdn.tgdd.vn/Products/Images/42/342676/Slider/iphone-17-pro638949088567223883.jpg'
+);
+
+SET @news1 = LAST_INSERT_ID();
+
+INSERT INTO images (news_id, image_url, image_describe) VALUES
+(@news1, 'https://cdn.tgdd.vn/Products/Images/42/342676/Slider/iphone-17-pro638949088567223883.jpg', 'Hình ảnh iPhone 17 Pro'),
+(@news1, 'https://cdn.tgdd.vn/Products/Images/42/342676/Slider/iphone-17-pro638949088568563906.jpg', 'Góc chụp khác của iPhone 17 Pro');
+
+INSERT INTO contents (news_id, content_name, content_text) VALUES
+(@news1, 'Giới thiệu', 'iPhone 17 Pro Max là mẫu điện thoại cao cấp hướng đến người dùng yêu thích công nghệ, chụp ảnh và giải trí. Bài viết giới thiệu thiết kế, màn hình và những điểm nổi bật của sản phẩm.'),
+(@news1, 'Camera và hiệu năng', 'Hệ thống camera được thiết kế để hỗ trợ chụp ảnh trong nhiều điều kiện ánh sáng. Hiệu năng mạnh mẽ đáp ứng nhu cầu chơi game, chỉnh sửa video và sử dụng nhiều ứng dụng.'),
+(@news1, 'Kết luận', 'iPhone 17 Pro Max là lựa chọn đáng tham khảo cho người dùng đang tìm kiếm một chiếc smartphone cao cấp.');
+
+
+INSERT INTO news (
+    news_product_id, news_name, news_title,
+    news_create_at, news_category, news_image_thumbnail
+) VALUES (
+    37,
+    'Samsung Galaxy Z Fold ra mắt',
+    'Điện thoại màn hình gập Samsung Galaxy Z Fold mang đến trải nghiệm đa nhiệm tiện lợi',
+    '2026-01-15 10:30:00',
+    'Công Nghệ',
+    'https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung_galaxy_s25_ultra_-_1_1.png'
+);
+
+SET @news2 = LAST_INSERT_ID();
+
+INSERT INTO images (news_id, image_url, image_describe) VALUES
+(@news2, 'https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung_galaxy_s25_ultra_-_1_1.png', 'Điện thoại Samsung'),
+(@news2, 'https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung_galaxy_s25_ultra_-_4_1.png', 'Thiết kế mặt lưng Samsung');
+
+INSERT INTO contents (news_id, content_name, content_text) VALUES
+(@news2, 'Tổng quan', 'Dòng điện thoại gập Samsung hướng đến người dùng cần màn hình lớn nhưng vẫn muốn một thiết bị có thể mang theo thuận tiện.'),
+(@news2, 'Trải nghiệm sử dụng', 'Màn hình mở rộng hỗ trợ đọc tài liệu, xem video và sử dụng nhiều ứng dụng. Người dùng nên tìm hiểu kích thước, dung lượng pin và chính sách bảo hành trước khi mua.');
+
+
+INSERT INTO news (
+    news_product_id, news_name, news_title,
+    news_create_at, news_category, news_image_thumbnail
+) VALUES (
+    27,
+    'Xiaomi ra mắt smartphone mới',
+    'Smartphone Xiaomi hướng đến hiệu năng cao trong phân khúc tầm trung',
+    '2026-02-05 08:15:00',
+    'Sản Phẩm Mới',
+    'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'
+);
+
+SET @news3 = LAST_INSERT_ID();
+
+INSERT INTO images (news_id, image_url, image_describe) VALUES
+(@news3, 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800', 'Smartphone Xiaomi minh họa'),
+(@news3, 'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=800', 'Điện thoại thông minh');
+
+INSERT INTO contents (news_id, content_name, content_text) VALUES
+(@news3, 'Thông tin sản phẩm', 'Xiaomi tiếp tục phát triển các dòng smartphone phục vụ nhu cầu học tập, làm việc và giải trí hằng ngày.'),
+(@news3, 'Điểm đáng chú ý', 'Khi chọn điện thoại, người dùng nên so sánh bộ xử lý, dung lượng RAM, bộ nhớ trong, camera và thời lượng pin.');
+
+
+INSERT INTO news (
+    news_product_id, news_name, news_title,
+    news_create_at, news_category, news_image_thumbnail
+) VALUES (
+    14,
+    'Ưu đãi mua điện thoại đầu năm',
+    'Săn ưu đãi smartphone với nhiều lựa chọn phù hợp ngân sách',
+    '2026-02-12 14:00:00',
+    'Khuyến Mãi',
+    'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'
+);
+
+SET @news4 = LAST_INSERT_ID();
+
+INSERT INTO images (news_id, image_url, image_describe) VALUES
+(@news4, 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800', 'Điện thoại trong chương trình ưu đãi');
+
+INSERT INTO contents (news_id, content_name, content_text) VALUES
+(@news4, 'Thông tin ưu đãi', 'Đây là nội dung khuyến mãi mẫu dùng để kiểm thử giao diện tin tức. Giá bán và điều kiện ưu đãi cần được cửa hàng xác nhận trước khi công bố.'),
+(@news4, 'Lưu ý khi mua hàng', 'Khách hàng nên kiểm tra giá cuối cùng, thời hạn áp dụng, điều kiện bảo hành và chính sách đổi trả.');
+
+
+INSERT INTO news (
+    news_product_id, news_name, news_title,
+    news_create_at, news_category, news_image_thumbnail
+) VALUES (
+    37,
+    'Cách chọn điện thoại chơi game',
+    'Những tiêu chí cần quan tâm khi chọn smartphone chơi game',
+    '2026-03-01 11:20:00',
+    'Kinh Nghiệm',
+    'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=800'
+);
+
+SET @news5 = LAST_INSERT_ID();
+
+INSERT INTO images (news_id, image_url, image_describe) VALUES
+(@news5, 'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=800', 'Smartphone dùng để chơi game');
+
+INSERT INTO contents (news_id, content_name, content_text) VALUES
+(@news5, 'Bộ xử lý và RAM', 'Bộ xử lý và RAM ảnh hưởng đến khả năng chạy game. Người dùng nên tham khảo yêu cầu phần cứng của trò chơi thường sử dụng.'),
+(@news5, 'Màn hình và pin', 'Màn hình có tần số quét cao có thể mang lại trải nghiệm chuyển động mượt hơn trong các trò chơi tương thích. Dung lượng pin và khả năng tản nhiệt cũng rất đáng cân nhắc.');
+
+
+INSERT INTO news (
+    news_product_id, news_name, news_title,
+    news_create_at, news_category, news_image_thumbnail
+) VALUES (
+    27,
+    'Hướng dẫn bảo quản điện thoại',
+    '5 mẹo giúp điện thoại luôn sạch và hoạt động ổn định',
+    '2026-03-10 09:45:00',
+    'Mẹo Công Nghệ',
+    'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'
+);
+
+SET @news6 = LAST_INSERT_ID();
+
+INSERT INTO images (news_id, image_url, image_describe) VALUES
+(@news6, 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800', 'Điện thoại thông minh');
+
+INSERT INTO contents (news_id, content_name, content_text) VALUES
+(@news6, 'Vệ sinh thiết bị', 'Sử dụng khăn mềm phù hợp để vệ sinh điện thoại. Tránh để hơi ẩm lọt vào các cổng kết nối và không sử dụng hóa chất không phù hợp.'),
+(@news6, 'Bảo vệ pin', 'Hạn chế để thiết bị trong môi trường nhiệt độ quá cao. Sử dụng bộ sạc tương thích và theo dõi tình trạng pin định kỳ.');
+
+
+INSERT INTO news (
+    news_product_id, news_name, news_title,
+    news_create_at, news_category, news_image_thumbnail
+) VALUES (
+    14,
+    'So sánh smartphone Android và iPhone',
+    'Nên chọn Android hay iPhone khi mua điện thoại mới?',
+    '2026-04-02 16:00:00',
+    'Tư Vấn',
+    'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=800'
+);
+
+SET @news7 = LAST_INSERT_ID();
+
+INSERT INTO images (news_id, image_url, image_describe) VALUES
+(@news7, 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800', 'Điện thoại thông minh'),
+(@news7, 'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=800', 'Thiết bị di động');
+
+INSERT INTO contents (news_id, content_name, content_text) VALUES
+(@news7, 'Hệ điều hành', 'Android có nhiều lựa chọn thiết bị và mức giá. iPhone sử dụng hệ sinh thái iOS của Apple. Mỗi nền tảng có ưu điểm riêng tùy theo nhu cầu.'),
+(@news7, 'Cách lựa chọn', 'Hãy cân nhắc ngân sách, thời gian hỗ trợ phần mềm, camera, pin, nhu cầu chơi game và những thiết bị bạn đang sử dụng.');
+
+
+INSERT INTO news (
+    news_product_id, news_name, news_title,
+    news_create_at, news_category, news_image_thumbnail
+) VALUES (
+    37,
+    'Những điều cần biết về sạc nhanh',
+    'Sạc nhanh trên smartphone hoạt động như thế nào?',
+    '2026-04-18 08:30:00',
+    'Công Nghệ',
+    'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'
+);
+
+SET @news8 = LAST_INSERT_ID();
+
+INSERT INTO images (news_id, image_url, image_describe) VALUES
+(@news8, 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800', 'Điện thoại và công nghệ sạc');
+
+INSERT INTO contents (news_id, content_name, content_text) VALUES
+(@news8, 'Nguyên lý sạc nhanh', 'Công nghệ sạc nhanh điều chỉnh công suất sạc phù hợp với thiết bị và bộ sạc tương thích. Tốc độ thực tế còn phụ thuộc nhiệt độ và mức pin.'),
+(@news8, 'Sử dụng an toàn', 'Nên sử dụng bộ sạc đạt tiêu chuẩn và phụ kiện tương thích. Không sử dụng thiết bị sạc bị hư hỏng.');
+
+
+INSERT INTO news (
+    news_product_id, news_name, news_title,
+    news_create_at, news_category, news_image_thumbnail
+) VALUES (
+    27,
+    'Hướng dẫn chọn dung lượng bộ nhớ',
+    '128GB, 256GB hay 512GB: nên mua smartphone bao nhiêu bộ nhớ?',
+    '2026-05-06 13:10:00',
+    'Tư Vấn',
+    'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=800'
+);
+
+SET @news9 = LAST_INSERT_ID();
+
+INSERT INTO images (news_id, image_url, image_describe) VALUES
+(@news9, 'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=800', 'Điện thoại thông minh');
+
+INSERT INTO contents (news_id, content_name, content_text) VALUES
+(@news9, 'Nhu cầu lưu trữ', 'Người thường xuyên chụp ảnh, quay video hoặc cài nhiều trò chơi có thể cần dung lượng bộ nhớ lớn hơn.'),
+(@news9, 'Gợi ý lựa chọn', 'Hãy ước tính lượng dữ liệu đang sử dụng và cân nhắc khả năng sao lưu trước khi chọn phiên bản bộ nhớ.');
+
+
+INSERT INTO news (
+    news_product_id, news_name, news_title,
+    news_create_at, news_category, news_image_thumbnail
+) VALUES (
+    14,
+    'Hướng dẫn mua điện thoại online',
+    'Kiểm tra những gì trước khi đặt mua smartphone trực tuyến?',
+    '2026-06-20 10:00:00',
+    'Kinh Nghiệm',
+    'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'
+);
+
+SET @news10 = LAST_INSERT_ID();
+
+INSERT INTO images (news_id, image_url, image_describe) VALUES
+(@news10, 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800', 'Smartphone mua sắm trực tuyến');
+
+INSERT INTO contents (news_id, content_name, content_text) VALUES
+(@news10, 'Kiểm tra thông tin', 'Đọc kỹ thông số, phiên bản sản phẩm, nguồn gốc hàng hóa, thời gian giao hàng và chính sách bảo hành trước khi đặt mua.'),
+(@news10, 'Sau khi nhận hàng', 'Kiểm tra ngoại hình, phụ kiện và tình trạng hoạt động của sản phẩm. Giữ lại hóa đơn và thông tin đơn hàng để tiện bảo hành.');
+
  select * from contents;
   select * from images;
   select * from news;
