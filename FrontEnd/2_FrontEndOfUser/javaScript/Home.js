@@ -1,14 +1,23 @@
 
 document.addEventListener("DOMContentLoaded", () => {
+  const token = localStorage.getItem("token");
   const usernameStored = localStorage.getItem("username");
 
-  if (usernameStored) {
+  if (token && usernameStored) {
     const loginButton = document.getElementById("login_button");
 
     if (loginButton) {
+      loginButton.classList.add("is-authenticated");
+
       const accountLabel = loginButton.querySelector(".account-label");
       if (accountLabel) {
         accountLabel.textContent = usernameStored;
+      }
+
+      const loginLink = loginButton.querySelector('.accout-menu-two a[href="LoginClient.html"]');
+      const loginMenuItem = loginLink?.closest("li");
+      if (loginMenuItem) {
+        loginMenuItem.hidden = true;
       }
     }
   }
@@ -43,6 +52,7 @@ function logout(){
         // Xoá token khỏi localStorage
         localStorage.removeItem("token");
         localStorage.removeItem("userId");
+        localStorage.removeItem("username");
         // Chuyển hướng về trang đăng nhập
         window.location.href = "LoginClient.html";
     })

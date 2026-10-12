@@ -229,6 +229,14 @@ body {
   gap:5px;
 }
 
+.login-button.is-authenticated:hover .accout-menu-two ul {
+  height: auto;
+}
+
+.login-button .accout-menu-two ul li[hidden] {
+  display: none;
+}
+
 .login-button:hover .accout-menu-two ul li {
   padding:5px;
   width:100%;
