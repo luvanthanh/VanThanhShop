@@ -41,10 +41,10 @@ $env:ORDER_BASE_URL="http://localhost:8085"; k6 run .\load-tests\k6\order-servic
 
 - `PRODUCT_ID`: product id de test endpoint lay chi tiet, mac dinh `1`.
 - `USERNAME`, `PASSWORD`: tai khoan login user-service, mac dinh `admin/admin`.
-- `ORDER_USER_ID`: user id de test endpoint lay order theo user, mac dinh `admin`.
+- `ORDER_USER_ID`: user id de test endpoint lay order theo user, mac dinh `c5a6ae2f-b48b-4956-a60e-6fb610edf2ba`.
 - `ORDER_ID`: neu co gia tri thi script order se test them endpoint lay order details.
 - `CART_ID`: cart id dung khi bat create order, mac dinh `1`.
-- `ENABLE_WRITES=true`: bat request ghi du lieu (`POST /products`, `POST /users`, `POST /orders`). Mac dinh tat de tranh tao nhieu du lieu khi stress test.
+- `ENABLE_WRITES=true`: bat request ghi du lieu (`POST /products/post`, `POST /users`, `POST /orders`). Mac dinh tat de tranh tao nhieu du lieu khi stress test.
 
 Vi du bat request ghi:
 

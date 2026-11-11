@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:8888/api";
+﻿const API_BASE = "http://localhost:8888/api";
 
 export class ApiError extends Error {
     constructor(message, status, payload) {

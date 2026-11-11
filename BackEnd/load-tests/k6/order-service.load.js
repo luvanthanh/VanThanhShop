@@ -29,7 +29,7 @@ export default function () {
   });
   checkApiResponse(allOrders, 'get all orders');
 
-  const ordersByUser = http.get(`${BASE_URL}/orders/getOrderByUserId/${USER_ID}`, {
+  const ordersByUser = http.get(`${BASE_URL}/orders/${USER_ID}`, {
     tags: { endpoint: 'get orders by user' },
   });
   checkApiResponse(ordersByUser, 'get orders by user');

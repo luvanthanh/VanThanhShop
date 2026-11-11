@@ -7,7 +7,7 @@ export const options = {
     product_load: {
       executor: 'ramping-vus',
       stages: [
-          { duration: '15s', target: 7000 },
+          { duration: '15s', target: 100 },
           // { duration: '10s', target: 1500 },
             // { duration: '10s', target: 1500 },
             // { duration: '10s', target: 2500 },
@@ -27,16 +27,16 @@ const PRODUCT_ID = __ENV.PRODUCT_ID || '1';
 export default function () {
   const endpoints = [
   ['/products', 'get all products'],
-  [`/products/getProductById/${PRODUCT_ID}`, 'get product by id'],
-  ['/products/getProductByName/iPhone', 'get by name'],
-  ['/products/getAndSortByPrice/increase', 'sort price increase'],
-  ['/products/getAndSortByPrice/decrease', 'sort price decrease'],
-  ['/products/getProductByBrand/iphone', 'get by brand'],
-  ['/products/getProductByRam/8', 'get by ram'],
-  ['/products/getProductByRom/128', 'get by rom'],
-  ['/products/getProductByColor/Black', 'get by color'],
-  ['/products/getProductByPrice?min=0&max=100000000', 'filter by price'],
-  ['/products/getProductByScreenSize?min=5&max=7', 'filter screen size'],
+  [`/products/id/${PRODUCT_ID}`, 'get product by id'],
+  ['/products/name/iPhone', 'get by name'],
+  ['/products/sort/price/create', 'sort price increase'],
+  ['/products/sort/price/decrease', 'sort price decrease'],
+  ['/products/brand/iphone', 'get by brand'],
+  ['/products/ram/8', 'get by ram'],
+  ['/products/rom/128', 'get by rom'],
+  ['/products/color/Black', 'get by color'],
+  ['/products/price?min=0&max=100000000', 'filter by price'],
+  ['/products/screen?min=5&max=7', 'filter screen size'],
 ];
 
   for (const [path, name] of endpoints) {
@@ -64,7 +64,7 @@ export default function () {
       productImage2: '',
       productImage3: '',
     };
-    const res = http.post(`${BASE_URL}/products`, JSON.stringify(payload), {
+    const res = http.post(`${BASE_URL}/products/post`, JSON.stringify(payload), {
       headers: JSON_HEADERS,
       tags: { endpoint: 'create product' },
     });
