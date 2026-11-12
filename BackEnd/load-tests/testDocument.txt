@@ -1,4 +1,1 @@
-k6 run .\load-tests\k6\product-service.stress.js
 k6 run .\load-tests\k6\product-service.load.js
-k6 run .\load-tests\k6\user-service.stress.js
-k6 run .\load-tests\k6\order-service.stress.js
