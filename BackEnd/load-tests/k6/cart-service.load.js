@@ -7,7 +7,7 @@ export const options = {
     cart_load: {
       executor: 'ramping-vus',
       stages: [
-        { duration: '15s', target: 500 }
+        { duration: '15s', target: 100 }
         // { duration: '1m', target: 20 },
         // { duration: '30s', target: 0 },
       ],
@@ -24,10 +24,12 @@ const AUTH_BASE_URL = serviceUrl('AUTH_BASE_URL', 'http://localhost:8888/api');
 const PRODUCT_ID = Number(__ENV.CART_PRODUCT_ID || 1);
 
 export function setup() {
-  const credentials = login(AUTH_BASE_URL, __ENV.USERNAME || 'admin', __ENV.PASSWORD || 'admin');
-  const userId = __ENV.CART_USER_ID || credentials.userId;
+  const userId = __ENV.CART_USER_ID || 'k6-load-test-user';
+  const token = shouldWrite()
+    ? login(AUTH_BASE_URL, __ENV.K6_USERNAME || 'admin', __ENV.K6_PASSWORD || 'admin').token
+    : null;
   const response = http.post(`${BASE_URL}/carts/user/${userId}`, null, {
-    headers: authHeaders(credentials.token),
+    headers: authHeaders(token),
     tags: { endpoint: 'create cart' },
   });
 
@@ -40,7 +42,7 @@ export function setup() {
     fail(`Create cart response has no cartId. Body=${response.body}`);
   }
 
-  return { ...credentials, userId, cartId };
+  return { userId, cartId, token };
 }
 
 export default function (data) {

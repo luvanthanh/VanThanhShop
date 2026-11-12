@@ -1,1 +1,3 @@
 k6 run .\load-tests\k6\product-service.load.js
+k6 run .\load-tests\k6\cart-service.load.js
+k6 run .\load-tests\k6\order-service.load.js
