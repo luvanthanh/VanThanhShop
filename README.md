@@ -52,7 +52,9 @@ docker compose ps
 - API Gateway: http://localhost:8888
 - MySQL: `localhost:3333`
 
-Để chạy giao diện Frontend, mở thư mục Frontend bằng Visual Studio Code và sử dụng **Live Server** để truy cập website.
+Giao diện cũ: mở `FrontEnd/2_FrontEndOfUser/html/Home.html` bằng **Live Server** trong VS Code.
+
+Giao diện React: vào `FrontEnd/3_FrontEndOfUserReact`, chạy `npm install` rồi `npm run dev`. Hướng dẫn chi tiết có trong [README của frontend React](FrontEnd/3_FrontEndOfUserReact/README.md).
 
 ### Bước 6: Dừng dự án
 

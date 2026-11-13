@@ -1,0 +1,66 @@
+:root {
+  font-family: Arial, sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  color: #211b2b;
+  background: #f7f6f9;
+  font-weight: 400;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a {
+  color: inherit;
+}
+
+.login-button .accout-menu-two ul li button {
+  width: 100%;
+  padding: 9px 10px;
+  border: 0;
+  background: transparent;
+  color: #211b2b;
+  cursor: pointer;
+  text-align: left;
+}
+
+.login-button .accout-menu-two ul li button:hover {
+  color: #5b2b82;
+}
+
+.product-phone {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+}
+
+.sub-images button {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
