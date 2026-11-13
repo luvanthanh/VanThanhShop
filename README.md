@@ -11,13 +11,13 @@
 Mở Terminal hoặc PowerShell và chạy:
 
 ```bash
-git clone https://github.com/luvanthanh/Service-orient-software-project.git
+git clone https://github.com/luvanthanh/VanThanhShop.git
 ```
 
 Di chuyển vào thư mục dự án:
 
 ```bash
-cd Service-orient-software-project
+cd VanThanhShop
 ```
 
 ### Bước 3: Cấu hình môi trường
