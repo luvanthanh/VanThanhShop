@@ -1,79 +1,114 @@
-# Hướng dẫn chạy dự án VanThanhShop
+# VanThanhShop
 
-### Bước 1: Cài đặt môi trường
+Hướng dẫn clone, cấu hình và chạy toàn bộ dự án trên Windows bằng PowerShell.
+Backend chạy trong Docker; frontend khách hàng React chạy bằng Vite.
 
-- Cài đặt Git: https://git-scm.com/
-- Cài đặt Docker Desktop: https://www.docker.com/products/docker-desktop/
-- Mở Docker Desktop và chờ Docker khởi động hoàn tất.
+## 1. Cài công cụ cần thiết
 
-### Bước 2: Clone dự án
+Cài đặt:
 
-Mở Terminal hoặc PowerShell và chạy:
+- [Git for Windows](https://git-scm.com/download/win)
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) và khởi động Docker Desktop
+- [Node.js LTS](https://nodejs.org/en/download) (npm được cài kèm Node.js)
 
-```bash
-git clone https://github.com/luvanthanh/VanThanhShop.git
+Mở terminal mới sau khi cài và kiểm tra:
+
+```powershell
+git --version
+docker --version
+docker compose version
+node -v
+npm -v
 ```
 
-Di chuyển vào thư mục dự án:
+Nếu `node` hoặc `npm` chưa được nhận diện, đóng/mở lại terminal hoặc VS Code để cập nhật `PATH`.
 
-```bash
+## 2. Clone dự án
+
+Mở PowerShell tại thư mục muốn lưu dự án, ví dụ:
+
+```powershell
+cd D:\ProjectInCV\Project1
+git clone https://github.com/luvanthanh/VanThanhShop.git
 cd VanThanhShop
 ```
 
-### Bước 3: Cấu hình môi trường
+Các lệnh Docker ở những bước sau cần chạy từ thư mục `VanThanhShop`, nơi có file `docker-compose.yml`.
 
-Nếu dự án có file `.env.example`, tạo file `.env` bằng lệnh:
+## 3. Tạo cấu hình môi trường cho Docker
+
+Repo không kèm file `.env.example`. Tạo file `.env` ở thư mục gốc bằng PowerShell:
 
 ```powershell
-Copy-Item .env.example .env
+'MYSQL_ROOT_PASSWORD=123456' | Set-Content -Encoding ascii .env
 ```
 
-Mở file `.env` và điền các thông tin cấu hình cần thiết.
+Đây là mật khẩu MySQL local mà các backend service hiện được cấu hình sử dụng. Chỉ dùng cấu hình này cho môi trường phát triển trên máy cá nhân; không đưa thông tin xác thực thật lên Git.
 
-### Bước 4: Chạy dự án bằng Docker
+## 4. Khởi động backend
 
-Tại thư mục chứa file `docker-compose.yml`, chạy:
+Đảm bảo Docker Desktop đang chạy, sau đó tại thư mục gốc dự án chạy:
 
-```bash
+```powershell
 docker compose up -d --build
 ```
 
-Chờ Docker build và khởi động các service.
+Kiểm tra trạng thái các container:
 
-Kiểm tra trạng thái:
-
-```bash
+```powershell
 docker compose ps
 ```
 
-### Bước 5: Truy cập dự án
+Đợi các service ở trạng thái `Up`. Nếu service chưa khởi động thành công, xem log bằng:
+
+```powershell
+docker compose logs --tail 100
+```
+
+Các địa chỉ local:
 
 - Eureka Dashboard: http://localhost:8761
 - API Gateway: http://localhost:8888
 - MySQL: `localhost:3333`
 
-Giao diện cũ: mở `FrontEnd/2_FrontEndOfUser/html/Home.html` bằng **Live Server** trong VS Code.
+## 5. Cài và chạy frontend React
 
-Giao diện React: vào `FrontEnd/3_FrontEndOfUserReact`, chạy `npm install` rồi `npm run dev`. Hướng dẫn chi tiết có trong [README của frontend React](FrontEnd/3_FrontEndOfUserReact/README.md).
+Mở **terminal thứ hai** trong VS Code hoặc PowerShell; giữ nguyên terminal dùng cho Docker. Chạy:
 
-### Bước 6: Dừng dự án
-
-Dừng các container nhưng giữ nguyên dữ liệu database:
-
-```bash
-docker compose stop
+```powershell
+cd D:\ProjectInCV\Project1\VanThanhShop\FrontEnd\3_FrontEndOfUserReact
+npm install
+npm run dev
 ```
 
-Khởi động lại dự án:
+`npm install` chỉ cần chạy lần đầu hoặc sau khi dependency thay đổi. Mở URL Vite hiện trong terminal, thường là http://localhost:5173.
 
-```bash
-docker compose start
-```
+Không mở `index.html` bằng Live Server để chạy React. Nếu cổng `5173` đang được sử dụng, Vite có thể chọn cổng khác; API Gateway hiện cho phép CORS từ `localhost:5173` và `127.0.0.1:5173`, vì vậy dùng đúng cổng `5173`.
 
-Nếu muốn dừng và xóa các container:
+### Frontend HTML/JavaScript cũ (tùy chọn)
 
-```bash
-docker compose down
-```
+Muốn chạy giao diện cũ thay vì React, mở `FrontEnd/2_FrontEndOfUser/html/Home.html` bằng Live Server trong VS Code.
 
-**Lưu ý:** Không sử dụng `docker compose down -v` nếu chưa sao lưu dữ liệu database.
+## 6. Dừng và khởi động lại
+
+- Dừng frontend React: nhấn `Ctrl+C` trong terminal đang chạy Vite.
+- Dừng backend nhưng giữ dữ liệu database:
+
+  ```powershell
+  cd D:\ProjectInCV\Project1\VanThanhShop
+  docker compose stop
+  ```
+
+- Khởi động lại các container đã dừng:
+
+  ```powershell
+  docker compose start
+  ```
+
+- Dừng và xóa container/network (dữ liệu database trong volume vẫn được giữ):
+
+  ```powershell
+  docker compose down
+  ```
+
+Không chạy `docker compose down -v` nếu chưa muốn xóa volume database và dữ liệu bên trong.
